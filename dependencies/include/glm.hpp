@@ -1,5 +1,7 @@
 #pragma once
 
+// Collection of glm includes for easier use
+
 #include "glm/fwd.hpp"
 #include "glm/glm.hpp"
 

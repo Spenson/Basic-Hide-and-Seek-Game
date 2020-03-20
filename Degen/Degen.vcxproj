@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(PlatformShortName)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)dependencies/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)dependencies\lib\$(PlatformShortName)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -80,11 +80,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)dependencies/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)dependencies\lib\$(PlatformShortName)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(PlatformShortName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(PlatformShortName)\$(Configuration)\</IntDir>
     <IncludePath>$(SolutionDir)dependencies/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)dependencies\lib\$(PlatformShortName)\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -92,6 +94,8 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(SolutionDir)dependencies/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)dependencies\lib\$(PlatformShortName)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)$(PlatformShortName)\$(Configuration)\</OutDir>
+    <IntDir>$(PlatformShortName)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -154,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\VAO and Meshes\cModelLoader.h" />
     <ClInclude Include="Engine\Entities\AnimatedObject.h" />
     <ClInclude Include="Engine\cEngine.h" />
     <ClInclude Include="Engine\Entities\BasicRenderObject.h" />
@@ -162,10 +167,18 @@
     <ClInclude Include="Engine\GL.h" />
     <ClInclude Include="Engine\glm.hpp" />
     <ClInclude Include="Engine\Globals.h" />
+    <ClInclude Include="Engine\VAO and Meshes\sModelDrawInfo.h" />
+    <ClInclude Include="Engine\VAO and Meshes\sComplexVertex.h" />
+    <ClInclude Include="Engine\VAO and Meshes\sTriangleIndices.h" />
+    <ClInclude Include="Engine\VAO and Meshes\VAO_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\dependencies\src\glad.c" />
     <ClCompile Include="Engine\cEngine.cpp" />
+    <ClCompile Include="Engine\VAO and Meshes\cModelLoader.cpp" />
+    <ClCompile Include="Engine\VAO and Meshes\sModelDrawInfo.cpp" />
+    <ClCompile Include="Engine\VAO and Meshes\sComplexVertex.cpp" />
+    <ClCompile Include="Engine\VAO and Meshes\VAO_Manager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
