@@ -1,5 +1,7 @@
 #pragma once
 
-
-static int WINDOW_WIDTH;
-static int WINDOW_HEIGHT;
+namespace Degen
+{
+	static int WINDOW_WIDTH;
+	static int WINDOW_HEIGHT;
+}

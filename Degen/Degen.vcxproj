@@ -107,8 +107,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)Dependencies\lib\$(PlatformShortName)\$(Configuration)\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -120,8 +123,11 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)Dependencies\lib\$(PlatformShortName)\$(Configuration)\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -137,8 +143,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)Dependencies\lib\$(PlatformShortName)\$(Configuration)\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -154,32 +163,51 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)Dependencies\lib\$(PlatformShortName)\$(Configuration)\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\VAO and Meshes\cModelLoader.h" />
-    <ClInclude Include="Engine\Entities\AnimatedObject.h" />
+    <ClInclude Include="Engine\FileReading\JsonHelpers.h" />
+    <ClInclude Include="Engine\Managers.h" />
+    <ClInclude Include="Engine\Render\cRenderer.h" />
+    <ClInclude Include="Engine\Render\FBO\cFBO.h" />
+    <ClInclude Include="Engine\Shaders\cShaderManager.h" />
+    <ClInclude Include="Engine\FileReading\cModelLoader.h" />
+    <ClInclude Include="Engine\Object\AnimatedObject.h" />
     <ClInclude Include="Engine\cEngine.h" />
-    <ClInclude Include="Engine\Entities\BasicRenderObject.h" />
-    <ClInclude Include="Engine\Entities\EntityManager.h" />
-    <ClInclude Include="Engine\Entities\iGameObject.h" />
+    <ClInclude Include="Engine\Object\cRenderOnlyObject.h" />
+    <ClInclude Include="Engine\Object\EntityManager.h" />
+    <ClInclude Include="Engine\Object\iGameObject.h" />
     <ClInclude Include="Engine\GL.h" />
     <ClInclude Include="Engine\glm.hpp" />
     <ClInclude Include="Engine\Globals.h" />
     <ClInclude Include="Engine\VAO and Meshes\sModelDrawInfo.h" />
     <ClInclude Include="Engine\VAO and Meshes\sComplexVertex.h" />
     <ClInclude Include="Engine\VAO and Meshes\sTriangleIndices.h" />
-    <ClInclude Include="Engine\VAO and Meshes\VAO_Manager.h" />
+    <ClInclude Include="Engine\VAO and Meshes\cVAOManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\dependencies\src\glad.c" />
+    <ClCompile Include="..\dependencies\src\jsoncpp.cpp" />
     <ClCompile Include="Engine\cEngine.cpp" />
-    <ClCompile Include="Engine\VAO and Meshes\cModelLoader.cpp" />
+    <ClCompile Include="Engine\FileReading\JsonHelpers.cpp" />
+    <ClCompile Include="Engine\Object\cRenderOnlyObject.cpp" />
+    <ClCompile Include="Engine\Render\cRenderer.cpp" />
+    <ClCompile Include="Engine\Render\FBO\cFBO.cpp" />
+    <ClCompile Include="Engine\Shaders\cShader.cpp" />
+    <ClCompile Include="Engine\Shaders\cShaderManager.cpp" />
+    <ClCompile Include="Engine\Shaders\cShaderProgram.cpp" />
+    <ClCompile Include="Engine\FileReading\cModelLoader.cpp" />
     <ClCompile Include="Engine\VAO and Meshes\sModelDrawInfo.cpp" />
     <ClCompile Include="Engine\VAO and Meshes\sComplexVertex.cpp" />
-    <ClCompile Include="Engine\VAO and Meshes\VAO_Manager.cpp" />
+    <ClCompile Include="Engine\VAO and Meshes\cVAOManager.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\config\init.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

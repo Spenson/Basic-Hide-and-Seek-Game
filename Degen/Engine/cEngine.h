@@ -3,7 +3,8 @@
 #include "GL.h"
 #include "Globals.h"
 #include <vector>
-#include "Entities/iGameObject.h"
+#include "Object/iGameObject.h"
+
 
 namespace Degen
 {
@@ -13,8 +14,8 @@ namespace Degen
 		cEngine();
 		virtual ~cEngine();
 
-		bool Initialize();
-		bool Load();
+		bool Initialize(std::string file);
+		bool Load(std::string file);
 		bool CleanUp();
 		void Go();
 		
@@ -23,7 +24,7 @@ namespace Degen
 		
 		bool InitGL();
 		
-		// Master List For Clean-Up
+		// Master List For Clean-Up? (Should be in a manager?)
 		std::vector<Object::iGameObject*> entities;
 	};
 

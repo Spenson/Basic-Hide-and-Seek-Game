@@ -1,0 +1,10 @@
+{
+	"shader": {
+		"Name": "Uber",
+		"frag": "fragmentShader01.glsl",
+		"vert": "vertexShader01.glsl"
+	},
+
+	"width": 1280,
+	"height": 720
+}
