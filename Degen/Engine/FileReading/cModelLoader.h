@@ -13,8 +13,8 @@ namespace Degen
 		{
 			std::map<std::string, Assimp::Importer> mImporters;
 		public:
-			cModelLoader();
-			~cModelLoader();
+			cModelLoader() = default;
+			~cModelLoader() = default;
 			// Imports all meshes in file then abandons Importer
 			VAOAndModel::sModelDrawInfo* LoadBasicModel(std::string	file_name, std::string friendly_name, std::string& error);
 		};

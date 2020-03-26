@@ -129,6 +129,8 @@ namespace Degen
 
 
 			// Store the draw information into the map
+			//delete[] drawInfo.indices;
+			//delete[] drawInfo.vertices;
 			this->m_name_draw_info[drawInfo.mesh_name] = drawInfo;
 
 

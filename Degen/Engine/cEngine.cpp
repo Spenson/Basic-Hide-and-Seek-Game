@@ -7,10 +7,14 @@
 #include "Shaders/cShaderManager.h"
 #include "VAO and Meshes/cVAOManager.h"
 #include "Managers.h"
+#include "Render/cRenderer.h"
 
 
 namespace Degen
 {
+	int WINDOW_WIDTH;
+	int WINDOW_HEIGHT;
+	
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -99,14 +103,140 @@ namespace Degen
 		VAOManager = new VAOAndModel::cVAOManager();
 		ShaderManager = new Shaders::cShaderManager();
 		ModelLoader = new FileReading::cModelLoader();
-		
+
+		{
+			Json::Value jsonShader;
+			if (jsonRoot["shader"].isObject())jsonShader = jsonRoot["shader"];
+
+			std::string name;
+			if (jsonShader["name"].isString()) name = jsonRoot["name"].asString();
+
+			Shaders::cShaderManager::cShader vertexShad;
+			if (jsonShader["vert"].isString()) vertexShad.fileName = "assets/shaders/" + jsonShader["vert"].asString();
+
+			Shaders::cShaderManager::cShader geoShader;
+			if (jsonShader["geo"].isString()) geoShader.fileName = "assets/shaders/" + jsonShader["geo"].asString();
+
+			Shaders::cShaderManager::cShader fragShader;
+			if (jsonShader["frag"].isString()) fragShader.fileName = "assets/shaders/" + jsonShader["frag"].asString();
+
+
+			if (vertexShad.fileName.empty() || fragShader.fileName.empty())
+			{
+				printf("vertex and fragment shaders required.\n");
+				return false;
+			}
+
+
+			if (geoShader.fileName.empty())
+			{
+				if (!ShaderManager->createProgramFromFile(name, vertexShad, fragShader))
+				{
+					printf("Could not create shader\n");
+					printf("%s\n", ShaderManager->getLastError().c_str());
+					return false;
+				}
+			}
+			else
+			{
+				if (!ShaderManager->createProgramFromFile(name, vertexShad, geoShader, fragShader))
+				{
+					printf("Could not create shader\n");
+					printf("%s\n", ShaderManager->getLastError().c_str());
+					return false;
+				}
+			}
+
+			mRenderer = new Render::cRenderer(ShaderManager->pGetShaderProgramFromFriendlyName(name));
+			mShaderName = name;
+		}
+
 
 		return true;
 	}
 
 	bool cEngine::Load(std::string file)
 	{
-		return false;
+		Json::Value jsonRoot;
+		{
+			std::string loadingErrors;
+			std::string fullFilePath = "./assets/config/" + file;
+			if (FileReading::ReadJsonFile(fullFilePath, jsonRoot, loadingErrors))
+			{
+				std::cout << "data file " << file << " opened and read successfully" << std::endl;
+			}
+			else
+			{
+				std::cout << "couldn't read data file: " << file << "\n\tErrors: " << loadingErrors << std::endl;
+				return false;
+			}
+		}
+
+		if (jsonRoot["Textures"].isArray())
+		{
+			const Json::Value& jsonTextures = jsonRoot["Textures"];
+			for (size_t idx = 0; idx < jsonTextures.size(); idx++)
+			{
+
+			}
+		}
+		if (jsonRoot["Models"].isArray())
+		{
+			Json::Value jsonModels = &jsonRoot["Models"];
+			std::string model_name;
+			std::string model_file;
+			bool is_basic;
+			std::string error;
+			for (unsigned int idx = 0; idx < jsonModels.size(); idx++)
+			{
+				Json::Value jsonCurModel = &jsonModels[idx];
+				if (jsonCurModel["name"].isString()) model_name = jsonCurModel["name"].asString();
+				if (jsonCurModel["file"].isString()) model_file = jsonCurModel["file"].asString();
+				if (jsonCurModel["is_basic"].isBool()) is_basic = jsonCurModel["basic"].asBool();
+				VAOAndModel::sModelDrawInfo* mdi = nullptr;
+
+				if (is_basic)
+				{
+					mdi = ModelLoader->LoadBasicModel(model_file, model_name, error);
+				}
+				else
+				{
+					printf("Advanced models not implemented.\n");
+				}
+				
+				if (!mdi)
+				{
+					printf("Model '%s' not loaded: %s\n", model_name.c_str(), error.c_str());
+					continue;
+				}
+
+				if(!VAOManager->LoadModelDrawInfoIntoVAO(*mdi, ShaderManager->GetProgramIDFromFriendlyName(mShaderName)))
+				{
+					printf("Model '%s' not pushed to VAO.\n", model_name.c_str());
+				}
+			}
+
+		}
+		if (jsonRoot["Animations"].isArray())
+		{
+			// TODO
+		}
+		if (jsonRoot["Lights"].isArray())
+		{
+			// TODO
+		}
+		if (jsonRoot["Entities"].isArray())
+		{
+			Json::Value jsonObjects = &jsonRoot["Objects"];
+			
+			for (unsigned int idx = 0; idx < jsonObjects.size(); idx++)
+			{
+				Json::Value jsonCurObject = &jsonObjects[idx];
+				
+			}
+		}
+
+		return true;
 	}
 
 	bool cEngine::CleanUp()

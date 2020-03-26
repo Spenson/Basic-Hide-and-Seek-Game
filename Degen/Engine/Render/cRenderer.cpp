@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include "../Globals.h"
 #include "../VAO and Meshes/sModelDrawInfo.h"
+#include "../Managers.h"
 
 namespace Degen
 {
@@ -25,6 +26,29 @@ namespace Degen
 			glm::vec4 boolModifiers;
 		};
 
+		cRenderer::cRenderer(Shaders::cShaderManager::cShaderProgram* shader) : mFBO(), mShaderProgram(shader)
+		{
+			std::string error;
+			if (!mFBO.init(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+			{
+				printf("FBO init failed:\n\t%s\n", error.c_str());
+				return;
+			}
+		}
+
+		void cRenderer::Update(double dt)
+		{
+			if (WINDOW_WIDTH != mFBO.width || WINDOW_HEIGHT != mFBO.height)
+			{
+				std::string error;
+				if (!mFBO.reset(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+				{
+					printf("FBO reset failed:\n\t%s\n", error.c_str());
+					return;
+				}
+
+			}
+		}
 
 		bool cRenderer::SingleRender(Object::iGameObject* object)
 		{
@@ -52,7 +76,7 @@ namespace Degen
 
 			if (object->GetType() == Object::RENDER_ONLY_TYPE)
 			{
-				RenderObject(dynamic_cast<Object::cRenderOnlyObject*>(object),mShaderProgram);
+				RenderObject(dynamic_cast<Object::cRenderOnlyObject*>(object), mShaderProgram);
 				return true;
 			}
 			return false;
@@ -63,7 +87,7 @@ namespace Degen
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glCullFace(GL_BACK);
-			
+
 			glEnable(GL_DEPTH_TEST);		// Turn ON depth test
 			glDepthMask(GL_TRUE);			// Write to depth buffer
 
@@ -110,7 +134,7 @@ namespace Degen
 
 
 			VAOAndModel::sModelDrawInfo drawInfo;
-			if (VAO->FindDrawInfoByModelName(object->mesh, drawInfo))
+			if (VAOManager->FindDrawInfoByModelName(object->mesh, drawInfo))
 			{
 				glBindVertexArray(drawInfo.vao_id);
 				glDrawElements(GL_TRIANGLES,
@@ -119,7 +143,7 @@ namespace Degen
 							   0);
 				glBindVertexArray(0);
 			}
-			
+
 		}
 
 	}

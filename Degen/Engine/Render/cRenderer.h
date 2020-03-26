@@ -3,6 +3,7 @@
 #include "../Object/cRenderOnlyObject.h"
 #include "../Shaders/cShaderManager.h"
 #include "../VAO and Meshes/cVAOManager.h"
+#include "../FBO/cFBO.h"
 
 namespace Degen
 {
@@ -11,8 +12,10 @@ namespace Degen
 		class cRenderer
 		{
 		public:
-			Shaders::cShaderManager::cShaderProgram* mShaderProgram = nullptr;
-			VAOAndModel::cVAOManager* VAO = nullptr;
+			cRenderer(Shaders::cShaderManager::cShaderProgram* shader);
+
+			void Update(double dt = 0.);
+			
 
 			bool SetShader(Shaders::cShaderManager::cShaderProgram* shader_program);
 			bool SingleRender(Object::iGameObject* object);
@@ -20,6 +23,8 @@ namespace Degen
 			void RenderObject(Object::cRenderOnlyObject* object, Shaders::cShaderManager::cShaderProgram* shader_program, glm::mat4 parent_matrix = glm::mat4(1.f));
 
 		private:
+			cFBO mFBO;
+			Shaders::cShaderManager::cShaderProgram* mShaderProgram = nullptr;
 		};
 	}
 }

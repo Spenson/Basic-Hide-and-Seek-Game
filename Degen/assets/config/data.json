@@ -1,0 +1,19 @@
+{
+  "Textures": [],
+  "Models": [
+    {
+      "name": "sphere",
+      "file": "sphere.ply",
+      "is_basic": true
+
+    }
+  ],
+  "Animations": [],
+  "Lights": [],
+  "Entities": [
+    {
+      "name": "FirstObject"
+
+    }
+  ]
+}

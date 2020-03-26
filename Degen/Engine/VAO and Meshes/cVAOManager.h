@@ -12,11 +12,11 @@ namespace Degen
 		{
 		public:
 
-			bool LoadModelDrawInfoIntoVAO(Degen::VAOAndModel::sModelDrawInfo& drawInfo,
+			bool LoadModelDrawInfoIntoVAO(sModelDrawInfo& drawInfo,
 										  unsigned int shaderProgramID);
 
 			bool FindDrawInfoByModelName(std::string filename,
-										 Degen::VAOAndModel::sModelDrawInfo& drawInfo);
+										 sModelDrawInfo& drawInfo);
 			
 		private:
 

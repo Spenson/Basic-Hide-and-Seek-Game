@@ -17,7 +17,8 @@ int main(int argc, char* argv[])
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
 	
 	Degen::cEngine engine;
-	engine.Initialize("init.json");
+	if (!engine.Initialize("init.json")) return EXIT_FAILURE;
+	if (!engine.Load("data.json")) return EXIT_FAILURE;
 	engine.Go();
 	engine.CleanUp();
 }

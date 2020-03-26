@@ -8,6 +8,10 @@
 
 namespace Degen
 {
+	namespace Render
+	{
+		class cRenderer;
+	}
 	class cEngine
 	{
 	public:
@@ -18,12 +22,15 @@ namespace Degen
 		bool Load(std::string file);
 		bool CleanUp();
 		void Go();
-		
+
 	private:
 		GLFWwindow* mWindow;
-		
+		Render::cRenderer* mRenderer;
+
+		std::string mShaderName;
+
 		bool InitGL();
-		
+
 		// Master List For Clean-Up? (Should be in a manager?)
 		std::vector<Object::iGameObject*> entities;
 	};

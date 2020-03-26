@@ -10,6 +10,7 @@ namespace Degen
 {
 	namespace FileReading
 	{
+
 		VAOAndModel::sModelDrawInfo* cModelLoader::LoadBasicModel(std::string file_name, std::string friendly_name, std::string& errors)
 		{
 			// Step 1: Read File

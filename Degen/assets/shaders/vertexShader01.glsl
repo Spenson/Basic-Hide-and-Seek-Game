@@ -3,15 +3,14 @@
 //uniform mat4 MVP;
 //uniform mat4 matModel;		// Model or World 
 //uniform mat4 matModelInverseTranspose;		// For normal calculation
-struct buffer
-{
-	mat4 matModel;
-	mat4 matModelInverseTranspose;
 
-	vec4 diffuseColour;
-	vec4 specularColour;
-	vec4 boolModifiers;
-};
+uniform mat4 matModel;
+uniform mat4 matModelInverseTranspose;
+
+uniform vec4 diffuseColour;
+uniform vec4 specularColour;
+uniform vec4 boolModifiers;
+
 
 
 uniform mat4 matView; 		// View or camera
