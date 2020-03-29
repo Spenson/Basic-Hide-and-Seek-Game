@@ -3,17 +3,34 @@
   "Models": [
     {
       "name": "sphere",
-      "file": "sphere.ply",
+      "file": "sphere_hires.ply",
       "is_basic": true
 
+    },
+    {
+      "name": "quad",
+      "file": "flat.ply",
+      "is_basic": true
     }
   ],
   "Animations": [],
   "Lights": [],
   "Entities": [
     {
-      "name": "FirstObject"
-
+      "name": "FirstObject",
+      "transform": {
+        "pos": [ 0.0, 0.0, 0.0 ],
+        "rot": [ 90.0, 0.0, 0.0 ]
+      },
+      "render": {
+        "mesh": "sphere",
+        "texture": "",
+        "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+        "specular": [ 1.0, 1.0, 1.0, 100.0 ],
+        "scale": [ 1.0, 1.0, 1.0 ],
+        "ignore_lighting": true,
+        "is_wireframe": false
+      }
     }
   ]
 }

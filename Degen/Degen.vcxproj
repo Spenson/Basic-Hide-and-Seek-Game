@@ -171,6 +171,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Component\iComponent.h" />
+    <ClInclude Include="Engine\Component\Light.h" />
     <ClInclude Include="Engine\Component\Position.h" />
     <ClInclude Include="Engine\Component\Render.h" />
     <ClInclude Include="Engine\Component\Rotation.h" />
@@ -178,7 +179,7 @@
     <ClInclude Include="Engine\Entity\cEntity.h" />
     <ClInclude Include="Engine\Entity\cEntityManager.h" />
     <ClInclude Include="Engine\FileReading\JsonHelpers.h" />
-    <ClInclude Include="Engine\Managers.h" />
+    <ClInclude Include="Engine\Load.h" />
     <ClInclude Include="Engine\Render\cRenderer.h" />
     <ClInclude Include="Engine\FBO\cFBO.h" />
     <ClInclude Include="Engine\Shaders\cShaderManager.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="..\dependencies\src\glad.c" />
     <ClCompile Include="..\dependencies\src\jsoncpp.cpp" />
     <ClCompile Include="Engine\cEngine.cpp" />
+    <ClCompile Include="Engine\Component\Light.cpp" />
     <ClCompile Include="Engine\Component\Position.cpp" />
     <ClCompile Include="Engine\Component\Render.cpp" />
     <ClCompile Include="Engine\Component\Rotation.cpp" />
@@ -212,6 +214,7 @@
     <ClCompile Include="Engine\Entity\cEntity.cpp" />
     <ClCompile Include="Engine\Entity\cEntityManager.cpp" />
     <ClCompile Include="Engine\FileReading\JsonHelpers.cpp" />
+    <ClCompile Include="Engine\Load.cpp" />
     <ClCompile Include="Engine\Object\cRenderOnlyObject.cpp" />
     <ClCompile Include="Engine\Render\cRenderer.cpp" />
     <ClCompile Include="Engine\FBO\cFBO.cpp" />

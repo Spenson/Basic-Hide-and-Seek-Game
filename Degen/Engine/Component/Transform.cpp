@@ -5,12 +5,12 @@ namespace Degen
 {
 	namespace Component
 	{
-		Transform::Transform() :iComponent(TRANSFORM_TYPE),
+		Transform::Transform() :iComponent(TRANSFORM_COMPONENT),
 			transform(1.f)
 		{
 
 		}
-		bool Transform::Serialize(Json::Value& json)
+		bool Transform::Deserialize(Json::Value& json)
 		{
 			glm::vec3 pos;
 			glm::vec3 rot;
@@ -20,7 +20,7 @@ namespace Degen
 
 			transform = glm::mat4(1.f);
 			transform = glm::translate(transform, pos);
-			transform *= glm::quat(rot);
+			transform *= glm::mat4(glm::quat(rot));
 			
 			return true;
 		}

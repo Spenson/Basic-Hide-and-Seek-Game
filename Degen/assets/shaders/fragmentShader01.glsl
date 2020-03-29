@@ -48,10 +48,6 @@ layout(location = 2) out vec4 worldPosOut;
 layout(location = 3) out vec4 specularOut;
 
 
-
-
-
-
 // Fragment shader
 struct sLight
 {
@@ -73,8 +69,12 @@ const int POINT_LIGHT_TYPE = 0;
 const int SPOT_LIGHT_TYPE = 1;
 const int DIRECTIONAL_LIGHT_TYPE = 2;
 
-//const int NUMBEROFLIGHTS = 10;
-const int NUMBEROFLIGHTS = 50;
+
+const int NUMBEROFLIGHTS = 100;
+//layout(std140, binding = 0) uniform Lights
+//{
+//	sLight theLights[NUMBEROFLIGHTS];
+//};
 uniform sLight theLights[NUMBEROFLIGHTS];  	// 50 uniforms
 
 // Really appears as:
@@ -444,15 +444,15 @@ void Pass01(void)
 	}
 
 
-	//if (light == 0.f)
-	//{
-	//	vec3 normal = texture(textureNormal, uvs.st).rgb;
-	//	vec3 position = texture(texturePosition, uvs.st).rgb;
-	//	vec4 specular = texture(Specular, uvs.st);
+	if (light == 0.f)
+	{
+		vec3 normal = texture(textureNormal, uvs.st).rgb;
+		vec3 position = texture(texturePosition, uvs.st).rgb;
+		vec4 specular = texture(textureSpecular, uvs.st);
 
-	//	outColour = calcualteLightContrib(outColour.rgb, normal, position, specular);
+		outColour = calcualteLightContrib(outColour.rgb, normal, position, specular);
 
-	//}
+	}
 
 	if (nightvision)
 	{

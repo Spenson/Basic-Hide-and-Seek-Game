@@ -1,9 +1,7 @@
 #pragma once
 
 #include "GL.h"
-#include "Globals.h"
-#include <vector>
-#include "Object/iGameObject.h"
+#include <string>
 
 
 namespace Degen
@@ -12,6 +10,8 @@ namespace Degen
 	{
 		class cRenderer;
 	}
+
+	
 	class cEngine
 	{
 	public:
@@ -27,12 +27,11 @@ namespace Degen
 		GLFWwindow* mWindow;
 		Render::cRenderer* mRenderer;
 
+		// Needed for loading
 		std::string mShaderName;
 
 		bool InitGL();
 
-		// Master List For Clean-Up? (Should be in a manager?)
-		std::vector<Object::iGameObject*> entities;
 	};
 
 }

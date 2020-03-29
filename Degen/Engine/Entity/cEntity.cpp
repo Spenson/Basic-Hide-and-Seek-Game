@@ -4,20 +4,6 @@ namespace Degen
 {
 	namespace Entity
 	{
-		template<class T>
-		inline T* cEntity::AddComponent()
-		{
-			T* c = new T();
-			if (dynamic_cast<Component::iComponent*>(c) == nullptr)
-			{
-				return nullptr;
-			}
-
-			this->components.push_back(c);
-
-			return c;
-		}
-
 		Component::iComponent* cEntity::GetComponent(unsigned int type)
 		{
 			for (unsigned int i = 0; i < components.size(); i++)
@@ -29,6 +15,19 @@ namespace Degen
 			}
 			//Entity does not contain specified component.
 			return nullptr;
+		}
+		std::vector<Component::iComponent*> cEntity::GetComponents(unsigned int type)
+		{
+			std::vector<Component::iComponent*> comps;
+			for (unsigned int i = 0; i < components.size(); i++)
+			{
+				if (type == components.at(i)->Type())
+				{
+					comps.push_back(components.at(i));
+				}
+			}
+			//Entity does not contain specified component.
+			return comps;
 		}
 		bool cEntity::RemoveComponent(Component::iComponent* c)
 		{

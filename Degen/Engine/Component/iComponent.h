@@ -11,7 +11,7 @@ namespace Degen
 		public:
 			virtual ~iComponent() = default;
 
-			virtual bool Serialize(Json::Value& json) = 0;
+			virtual bool Deserialize(Json::Value& json) = 0;
 			
 			unsigned int Type() { return mType; }
 		protected:

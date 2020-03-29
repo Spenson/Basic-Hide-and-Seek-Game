@@ -6,13 +6,13 @@ namespace Degen
 {
 	namespace Component
 	{
-		constexpr unsigned int ROTATION_TYPE = 2;
+		constexpr unsigned int ROTATION_COMPONENT = 2;
 
 		class Rotation : public iComponent
 		{
 		public:
 			Rotation();
-			bool Serialize(Json::Value& json) override;
+			bool Deserialize(Json::Value& json) override;
 
 			glm::quat rotation;
 		};

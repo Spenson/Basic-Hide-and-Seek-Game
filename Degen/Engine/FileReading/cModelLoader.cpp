@@ -27,7 +27,7 @@ namespace Degen
 			std::cout << std::endl;
 			std::cout << "LoadBasicModel:" << file_name << std::endl;
 
-			pScene = mImporter.ReadFile(file_name.c_str(), Flags);
+			pScene = mImporter.ReadFile((base_path+file_name).c_str(), Flags);
 
 			errors.clear();
 			errors.append(mImporter.GetErrorString());

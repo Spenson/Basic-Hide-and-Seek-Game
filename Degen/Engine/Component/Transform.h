@@ -6,13 +6,13 @@ namespace Degen
 {
 	namespace Component
 	{
-		constexpr unsigned int TRANSFORM_TYPE = 1;
+		constexpr unsigned int TRANSFORM_COMPONENT = 1;
 
 		class Transform : public iComponent
 		{
 		public:
 			Transform();
-			bool Serialize(Json::Value& json) override;
+			bool Deserialize(Json::Value& json) override;
 
 			glm::mat4 transform;
 		};

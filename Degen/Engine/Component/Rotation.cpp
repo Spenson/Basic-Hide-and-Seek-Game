@@ -6,11 +6,11 @@ namespace Degen
 {
 	namespace Component
 	{
-		Rotation::Rotation() :iComponent(ROTATION_TYPE),
+		Rotation::Rotation() :iComponent(ROTATION_COMPONENT),
 			rotation(glm::vec3(0.f))
 		{
 		}
-		bool Rotation::Serialize(Json::Value& json)
+		bool Rotation::Deserialize(Json::Value& json)
 		{
 			glm::vec3 rot;
 			JsonHelp::Set(json["rotation"], rot);

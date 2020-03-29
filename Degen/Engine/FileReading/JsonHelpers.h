@@ -6,6 +6,13 @@ namespace Degen
 {
 	namespace JsonHelp
 	{
+		// set a int
+		inline bool Set(const Json::Value& jsonVal, int& val)
+		{
+			if (!jsonVal.isInt()) return false;
+			val = jsonVal.asInt();
+			return true;
+		}
 		// set a string
 		inline bool Set(const Json::Value& jsonVal, std::string& val)
 		{

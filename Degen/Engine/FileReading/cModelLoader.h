@@ -12,6 +12,7 @@ namespace Degen
 		class cModelLoader
 		{
 			std::map<std::string, Assimp::Importer> mImporters;
+			std::string base_path = "assets/models/";
 		public:
 			cModelLoader() = default;
 			~cModelLoader() = default;

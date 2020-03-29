@@ -5,7 +5,7 @@ namespace Degen
 {
 	namespace Component
 	{
-		Render::Render() : iComponent(RENDER_TYPE),
+		Render::Render() : iComponent(RENDER_COMPONENT),
 			mesh(),
 			texture(),
 			diffuse_colour(1.f),
@@ -15,7 +15,7 @@ namespace Degen
 			is_wireframe(false)
 		{
 		}
-		bool Render::Serialize(Json::Value& json)
+		bool Render::Deserialize(Json::Value& json)
 		{
 			JsonHelp::Set(json["mesh"], mesh);
 			JsonHelp::Set(json["texture"], texture);

@@ -6,11 +6,11 @@ namespace Degen
 {
 	namespace Component
 	{
-		Position::Position() :iComponent(POSITION_TYPE),
+		Position::Position() :iComponent(POSITION_COMPONENT),
 			position(0.f)
 		{
 		}
-		bool Position::Serialize(Json::Value& json)
+		bool Position::Deserialize(Json::Value& json)
 		{
 			JsonHelp::Set(json["position"], position);
 			

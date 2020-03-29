@@ -6,13 +6,13 @@ namespace Degen
 {
 	namespace Component
 	{
-		constexpr unsigned int RENDER_TYPE = 2;
+		constexpr unsigned int RENDER_COMPONENT = 4;
 
 		class Render : public iComponent
 		{
 		public:
 			Render();
-			bool Serialize(Json::Value& json) override;
+			bool Deserialize(Json::Value& json) override;
 
 			std::string mesh; //Model
 			std::string texture;

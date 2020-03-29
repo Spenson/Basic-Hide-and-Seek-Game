@@ -2,19 +2,26 @@
 #include <cassert>
 #include <iostream>
 
-#include "FileReading/JsonHelpers.h"
-#include "FileReading/cModelLoader.h"
-#include "Shaders/cShaderManager.h"
-#include "VAO and Meshes/cVAOManager.h"
-#include "Managers.h"
 #include "Render/cRenderer.h"
+
+#include "FileReading/JsonHelpers.h"
+#include "Load.h"
+
+#include "VAO and Meshes/cVAOManager.h"
+#include "Shaders/cShaderManager.h"
+#include "FileReading/cModelLoader.h"
+#include "Entity/cEntityManager.h"
 
 
 namespace Degen
 {
 	int WINDOW_WIDTH;
 	int WINDOW_HEIGHT;
-	
+	VAOAndModel::cVAOManager* VAOManager; // Manages objects pushed to gpu
+	Shaders::cShaderManager* ShaderManager; // managers all shaders created
+	FileReading::cModelLoader* ModelLoader; // manages files loded with assimp
+	Entity::cEntityManager* EntityManager; // creats and cleans up entities
+
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -23,6 +30,11 @@ namespace Degen
 		}
 	}
 
+	static void window_size_callback(GLFWwindow* window, int width, int height)
+	{
+		
+	}
+	
 	cEngine::cEngine()
 	{
 		WINDOW_WIDTH = 800;
@@ -50,6 +62,7 @@ namespace Degen
 		}
 
 		glfwSetKeyCallback(mWindow, key_callback);
+		glfwSetWindowSizeCallback(mWindow, window_size_callback);
 
 		glfwMakeContextCurrent(mWindow);
 
@@ -103,6 +116,7 @@ namespace Degen
 		VAOManager = new VAOAndModel::cVAOManager();
 		ShaderManager = new Shaders::cShaderManager();
 		ModelLoader = new FileReading::cModelLoader();
+		EntityManager = new Entity::cEntityManager();
 
 		{
 			Json::Value jsonShader;
@@ -146,9 +160,11 @@ namespace Degen
 					return false;
 				}
 			}
-
+			
+			ShaderManager->pGetShaderProgramFromFriendlyName(name)->LoadActiveUniforms();
 			mRenderer = new Render::cRenderer(ShaderManager->pGetShaderProgramFromFriendlyName(name));
 			mShaderName = name;
+			
 		}
 
 
@@ -172,68 +188,21 @@ namespace Degen
 			}
 		}
 
-		if (jsonRoot["Textures"].isArray())
-		{
-			const Json::Value& jsonTextures = jsonRoot["Textures"];
-			for (size_t idx = 0; idx < jsonTextures.size(); idx++)
-			{
+		// TODO: TEXTURES
 
-			}
-		}
-		if (jsonRoot["Models"].isArray())
+		if(!Load::LoadModels(jsonRoot["Models"], mShaderName))
 		{
-			Json::Value jsonModels = &jsonRoot["Models"];
-			std::string model_name;
-			std::string model_file;
-			bool is_basic;
-			std::string error;
-			for (unsigned int idx = 0; idx < jsonModels.size(); idx++)
-			{
-				Json::Value jsonCurModel = &jsonModels[idx];
-				if (jsonCurModel["name"].isString()) model_name = jsonCurModel["name"].asString();
-				if (jsonCurModel["file"].isString()) model_file = jsonCurModel["file"].asString();
-				if (jsonCurModel["is_basic"].isBool()) is_basic = jsonCurModel["basic"].asBool();
-				VAOAndModel::sModelDrawInfo* mdi = nullptr;
+			printf("Could not load models.\n");
+			return false;
+		}
 
-				if (is_basic)
-				{
-					mdi = ModelLoader->LoadBasicModel(model_file, model_name, error);
-				}
-				else
-				{
-					printf("Advanced models not implemented.\n");
-				}
-				
-				if (!mdi)
-				{
-					printf("Model '%s' not loaded: %s\n", model_name.c_str(), error.c_str());
-					continue;
-				}
-
-				if(!VAOManager->LoadModelDrawInfoIntoVAO(*mdi, ShaderManager->GetProgramIDFromFriendlyName(mShaderName)))
-				{
-					printf("Model '%s' not pushed to VAO.\n", model_name.c_str());
-				}
-			}
-
-		}
-		if (jsonRoot["Animations"].isArray())
+		// TODO: Animations
+		// TODO: Lights
+		
+		if (!Load::LoadEntities(jsonRoot["Entities"]))
 		{
-			// TODO
-		}
-		if (jsonRoot["Lights"].isArray())
-		{
-			// TODO
-		}
-		if (jsonRoot["Entities"].isArray())
-		{
-			Json::Value jsonObjects = &jsonRoot["Objects"];
-			
-			for (unsigned int idx = 0; idx < jsonObjects.size(); idx++)
-			{
-				Json::Value jsonCurObject = &jsonObjects[idx];
-				
-			}
+			printf("Could not load entities.\n");
+			return false;
 		}
 
 		return true;
@@ -246,18 +215,23 @@ namespace Degen
 
 	void cEngine::Go()
 	{
+		double delta_time = 0;
+		double previous_time = glfwGetTime();
 		while (!glfwWindowShouldClose(mWindow))
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			//get window size
 			glfwGetWindowSize(mWindow, &WINDOW_WIDTH, &WINDOW_HEIGHT);
 
 			//set the view port
-			glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+			//glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-			//call this update
-			//this->Update();
+			double time = glfwGetTime();
+			delta_time = glm::max(glm::min(time - previous_time, 0.05),0.001); // min "simulate" 20fps, even if <20fps, max fps1000 (crazy but for error stuff)
+			previous_time = time;
+			
+			mRenderer->Update(delta_time);
 
 			//Swap buffers
 			glfwSwapBuffers(mWindow);

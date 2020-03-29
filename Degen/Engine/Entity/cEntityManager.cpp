@@ -3,6 +3,8 @@ namespace Degen
 {
 	namespace Entity
 	{
+		std::vector<cEntity*> cEntityManager::entities;
+		
 		cEntityManager::cEntityManager() = default;
 
 		cEntityManager::~cEntityManager()
