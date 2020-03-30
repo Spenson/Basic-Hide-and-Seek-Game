@@ -7,6 +7,8 @@
 #include "Component/Rotation.h"
 #include "Component/Camera.h"
 #include "Component/Light.h"
+#include "Component/Velocity.h"
+#include "Component/Gatherer.h"
 
 namespace Degen
 {
@@ -96,6 +98,16 @@ namespace Degen
 						if (components[i]["component"] == "light")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Light>();
+							comp->Deserialize(components[i]);
+						}
+						if (components[i]["component"] == "velocity")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Velocity>();
+							comp->Deserialize(components[i]);
+						}
+						if (components[i]["component"] == "gatherer")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Gatherer>();
 							comp->Deserialize(components[i]);
 						}
 					}

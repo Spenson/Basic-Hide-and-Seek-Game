@@ -24,6 +24,8 @@ namespace Degen
 
 			struct edge
 			{
+				edge(node* a, node* b, unsigned length) :a(a), b(b), length(length) {}
+				node* other(node* n) { return n == a ? b : a; }
 				node* a;
 				node* b;
 				unsigned length;
@@ -46,6 +48,7 @@ namespace Degen
 
 			unsigned map_width, map_height;
 			std::vector<node*> map;
+			unsigned home_node;
 
 
 		};

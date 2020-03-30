@@ -42,20 +42,23 @@
       "name": "x",
       "components": [
         {
-          "component": "transform",
-          "pos": [ 0.0, 0.0, 0.0 ],
-          "rot": [ 0.0, 10.0, 0.0 ]
+          "component": "position",
+          "position": [ 0.0, 0.0, 0.0 ]
         },
         {
-          "component": "render",
-          "mesh": "cube",
-          "texture": "",
-          "diffuse": [ 1.0, 0.8, 0.2, 1.0 ],
-          "specular": [ 1.0, 1.0, 1.0, 0.9 ],
-          "scale": [ 1.0, 1.0, 1.0 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        }
+          "component": "rotation",
+          "rotation": [ 0.0, 10.0, 0.0 ]
+        }//,
+        //{
+        //  "component": "render",
+        //  "mesh": "cube",
+        //  "texture": "",
+        //  "diffuse": [ 1.0, 0.8, 0.2, 1.0 ],
+        //  "specular": [ 1.0, 1.0, 1.0, 0.9 ],
+        //  "scale": [ 1.0, 1.0, 1.0 ],
+        //  "ignore_lighting": false,
+        //  "is_wireframe": false
+        //}
       ]
     },
     {

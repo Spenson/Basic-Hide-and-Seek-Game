@@ -68,7 +68,7 @@ namespace Degen
 		if (!mWindow)
 		{
 			glfwTerminate();
-			printf("Unable to create glfw window\n%s");
+			printf("Unable to create glfw window\n");
 			return false;
 		}
 
