@@ -231,9 +231,9 @@ namespace Degen
 
 			glActiveTexture(GL_TEXTURE9);				
 			glBindTexture(GL_TEXTURE_2D, mFBO.colourTexture_ID);
-			glActiveTexture(GL_TEXTURE11);			
+			glActiveTexture(GL_TEXTURE10);			
 			glBindTexture(GL_TEXTURE_2D, mFBO.normalTexture_ID);	
-			glActiveTexture(GL_TEXTURE10);				
+			glActiveTexture(GL_TEXTURE11);				
 			glBindTexture(GL_TEXTURE_2D, mFBO.positionTexture_ID);
 			glActiveTexture(GL_TEXTURE12);				
 			glBindTexture(GL_TEXTURE_2D, mFBO.specularTexture_ID);	

@@ -57,13 +57,18 @@ namespace Degen
 	bool cEngine::InitGL()
 	{
 		// NOTE: assert not built into release
+#ifdef  _DEBUG
 		assert(glfwInit());
+#else
+		glfwInit();
+#endif
+
 
 		mWindow = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Degen engine...", 0, 0);
 		if (!mWindow)
 		{
 			glfwTerminate();
-			printf("Unable to create glfw window\n");
+			printf("Unable to create glfw window\n%s");
 			return false;
 		}
 
@@ -75,7 +80,11 @@ namespace Degen
 		glfwSwapInterval(1);
 
 		//Init glad
+#ifdef  _DEBUG
 		assert(gladLoadGL());
+#else
+		gladLoadGL();
+#endif
 
 		std::cout << glGetString(GL_VERSION) << std::endl;
 

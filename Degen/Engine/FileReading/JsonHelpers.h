@@ -23,6 +23,8 @@ namespace Degen
 		// set a string
 		inline bool Set(const Json::Value& jsonVal, std::string& val)
 		{
+
+			
 			if (!jsonVal.isString()) return false;
 			val = jsonVal.asString();
 			return true;
