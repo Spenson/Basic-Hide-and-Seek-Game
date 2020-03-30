@@ -11,29 +11,23 @@
       "name": "quad",
       "file": "flat.ply",
       "is_basic": true
+    },
+    {
+      "name": "cube",
+      "file": "cube.ply",
+      "is_basic": true
     }
   ],
   "Animations": [],
   "Lights": [],
   "Entities": [
     {
-      "name": "FirstObject",
+      "name": "FreeCamera",
       "id": 1000,
       "components": [
         {
-          "component": "transform",
-          "pos": [ 0.0, 0.0, 0.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "sphere",
-          "texture": "",
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
-          "scale": [ 1.0, 1.0, 1.0 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
+          "component": "position",
+          "position": [ 0.0, 0.0, 0.0 ]
         },
         {
           "component": "camera",
@@ -45,33 +39,43 @@
       ]
     },
     {
+      "name": "x",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, 0.0, 0.0 ],
+          "rot": [ 0.0, 10.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "cube",
+          "texture": "",
+          "diffuse": [ 1.0, 0.8, 0.2, 1.0 ],
+          "specular": [ 1.0, 1.0, 1.0, 0.9 ],
+          "scale": [ 1.0, 1.0, 1.0 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        }
+      ]
+    },
+    {
       "name": "Object 2",
       "components": [
         {
           "component": "transform",
-          "pos": [ 0.0, 100.0, 0.0 ],
+          "pos": [ 10.0, 100.0, 0.0 ],
           "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "sphere",
-          "texture": "",
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "specular": [ 1.0, 1.0, 1.0, 1000.0 ],
-          "scale": [ 1.0, 1.0, 1.0 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
         },
         {
           "component": "light",
           "on": true,
           "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
-          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
+          "specular": [ 1.0, 1.0, 1.0, 1.0 ],
           "const_atten": 0.0000001,
           "linear_atten": 0.012,
           "quad_atten": 0.000001,
           "direction": [ 0.0, -1.0, 0.0 ],
-          "position": [ 0.0, 0.0, 0.0 ],
+          "position": [ 0.0, 50.0, 0.0 ],
           "type": 0,
           "inner_angle": 5.0,
           "outer_angle": 10.0

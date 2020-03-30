@@ -229,14 +229,14 @@ namespace Degen
 			glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(matWorldCurrentGO));
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matModelInverseTranspose"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
 
-			glActiveTexture(GL_TEXTURE9);				// Texture Unit 0
-			glBindTexture(GL_TEXTURE_2D, mFBO.colourTexture_ID);	// Texture now assoc with texture unit 0
-			glActiveTexture(GL_TEXTURE10);				// Texture Unit 1
-			glBindTexture(GL_TEXTURE_2D, mFBO.normalTexture_ID);	// Texture now assoc with texture unit 0
-			glActiveTexture(GL_TEXTURE11);				// Texture Unit 2
-			glBindTexture(GL_TEXTURE_2D, mFBO.positionTexture_ID);	// Texture now assoc with texture unit 0
-			glActiveTexture(GL_TEXTURE12);				// Texture Unit 3
-			glBindTexture(GL_TEXTURE_2D, mFBO.specularTexture_ID);	// Texture now assoc with texture unit 0
+			glActiveTexture(GL_TEXTURE9);				
+			glBindTexture(GL_TEXTURE_2D, mFBO.colourTexture_ID);
+			glActiveTexture(GL_TEXTURE11);			
+			glBindTexture(GL_TEXTURE_2D, mFBO.normalTexture_ID);	
+			glActiveTexture(GL_TEXTURE10);				
+			glBindTexture(GL_TEXTURE_2D, mFBO.positionTexture_ID);
+			glActiveTexture(GL_TEXTURE12);				
+			glBindTexture(GL_TEXTURE_2D, mFBO.specularTexture_ID);	
 
 			// Tie the texture units to the samplers in the shader
 			glUniform1i(mShaderProgram->GetUniformLocationID("textureColour"), 9);	// Texture unit 0

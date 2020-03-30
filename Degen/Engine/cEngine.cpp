@@ -3,6 +3,9 @@
 #include <iostream>
 
 #include "Render/cRenderer.h"
+#include "Inputs/cInput.h"
+#include "Camera/cCamera.h"
+#include "AI/cIntelligence.h"
 
 #include "FileReading/JsonHelpers.h"
 #include "Load.h"
@@ -11,9 +14,7 @@
 #include "Shaders/cShaderManager.h"
 #include "FileReading/cModelLoader.h"
 #include "Entity/cEntityManager.h"
-#include "Camera/cCamera.h"
 #include "sView.h"
-#include "Component/Camera.h"
 
 
 namespace Degen
@@ -174,7 +175,12 @@ namespace Degen
 
 
 		mCamera = new Camera::cCamera();
+		mInput = new Input::cInput(mWindow);
 
+		if(jsonRoot["ai_map"].isString())
+		{
+			mIntelligence = new AI::cIntelligence(jsonRoot["ai_map"].asString());
+		}
 
 		return true;
 	}
@@ -217,6 +223,7 @@ namespace Degen
 		{
 			mRenderer->AddEntity(entity);
 			mCamera->AddEntity(entity);
+			mIntelligence->AddEntity(entity);
 		}
 
 		return true;
@@ -233,9 +240,6 @@ namespace Degen
 		double previous_time = glfwGetTime();
 		while (!glfwWindowShouldClose(mWindow))
 		{
-			dynamic_cast<Component::Camera*>(EntityManager->GetEntity(1000)->GetComponent(Component::CAMERA_COMPONENT))
-			->yaw += 10.f * delta_time;
-			
 			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			//get window size
@@ -247,6 +251,8 @@ namespace Degen
 			double time = glfwGetTime();
 			delta_time = glm::max(glm::min(time - previous_time, 0.05), 0.001); // min "simulate" 20fps, even if <20fps, max fps1000 (crazy but for error stuff)
 			previous_time = time;
+
+			mInput->Update(delta_time);
 
 			mCamera->Update(delta_time);
 			mRenderer->Update(delta_time);

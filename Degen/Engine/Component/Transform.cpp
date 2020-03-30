@@ -20,7 +20,7 @@ namespace Degen
 
 			transform = glm::mat4(1.f);
 			transform = glm::translate(transform, pos);
-			transform *= glm::mat4(glm::quat(rot));
+			transform *= glm::mat4(glm::quat(glm::radians(rot)));
 			
 			return true;
 		}

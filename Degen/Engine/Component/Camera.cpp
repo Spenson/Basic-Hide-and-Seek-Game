@@ -15,11 +15,11 @@ namespace Degen
 			lock_pitch(false),
 			pitch(0.f),
 			max_pitch(89.9f),
-			min_pitch(89.9f),
+			min_pitch(-89.9f),
 			lock_yaw(false),
 			yaw(0.f),
-			max_yaw(181.f),
-			min_yaw(-181.f),
+			max_yaw(361.f),
+			min_yaw(-361.f),
 			distance(10.f)
 		{
 		}

@@ -14,6 +14,14 @@ namespace Degen
 	{
 		class cCamera;
 	}
+	namespace Input
+	{
+		class cInput;
+	}
+	namespace AI
+	{
+		class cIntelligence;
+	}
 	
 	class cEngine
 	{
@@ -30,6 +38,8 @@ namespace Degen
 		GLFWwindow* mWindow;
 		Render::cRenderer* mRenderer;
 		Camera::cCamera* mCamera;
+		Input::cInput* mInput;
+		AI::cIntelligence* mIntelligence;
 
 		// Needed for loading
 		std::string mShaderName;

@@ -75,19 +75,23 @@ void main()
 	}
 	else
 	{
+		//vertPosition.xyz += ( vNormal.xyz * textOffset.x );		
+		vec4 vertOriginal = vec4(vertPosition.xyz, 1.0f);
+
 		mat4 matMVP = matProj * matView * matModel;
 
-		gl_Position = matMVP * vec4(vertPosition.xyz, 1.0);
+		gl_Position = matMVP * vertOriginal;
 
 		// Vertex location in "world space"
 		// Vec4 = mat4x4 * vec4
-		fVertWorldLocation = matModel * vec4(vertPosition.xyz, 1.0);
+		fVertWorldLocation = matModel * vertOriginal;
 
-		//mat4 matModelInverseTranspose = inverse(transpose(matModel));
+		mat4 matModelInverseTranspose = inverse(transpose(matModel));
 
 		vec3 theNormal = normalize(vNormal.xyz);
 		fNormal = matModelInverseTranspose * vec4(theNormal, 1.0f);
 		fNormal.xyz = normalize(fNormal.xyz);
+		fNormal.w = 1.0f;
 
 		// Pass the colour and UV unchanged.
 		fColour = vColour;

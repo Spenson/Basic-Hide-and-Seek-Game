@@ -170,6 +170,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\AI\BMP Loader\BMPImage.h" />
+    <ClInclude Include="Engine\AI\BMP Loader\ResourceManager.h" />
+    <ClInclude Include="Engine\AI\cIntelligence.h" />
     <ClInclude Include="Engine\Camera\cCamera.h" />
     <ClInclude Include="Engine\Component\Camera.h" />
     <ClInclude Include="Engine\Component\iComponent.h" />
@@ -181,6 +184,7 @@
     <ClInclude Include="Engine\Entity\cEntity.h" />
     <ClInclude Include="Engine\Entity\cEntityManager.h" />
     <ClInclude Include="Engine\FileReading\JsonHelpers.h" />
+    <ClInclude Include="Engine\Inputs\cInput.h" />
     <ClInclude Include="Engine\LightHelper\cLightHelper.h" />
     <ClInclude Include="Engine\Load.h" />
     <ClInclude Include="Engine\Render\cRenderer.h" />
@@ -209,6 +213,9 @@
   <ItemGroup>
     <ClCompile Include="..\dependencies\src\glad.c" />
     <ClCompile Include="..\dependencies\src\jsoncpp.cpp" />
+    <ClCompile Include="Engine\AI\BMP Loader\BMPImage.cpp" />
+    <ClCompile Include="Engine\AI\BMP Loader\ResourceManager.cpp" />
+    <ClCompile Include="Engine\AI\cIntelligence.cpp" />
     <ClCompile Include="Engine\Camera\cCamera.cpp" />
     <ClCompile Include="Engine\cEngine.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
@@ -220,6 +227,7 @@
     <ClCompile Include="Engine\Entity\cEntity.cpp" />
     <ClCompile Include="Engine\Entity\cEntityManager.cpp" />
     <ClCompile Include="Engine\FileReading\JsonHelpers.cpp" />
+    <ClCompile Include="Engine\Inputs\cInput.cpp" />
     <ClCompile Include="Engine\LightHelper\cLightHelper.cpp" />
     <ClCompile Include="Engine\Load.cpp" />
     <ClCompile Include="Engine\Object\cRenderOnlyObject.cpp" />
