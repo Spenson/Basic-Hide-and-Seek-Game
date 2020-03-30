@@ -170,6 +170,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Camera\cCamera.h" />
+    <ClInclude Include="Engine\Component\Camera.h" />
     <ClInclude Include="Engine\Component\iComponent.h" />
     <ClInclude Include="Engine\Component\Light.h" />
     <ClInclude Include="Engine\Component\Position.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="Engine\Entity\cEntity.h" />
     <ClInclude Include="Engine\Entity\cEntityManager.h" />
     <ClInclude Include="Engine\FileReading\JsonHelpers.h" />
+    <ClInclude Include="Engine\LightHelper\cLightHelper.h" />
     <ClInclude Include="Engine\Load.h" />
     <ClInclude Include="Engine\Render\cRenderer.h" />
     <ClInclude Include="Engine\FBO\cFBO.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="Engine\GL.h" />
     <ClInclude Include="Engine\glm.hpp" />
     <ClInclude Include="Engine\Globals.h" />
+    <ClInclude Include="Engine\sView.h" />
     <ClInclude Include="Engine\Texture\C24BitBMPpixel.h" />
     <ClInclude Include="Engine\Texture\cBasicTextureManager.h" />
     <ClInclude Include="Engine\Texture\CTextureFromBMP.h" />
@@ -205,7 +209,9 @@
   <ItemGroup>
     <ClCompile Include="..\dependencies\src\glad.c" />
     <ClCompile Include="..\dependencies\src\jsoncpp.cpp" />
+    <ClCompile Include="Engine\Camera\cCamera.cpp" />
     <ClCompile Include="Engine\cEngine.cpp" />
+    <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Light.cpp" />
     <ClCompile Include="Engine\Component\Position.cpp" />
     <ClCompile Include="Engine\Component\Render.cpp" />
@@ -214,6 +220,7 @@
     <ClCompile Include="Engine\Entity\cEntity.cpp" />
     <ClCompile Include="Engine\Entity\cEntityManager.cpp" />
     <ClCompile Include="Engine\FileReading\JsonHelpers.cpp" />
+    <ClCompile Include="Engine\LightHelper\cLightHelper.cpp" />
     <ClCompile Include="Engine\Load.cpp" />
     <ClCompile Include="Engine\Object\cRenderOnlyObject.cpp" />
     <ClCompile Include="Engine\Render\cRenderer.cpp" />

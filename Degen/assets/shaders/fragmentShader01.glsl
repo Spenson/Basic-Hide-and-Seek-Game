@@ -1,4 +1,4 @@
-#version 410
+#version 420
 
 in vec4 fColour;
 in vec4 fVertWorldLocation;
@@ -71,20 +71,12 @@ const int DIRECTIONAL_LIGHT_TYPE = 2;
 
 
 const int NUMBEROFLIGHTS = 100;
-//layout(std140, binding = 0) uniform Lights
-//{
-//	sLight theLights[NUMBEROFLIGHTS];
-//};
-uniform sLight theLights[NUMBEROFLIGHTS];  	// 50 uniforms
+layout(std140) uniform LightBlock
+{
+	sLight Lights[NUMBEROFLIGHTS];
+};
+//uniform sLight Lights[NUMBEROFLIGHTS];  	// 50 uniforms
 
-// Really appears as:
-// uniform vec4 theLights[0].position
-// uniform vec4 theLights[0].diffuse
-// uniform vec4 theLights[0].specular
-// uniform vec4 theLights[0].atten
-// uniform vec4 theLights[0].direction
-// uniform vec4 theLights[0].param1
-// uniform vec4 theLights[0].param2
 
 uniform int passNumber;
 uniform float Width;
@@ -129,13 +121,13 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal,
 	{
 		// ********************************************************
 		// is light "on"
-		if (theLights[index].param2.x == 0.0f)
+		if (Lights[index].param2.x == 0.0f)
 		{	// it's off
 			continue;
 		}
 
 		// Cast to an int (note with c'tor)
-		int intLightType = int(theLights[index].param1.x);
+		int intLightType = int(Lights[index].param1.x);
 
 		// We will do the directional light here... 
 		// (BEFORE the attenuation, since sunlight has no attenuation, really)
@@ -147,31 +139,45 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal,
 			// -- Almost always, there's only 1 of these in a scene
 			// Cheapest light to calculate. 
 
-			vec3 lightContrib = theLights[index].diffuse.rgb;
+			vec3 lightContrib = Lights[index].diffuse.rgb;
 
 			// Get the dot product of the light and normalize
-			float dotProduct = dot(-theLights[index].direction.xyz,
+			float dotProduct = dot(-Lights[index].direction.xyz,
 								   normalize(norm.xyz));	// -1 to 1
 
 			dotProduct = max(0.0f, dotProduct);		// 0 to 1
 
 			lightContrib *= dotProduct;
 
-			finalObjectColour.rgb += (vertexMaterialColour.rgb * theLights[index].diffuse.rgb * lightContrib);
+			finalObjectColour.rgb += (vertexMaterialColour.rgb * Lights[index].diffuse.rgb * lightContrib);
 			//+ (materialSpecular.rgb * lightSpecularContrib.rgb);
 // NOTE: There isn't any attenuation, like with sunlight.
 // (This is part of the reason directional lights are fast to calculate)
 
-
-			return finalObjectColour;
+// All done with this light.
+			continue;
 		}
 
 		// Assume it's a point light 
 		// intLightType = 0
 
 		// Contribution for this light
-		vec3 vLightToVertex = theLights[index].position.xyz - vertexWorldPos.xyz;
+		vec3 vLightToVertex = Lights[index].position.xyz - vertexWorldPos.xyz;
 		float distanceToLight = length(vLightToVertex);
+
+		// Add a distance check here. 
+		// Are we "too far" from this light (i.e. the light isn't contributing to the scene)?
+		// (atten.w is the DistanceCutOff for this light)
+		if (distanceToLight > Lights[index].atten.w)
+		{
+			// Make light contribution black
+			finalObjectColour.rgb += vec3(1.0f, 0.0f, 0.0f);
+			// All done with this light
+			continue;
+		}
+
+		// If here, then the light IS contributing to the scene.
+
 		vec3 lightVector = normalize(vLightToVertex);
 		// -1 to 1
 		float dotProduct = dot(lightVector, vertexNormal.xyz);
@@ -179,7 +185,7 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal,
 		// If it's negative, will clamp to 0 --- range from 0 to 1
 		dotProduct = max(0.0f, dotProduct);
 
-		vec3 lightDiffuseContrib = dotProduct * theLights[index].diffuse.rgb;
+		vec3 lightDiffuseContrib = dotProduct * Lights[index].diffuse.rgb;
 
 
 		// Specular 
@@ -195,15 +201,15 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal,
 		float objectSpecularPower = vertexSpecular.w;
 
 		//		lightSpecularContrib = pow( max(0.0f, dot( eyeVector, reflectVector) ), objectSpecularPower )
-		//			                   * vertexSpecular.rgb;	//* theLights[lightIndex].Specular.rgb
+		//			                   * vertexSpecular.rgb;	//* Lights[lightIndex].Specular.rgb
 		lightSpecularContrib = pow(max(0.0f, dot(eyeVector, reflectVector)), objectSpecularPower)
-			* theLights[index].specular.rgb;
+			* Lights[index].specular.rgb;
 
 		// Attenuation
 		float attenuation = 1.0f /
-			(theLights[index].atten.x +
-			 theLights[index].atten.y * distanceToLight +
-			 theLights[index].atten.z * distanceToLight * distanceToLight);
+			(Lights[index].atten.x +
+			 Lights[index].atten.y * distanceToLight +
+			 Lights[index].atten.z * distanceToLight * distanceToLight);
 
 		// total light contribution is Diffuse + Specular
 		lightDiffuseContrib *= attenuation;
@@ -217,12 +223,12 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal,
 
 			// Yes, it's a spotlight
 			// Calcualate light vector (light to vertex, in world)
-			vec3 vertexToLight = vertexWorldPos.xyz - theLights[index].position.xyz;
+			vec3 vertexToLight = vertexWorldPos.xyz - Lights[index].position.xyz;
 
 			vertexToLight = normalize(vertexToLight);
 
 			float currentLightRayAngle
-				= dot(vertexToLight.xyz, theLights[index].direction.xyz);
+				= dot(vertexToLight.xyz, Lights[index].direction.xyz);
 
 			currentLightRayAngle = max(0.0f, currentLightRayAngle);
 
@@ -230,8 +236,8 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal,
 			// x = lightType, y = inner angle, z = outer angle, w = TBD
 
 			// Is this inside the cone? 
-			float outerConeAngleCos = cos(radians(theLights[index].param1.z));
-			float innerConeAngleCos = cos(radians(theLights[index].param1.y));
+			float outerConeAngleCos = cos(radians(Lights[index].param1.z));
+			float innerConeAngleCos = cos(radians(Lights[index].param1.y));
 
 			// Is it completely outside of the spot?
 			if (currentLightRayAngle < outerConeAngleCos)
@@ -263,9 +269,9 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal,
 
 	}//for(intindex=0...
 
-	vec3 ambientObjectColour = (Ambient * vertexMaterialColour.rgb);
+	//vec3 ambientObjectColour = (Ambient * vertexMaterialColour.rgb);
 
-	finalObjectColour.rgb = max(ambientObjectColour, finalObjectColour.rgb);
+	//finalObjectColour.rgb = max(ambientObjectColour, finalObjectColour.rgb);
 
 	finalObjectColour.a = 1.0f;
 
@@ -386,11 +392,11 @@ void Pass00(void)
 
 	if (boolModifiers.y == 0.0f)
 	{
-		normalOut.a = 1.f;
+		normalOut.w = 1.f;
 	}
 	else
 	{
-		normalOut.a = 0.f;
+		normalOut.w = 0.f;
 	}
 
 	worldPosOut = fVertWorldLocation;
@@ -413,61 +419,18 @@ void Pass01(void)
 
 	vec4 outColour = texture(textureColour, uvs.st);
 
-	if (blur)
-	{
-		float bo = 0.01f;
-
-		vec3 texRGB1 = texture(textureColour, vec2(uvs.s + 0.0f, uvs.t + 0.0f)).rgb;
-		vec3 texRGB2 = texture(textureColour, vec2(uvs.s - bo, uvs.t + 0.0f)).rgb;
-		vec3 texRGB3 = texture(textureColour, vec2(uvs.s + bo, uvs.t + 0.0f)).rgb;
-		vec3 texRGB4 = texture(textureColour, vec2(uvs.s + 0.0f, uvs.t - bo)).rgb;
-		vec3 texRGB5 = texture(textureColour, vec2(uvs.s + 0.0f, uvs.t + bo)).rgb;
-
-		vec3 texRGB6 = texture(textureColour, vec2(uvs.s - bo * 2.f, uvs.t + 0.0f)).rgb;
-		vec3 texRGB7 = texture(textureColour, vec2(uvs.s + bo * 2.f, uvs.t + 0.0f)).rgb;
-		vec3 texRGB8 = texture(textureColour, vec2(uvs.s + 0.0f, uvs.t - bo * 2.f)).rgb;
-		vec3 texRGB9 = texture(textureColour, vec2(uvs.s + 0.0f, uvs.t + bo * 2.f)).rgb;
-
-		vec3 RGB = 0.4f * texRGB1 +
-			0.1f * texRGB2 +
-			0.1f * texRGB3 +
-			0.1f * texRGB4 +
-			0.1f * texRGB5 +
-			0.05f * texRGB6 +
-			0.05f * texRGB7 +
-			0.05f * texRGB8 +
-			0.05f * texRGB9;
 
 
-
-		outColour.rgb = RGB;
-	}
-
-
-	if (light == 0.f)
+	if (light == 1.f)
 	{
 		vec3 normal = texture(textureNormal, uvs.st).rgb;
 		vec3 position = texture(texturePosition, uvs.st).rgb;
 		vec4 specular = texture(textureSpecular, uvs.st);
 
 		outColour = calcualteLightContrib(outColour.rgb, normal, position, specular);
-
+		
 	}
 
-	if (nightvision)
-	{
-		vec4 temp = texture(texture00, uvs.st);
-		float grey = (temp.r + temp.g + temp.b) / 3.0f;
-		if (grey > 0.05)
-		{
-			outColour.rgb = temp.rgb;
-		}
-		else
-		{
-			outColour.r = 0.f;
-			outColour.b = 0.f;
-		}
-	}
 
 	pixelColour.rgb = outColour.rgb;
 	//pixelColour.rgb *= texture(textureNormal, uvs.st).rgb;

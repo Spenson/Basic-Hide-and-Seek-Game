@@ -56,7 +56,7 @@ float cLightHelper::calcApproxDistFromAtten( float targetLightLevel, float accur
 	float targetLightLevelHigh = targetLightLevel + accuracy;
 
 	// See if we're getting a value at infinite. i.e. at 'infinite distance', is the light level too high already
-	if ( this->calcDiffuseFromAttenByDistance( cLightHelper::DEFAULTINFINITEDISTANCE, 
+	if ( calcDiffuseFromAttenByDistance( cLightHelper::DEFAULTINFINITEDISTANCE, 
 		                                       constAttenuation, linearAttenuation, quadraticAttenuation,
 	                                           accuracy ) > targetLightLevelHigh )
 	{	// Yes, so we can never get down to this light level
@@ -75,7 +75,7 @@ float cLightHelper::calcApproxDistFromAtten( float targetLightLevel, float accur
 		float curDistanceGuess = ( (distanceGuessHigh - distanceGuessLow) / 2.0f ) + distanceGuessLow;
 		// 
 		float curDiffuseAtGuessDistance 
-			= this->calcDiffuseFromAttenByDistance( curDistanceGuess, constAttenuation, 
+			= calcDiffuseFromAttenByDistance( curDistanceGuess, constAttenuation, 
 													linearAttenuation, quadraticAttenuation, DEFAULTZEROTHRESHOLD );
 		// Could be three possibilities: too low, too high, or in between
 		if ( curDiffuseAtGuessDistance < targetLightLevelLow )

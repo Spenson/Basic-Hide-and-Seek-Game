@@ -10,7 +10,10 @@ namespace Degen
 	{
 		class cRenderer;
 	}
-
+	namespace Camera
+	{
+		class cCamera;
+	}
 	
 	class cEngine
 	{
@@ -26,6 +29,7 @@ namespace Degen
 	private:
 		GLFWwindow* mWindow;
 		Render::cRenderer* mRenderer;
+		Camera::cCamera* mCamera;
 
 		// Needed for loading
 		std::string mShaderName;

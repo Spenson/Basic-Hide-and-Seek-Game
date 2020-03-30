@@ -3,6 +3,7 @@
 #include "FileReading/cModelLoader.h"
 #include "Shaders/cShaderManager.h"
 #include "VAO and Meshes/cVAOManager.h"
+#include "sView.h"
 
 namespace Degen
 {
@@ -13,4 +14,6 @@ namespace Degen
 	extern Shaders::cShaderManager* ShaderManager; // managers all shaders created
 	extern FileReading::cModelLoader* ModelLoader; // manages files loded with assimp
 	extern Entity::cEntityManager* EntityManager; // creats and cleans up entities
+	extern sView* View; // view for rendering updated by camera
+	
 }

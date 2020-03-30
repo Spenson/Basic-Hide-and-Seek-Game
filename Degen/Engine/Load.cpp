@@ -5,6 +5,8 @@
 #include "Component/Render.h"
 #include "Component/Position.h"
 #include "Component/Rotation.h"
+#include "Component/Camera.h"
+#include "Component/Light.h"
 
 namespace Degen
 {
@@ -56,32 +58,46 @@ namespace Degen
 			{
 				Json::Value jsonCurEntity = jsonEntities[idx];
 				Entity::cEntity* ent = Entity::cEntityManager::CreateEntity();
-				std::vector<std::string> component_names = jsonCurEntity.getMemberNames();
-				for (unsigned int i = 0; i < component_names.size(); i++)
+				//std::vector<std::string> component_names = jsonCurEntity.getMemberNames();
+
+				JsonHelp::Set(jsonCurEntity["name"], ent->name);
+				JsonHelp::Set(jsonCurEntity["id"], ent->id);
+
+				if (jsonCurEntity["components"].isArray())
 				{
-					if (component_names[i] == "name")
+					Json::Value components = jsonCurEntity["components"];
+					for (unsigned int i = 0; i < components.size(); i++)
 					{
-						JsonHelp::Set(jsonCurEntity[component_names[i]], ent->name);
-					}
-					if (component_names[i] == "transform")
-					{
-						Component::iComponent* comp = ent->AddComponent<Component::Transform>();
-						comp->Deserialize(jsonCurEntity[component_names[i]]);
-					}
-					if (component_names[i] == "render")
-					{
-						Component::iComponent* comp = ent->AddComponent<Component::Render>();
-						comp->Deserialize(jsonCurEntity[component_names[i]]);
-					}
-					if (component_names[i] == "position")
-					{
-						Component::iComponent* comp = ent->AddComponent<Component::Position>();
-						comp->Deserialize(jsonCurEntity[component_names[i]]);
-					}
-					if (component_names[i] == "rotation")
-					{
-						Component::iComponent* comp = ent->AddComponent<Component::Rotation>();
-						comp->Deserialize(jsonCurEntity[component_names[i]]);
+						if (components[i]["component"] == "transform")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Transform>();
+							comp->Deserialize(components[i]);
+						}
+						if (components[i]["component"] == "render")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Render>();
+							comp->Deserialize(components[i]);
+						}
+						if (components[i]["component"] == "position")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Position>();
+							comp->Deserialize(components[i]);
+						}
+						if (components[i]["component"] == "rotation")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Rotation>();
+							comp->Deserialize(components[i]);
+						}
+						if (components[i]["component"] == "camera")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Camera>();
+							comp->Deserialize(components[i]);
+						}
+						if (components[i]["component"] == "light")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Light>();
+							comp->Deserialize(components[i]);
+						}
 					}
 				}
 			}

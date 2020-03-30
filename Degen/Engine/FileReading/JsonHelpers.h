@@ -13,6 +13,13 @@ namespace Degen
 			val = jsonVal.asInt();
 			return true;
 		}
+		// set a unsigned
+		inline bool Set(const Json::Value& jsonVal, unsigned& val)
+		{
+			if (!jsonVal.isUInt()) return false;
+			val = jsonVal.asUInt();
+			return true;
+		}
 		// set a string
 		inline bool Set(const Json::Value& jsonVal, std::string& val)
 		{

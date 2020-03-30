@@ -11,6 +11,9 @@
 #include "Shaders/cShaderManager.h"
 #include "FileReading/cModelLoader.h"
 #include "Entity/cEntityManager.h"
+#include "Camera/cCamera.h"
+#include "sView.h"
+#include "Component/Camera.h"
 
 
 namespace Degen
@@ -21,6 +24,7 @@ namespace Degen
 	Shaders::cShaderManager* ShaderManager; // managers all shaders created
 	FileReading::cModelLoader* ModelLoader; // manages files loded with assimp
 	Entity::cEntityManager* EntityManager; // creats and cleans up entities
+	sView* View;
 
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
@@ -32,9 +36,10 @@ namespace Degen
 
 	static void window_size_callback(GLFWwindow* window, int width, int height)
 	{
-		
+		WINDOW_WIDTH = width;
+		WINDOW_HEIGHT = height;
 	}
-	
+
 	cEngine::cEngine()
 	{
 		WINDOW_WIDTH = 800;
@@ -80,7 +85,7 @@ namespace Degen
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Clear to grey
-		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+		glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 
 		glLineWidth(3);
 
@@ -104,8 +109,8 @@ namespace Degen
 			}
 		}
 
-		if (jsonRoot["width"].isInt64()) WINDOW_WIDTH = jsonRoot["width"].asInt64();
-		if (jsonRoot["height"].isInt64()) WINDOW_HEIGHT = jsonRoot["height"].asInt64();
+		if (jsonRoot["width"].isInt()) WINDOW_WIDTH = jsonRoot["width"].asInt();
+		if (jsonRoot["height"].isInt()) WINDOW_HEIGHT = jsonRoot["height"].asInt();
 
 		if (!InitGL())
 		{
@@ -117,6 +122,7 @@ namespace Degen
 		ShaderManager = new Shaders::cShaderManager();
 		ModelLoader = new FileReading::cModelLoader();
 		EntityManager = new Entity::cEntityManager();
+		View = new sView();
 
 		{
 			Json::Value jsonShader;
@@ -160,12 +166,14 @@ namespace Degen
 					return false;
 				}
 			}
-			
+
 			ShaderManager->pGetShaderProgramFromFriendlyName(name)->LoadActiveUniforms();
 			mRenderer = new Render::cRenderer(ShaderManager->pGetShaderProgramFromFriendlyName(name));
 			mShaderName = name;
-			
 		}
+
+
+		mCamera = new Camera::cCamera();
 
 
 		return true;
@@ -190,7 +198,7 @@ namespace Degen
 
 		// TODO: TEXTURES
 
-		if(!Load::LoadModels(jsonRoot["Models"], mShaderName))
+		if (!Load::LoadModels(jsonRoot["Models"], mShaderName))
 		{
 			printf("Could not load models.\n");
 			return false;
@@ -198,11 +206,17 @@ namespace Degen
 
 		// TODO: Animations
 		// TODO: Lights
-		
+
 		if (!Load::LoadEntities(jsonRoot["Entities"]))
 		{
 			printf("Could not load entities.\n");
 			return false;
+		}
+
+		for (auto* entity : Entity::cEntityManager::entities)
+		{
+			mRenderer->AddEntity(entity);
+			mCamera->AddEntity(entity);
 		}
 
 		return true;
@@ -219,6 +233,9 @@ namespace Degen
 		double previous_time = glfwGetTime();
 		while (!glfwWindowShouldClose(mWindow))
 		{
+			dynamic_cast<Component::Camera*>(EntityManager->GetEntity(1000)->GetComponent(Component::CAMERA_COMPONENT))
+			->yaw += 10.f * delta_time;
+			
 			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			//get window size
@@ -228,10 +245,12 @@ namespace Degen
 			//glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 			double time = glfwGetTime();
-			delta_time = glm::max(glm::min(time - previous_time, 0.05),0.001); // min "simulate" 20fps, even if <20fps, max fps1000 (crazy but for error stuff)
+			delta_time = glm::max(glm::min(time - previous_time, 0.05), 0.001); // min "simulate" 20fps, even if <20fps, max fps1000 (crazy but for error stuff)
 			previous_time = time;
-			
+
+			mCamera->Update(delta_time);
 			mRenderer->Update(delta_time);
+
 
 			//Swap buffers
 			glfwSwapBuffers(mWindow);

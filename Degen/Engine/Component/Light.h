@@ -27,9 +27,9 @@ namespace Degen
 			float linear_atten;
 			float quad_atten;
 			float cutoff;
-			//glm::vec4 atten;	// x = constant, y = linear, z = quadratic, w = DistanceCutOff
-			glm::vec3 direction;// relitive to position. must nbe normalized
-
+			glm::vec3 direction;
+			glm::vec3 position;
+			
 			LightType type;
 			float inner_angle;
 			float outer_angle;

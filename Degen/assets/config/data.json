@@ -18,19 +18,65 @@
   "Entities": [
     {
       "name": "FirstObject",
-      "transform": {
-        "pos": [ 0.0, 0.0, 0.0 ],
-        "rot": [ 90.0, 0.0, 0.0 ]
-      },
-      "render": {
-        "mesh": "sphere",
-        "texture": "",
-        "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-        "specular": [ 1.0, 1.0, 1.0, 100.0 ],
-        "scale": [ 1.0, 1.0, 1.0 ],
-        "ignore_lighting": true,
-        "is_wireframe": false
-      }
+      "id": 1000,
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, 0.0, 0.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "sphere",
+          "texture": "",
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
+          "scale": [ 1.0, 1.0, 1.0 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "camera",
+          "active": true,
+          "pitch": 0.0,
+          "yaw": 0.0,
+          "distance": 20.0
+        }
+      ]
+    },
+    {
+      "name": "Object 2",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, 100.0, 0.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "sphere",
+          "texture": "",
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "specular": [ 1.0, 1.0, 1.0, 1000.0 ],
+          "scale": [ 1.0, 1.0, 1.0 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "light",
+          "on": true,
+          "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
+          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
+          "const_atten": 0.0000001,
+          "linear_atten": 0.012,
+          "quad_atten": 0.000001,
+          "direction": [ 0.0, -1.0, 0.0 ],
+          "position": [ 0.0, 0.0, 0.0 ],
+          "type": 0,
+          "inner_angle": 5.0,
+          "outer_angle": 10.0
+        }
+      ]
     }
   ]
 }

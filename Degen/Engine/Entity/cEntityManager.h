@@ -14,6 +14,9 @@ namespace Degen
 			virtual ~cEntityManager();
 
 			static cEntity* CreateEntity();
+
+			static cEntity* GetEntity(unsigned id);
+			static cEntity* GetEntity(std::string name);
 			
 			static std::vector<cEntity*> entities;
 		};

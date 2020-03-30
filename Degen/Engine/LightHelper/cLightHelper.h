@@ -31,13 +31,13 @@ public:
 	// 50% brightness
 	// 25% brightness
 	//  5% brightness 
-	float calcApproxDistFromAtten( float targetLightLevel, float accuracy, float infiniteDistance, 
+	static float calcApproxDistFromAtten( float targetLightLevel, float accuracy, float infiniteDistance, 
 	                               float constAttenuation, float linearAttenuation,  float quadraticAttenuation, 
 	                               unsigned int maxIterations = DEFAULTMAXITERATIONS /*= 50*/ );
 	static const float DEFAULTZEROTHRESHOLD;	// = 0.0001f;
 	// If value gets below the "zeroThreshold", will be treated as zero
 	//float calcAttenFromDist(float distance, float zeroThreshold = DEFAULTZEROTHRESHOLD);
-	float calcDiffuseFromAttenByDistance( float distance, 
+	static float calcDiffuseFromAttenByDistance( float distance, 
 										  float constAttenuation, 
 										  float linearAttenuation, 
 										  float quadraticAttenuation,

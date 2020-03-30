@@ -21,5 +21,21 @@ namespace Degen
 			entities.push_back(ent);
 			return ent;
 		}
+		cEntity* cEntityManager::GetEntity(unsigned id)
+		{
+			for (auto* entity : entities)
+			{
+				if(entity->id == id) return entity;
+			}
+			return nullptr;
+		}
+		cEntity* cEntityManager::GetEntity(std::string name)
+		{
+			for (auto* entity : entities)
+			{
+				if (entity->name == name) return entity;
+			}
+			return nullptr;
+		}
 	}
 }
