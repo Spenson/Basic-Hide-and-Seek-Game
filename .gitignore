@@ -13,9 +13,15 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+Degen/x64/[Dd]ebug/
+x64/[Dd]ebug/
+Degen/x86/[Dd]ebug/
+x86/[Dd]ebug/
 [Dd]ebugPublic/
-[Rr]elease/
+Degen/x64/[Rr]elease/
+x64/[Rr]elease/
+Degen/x86/[Rr]elease/
+x86/[Rr]elease/
 [Rr]eleases/
 Degen/x64/
 Degen/x86/
