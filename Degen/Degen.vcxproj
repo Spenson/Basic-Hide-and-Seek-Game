@@ -175,6 +175,7 @@
     <ClCompile Include="Engine\AI\BMP Loader\BMPImage.cpp" />
     <ClCompile Include="Engine\AI\BMP Loader\ResourceManager.cpp" />
     <ClCompile Include="Engine\AI\cIntelligence.cpp" />
+    <ClCompile Include="Engine\AI\Graph.cpp" />
     <ClCompile Include="Engine\BasicMotion\cBasicMotion.cpp" />
     <ClCompile Include="Engine\Camera\cCamera.cpp" />
     <ClCompile Include="Engine\cEngine.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Engine\AI\BMP Loader\BMPImage.h" />
     <ClInclude Include="Engine\AI\BMP Loader\ResourceManager.h" />
     <ClInclude Include="Engine\AI\cIntelligence.h" />
+    <ClInclude Include="Engine\AI\Graph.h" />
     <ClInclude Include="Engine\BasicMotion\cBasicMotion.h" />
     <ClInclude Include="Engine\Camera\cCamera.h" />
     <ClInclude Include="Engine\cEngine.h" />

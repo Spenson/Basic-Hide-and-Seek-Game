@@ -1,5 +1,6 @@
 #pragma once
 #include "iComponent.h"
+#include "../AI/Graph.h"
 
 namespace Degen
 {
@@ -16,12 +17,14 @@ namespace Degen
 			{
 				idle,
 				search,
-				gather,
+				wait,
 				return_
 			};
 			state current_state = idle;
 			float time;
-			std::vector<unsigned> path;
+			AI::Node* node;
+			
+			std::vector<AI::Node*> path;
 			
 		};
 	}

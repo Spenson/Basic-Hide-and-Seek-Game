@@ -126,6 +126,9 @@
     <ClCompile Include="Engine\BasicMotion\cBasicMotion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\AI\Graph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AI\BMP Loader\BMPImage.h">
@@ -252,6 +255,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\ComponentCheatSheat.txt">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\AI\Graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

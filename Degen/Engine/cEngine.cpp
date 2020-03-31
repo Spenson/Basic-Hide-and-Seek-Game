@@ -15,6 +15,7 @@
 #include "FileReading/cModelLoader.h"
 #include "Entity/cEntityManager.h"
 #include "sView.h"
+#include "BasicMotion/cBasicMotion.h"
 
 
 namespace Degen
@@ -190,6 +191,7 @@ namespace Degen
 		{
 			mIntelligence = new AI::cIntelligence(jsonRoot["ai_map"].asString());
 		}
+		mBasicMotion = new BasicMotion::cBasicMotion();
 
 		return true;
 	}
@@ -220,8 +222,7 @@ namespace Degen
 		}
 
 		// TODO: Animations
-		// TODO: Lights
-
+	
 		if (!Load::LoadEntities(jsonRoot["Entities"]))
 		{
 			printf("Could not load entities.\n");
@@ -233,6 +234,7 @@ namespace Degen
 			mRenderer->AddEntity(entity);
 			mCamera->AddEntity(entity);
 			mIntelligence->AddEntity(entity);
+			mBasicMotion->AddEntity(entity);
 		}
 
 		return true;
@@ -262,7 +264,8 @@ namespace Degen
 			previous_time = time;
 
 			mInput->Update(delta_time);
-
+			mIntelligence->Update(delta_time);
+			mBasicMotion->Update(delta_time);
 			mCamera->Update(delta_time);
 			mRenderer->Update(delta_time);
 

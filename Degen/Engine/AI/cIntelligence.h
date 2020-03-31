@@ -2,6 +2,13 @@
 #include <string>
 #include "../Entity/cEntity.h"
 #include <glm.hpp>
+#include "Graph.h"
+
+namespace Degen {
+	namespace Component {
+		class Gatherer;
+	}
+}
 
 namespace Degen
 {
@@ -10,45 +17,19 @@ namespace Degen
 		class cIntelligence
 		{
 		public:
-			struct node;
-
-			enum node_type
-			{
-				open,
-				difficult,
-				wall,
-				start,
-				resource,
-				home
-			};
-
-			struct edge
-			{
-				edge(node* a, node* b, unsigned length) :a(a), b(b), length(length) {}
-				node* other(node* n) { return n == a ? b : a; }
-				node* a;
-				node* b;
-				unsigned length;
-			};
-
-			struct node
-			{
-				node_type type;
-				glm::vec3 world_position;
-				unsigned x, y; // for refrence
-				std::vector<edge*> edges;
-			};
-
-
 			cIntelligence(std::string map_file);
 			void Update(double dt);
+			void WaitUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather);
+			void ReturnUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather);
+			void SearchUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather);
 			void AddEntity(Entity::cEntity* entity);
 
 			std::vector<Entity::cEntity*> entities;
 
 			unsigned map_width, map_height;
-			std::vector<node*> map;
-			unsigned home_node;
+			Node* home_node;
+			Node* start_node;
+			Graph* graph;
 
 
 		};

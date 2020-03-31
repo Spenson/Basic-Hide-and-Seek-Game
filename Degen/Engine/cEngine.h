@@ -22,6 +22,10 @@ namespace Degen
 	{
 		class cIntelligence;
 	}
+	namespace BasicMotion
+	{
+		class cBasicMotion;
+	}
 	
 	class cEngine
 	{
@@ -40,6 +44,7 @@ namespace Degen
 		Camera::cCamera* mCamera;
 		Input::cInput* mInput;
 		AI::cIntelligence* mIntelligence;
+		BasicMotion::cBasicMotion* mBasicMotion;
 
 		// Needed for loading
 		std::string mShaderName;
