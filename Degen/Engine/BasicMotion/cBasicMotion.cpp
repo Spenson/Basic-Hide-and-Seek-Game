@@ -23,7 +23,7 @@ namespace Degen
 				Component::Rotation* rot = dynamic_cast<Component::Rotation*>(ent->GetComponent(Component::ROTATION_COMPONENT));
 				if(rot)
 				{
-					rot->rotation = glm::quatLookAt(-vel->velocity, glm::vec3(0.f,1.f,0.f));
+					rot->rotation = glm::quatLookAt(-glm::normalize(vel->velocity), glm::vec3(0.f,1.f,0.f));
 				}
 			}
 		}

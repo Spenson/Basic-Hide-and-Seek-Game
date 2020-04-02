@@ -77,8 +77,8 @@ void main()
 	{
 		//vertPosition.xyz += ( vNormal.xyz * textOffset.x );		
 		vec4 vertOriginal = vec4(vertPosition.xyz, 1.0f);
-
 		mat4 matMVP = matProj * matView * matModel;
+		
 
 		gl_Position = matMVP * vertOriginal;
 
@@ -86,7 +86,7 @@ void main()
 		// Vec4 = mat4x4 * vec4
 		fVertWorldLocation = matModel * vertOriginal;
 
-		mat4 matModelInverseTranspose = inverse(transpose(matModel));
+		//mat4 matModelInverseTranspose = inverse(transpose(matModel));
 
 		vec3 theNormal = normalize(vNormal.xyz);
 		fNormal = matModelInverseTranspose * vec4(theNormal, 1.0f);

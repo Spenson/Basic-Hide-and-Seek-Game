@@ -8,18 +8,23 @@ namespace Degen
 		Render::Render() : iComponent(RENDER_COMPONENT),
 			mesh(),
 			texture(),
+			texture_amount(0.f),
 			diffuse_colour(1.f),
+			diffuse_amount(1.f),
 			specular_colour(1.f, 1.f, 1.f, 1000.f),
 			scale(1.f),
 			ignore_lighting(true),
 			is_wireframe(false)
 		{
 		}
+
 		bool Render::Deserialize(Json::Value& json)
 		{
 			JsonHelp::Set(json["mesh"], mesh);
 			JsonHelp::Set(json["texture"], texture);
+			JsonHelp::Set(json["texture_amount"], texture_amount);
 			JsonHelp::Set(json["diffuse"], diffuse_colour);
+			JsonHelp::Set(json["diffuse_amount"], diffuse_amount);
 			JsonHelp::Set(json["specular"], specular_colour);
 			JsonHelp::Set(json["scale"], scale);
 			JsonHelp::Set(json["ignore_lighting"], ignore_lighting);

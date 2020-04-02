@@ -14,6 +14,26 @@ namespace Degen
 {
 	namespace Load
 	{
+		bool LoadTextures(const Json::Value& jsonTextures)
+		{
+			if (!jsonTextures.isArray()) { return false; }
+			std::string texture_file;
+			std::string texture_name;
+			std::string texture_format;
+			
+			for(unsigned int idx = 0; idx < jsonTextures.size(); idx++)
+			{
+				JsonHelp::Set(jsonTextures[idx]["name"], texture_name);
+				JsonHelp::Set(jsonTextures[idx]["file"], texture_file);
+				JsonHelp::Set(jsonTextures[idx]["format"], texture_format);
+				if(texture_format == "png")
+				{
+					TextureManager->Create2DTextureFromPNGFile(texture_file, texture_name);
+				}
+			}
+			
+			return true;
+		}
 		bool LoadModels(const Json::Value& jsonModels, const std::string& shader_name)
 		{
 			if (!jsonModels.isArray()) { return false; }
@@ -21,6 +41,7 @@ namespace Degen
 			std::string model_name;
 			std::string model_file;
 			bool is_basic = true;
+			unsigned meshidx = 0;
 			std::string error;
 			for (unsigned int idx = 0; idx < jsonModels.size(); idx++)
 			{
@@ -28,6 +49,9 @@ namespace Degen
 				if (jsonCurModel["name"].isString()) model_name = jsonCurModel["name"].asString();
 				if (jsonCurModel["file"].isString()) model_file = jsonCurModel["file"].asString();
 				if (jsonCurModel["is_basic"].isBool()) is_basic = jsonCurModel["is_basic"].asBool();
+				if (jsonCurModel["mesh_number"].isUInt())
+					meshidx = jsonCurModel["mesh_number"].asUInt();
+				
 				VAOAndModel::sModelDrawInfo* mdi = nullptr;
 
 				if (is_basic)
@@ -36,7 +60,7 @@ namespace Degen
 				}
 				else
 				{
-					printf("Advanced models not implemented.\n");
+					mdi = ModelLoader->LoadModel(model_file, model_name, error, meshidx);
 				}
 
 				if (!mdi)
@@ -75,37 +99,37 @@ namespace Degen
 							Component::iComponent* comp = ent->AddComponent<Component::Transform>();
 							comp->Deserialize(components[i]);
 						}
-						if (components[i]["component"] == "render")
+						else if (components[i]["component"] == "render")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Render>();
 							comp->Deserialize(components[i]);
 						}
-						if (components[i]["component"] == "position")
+						else if (components[i]["component"] == "position")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Position>();
 							comp->Deserialize(components[i]);
 						}
-						if (components[i]["component"] == "rotation")
+						else if (components[i]["component"] == "rotation")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Rotation>();
 							comp->Deserialize(components[i]);
 						}
-						if (components[i]["component"] == "camera")
+						else if (components[i]["component"] == "camera")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Camera>();
 							comp->Deserialize(components[i]);
 						}
-						if (components[i]["component"] == "light")
+						else if (components[i]["component"] == "light")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Light>();
 							comp->Deserialize(components[i]);
 						}
-						if (components[i]["component"] == "velocity")
+						else if (components[i]["component"] == "velocity")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Velocity>();
 							comp->Deserialize(components[i]);
 						}
-						if (components[i]["component"] == "gatherer")
+						else if (components[i]["component"] == "gatherer")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Gatherer>();
 							comp->Deserialize(components[i]);

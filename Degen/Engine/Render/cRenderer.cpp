@@ -78,21 +78,26 @@ namespace Degen
 
 
 			glBindFramebuffer(GL_FRAMEBUFFER, mFBO.ID);
-			mFBO.clearBuffers(true, true);
+			mFBO.clearBuffers(true, false);
 
 			glUseProgram(mShaderProgram->ID);
 			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 0);
 
+			glEnable(GL_DEPTH);
 			glDepthMask(GL_TRUE);
 			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+
+			glEnable(GL_CULL_FACE);
 
 			float ratio = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
 			glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glClearStencil(0);
-			glClear(GL_STENCIL_BUFFER_BIT);
+			//glClearStencil(0);
+			//glClear(GL_STENCIL_BUFFER_BIT);
+			//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 			glm::mat4 perspective = glm::perspective(View->fovy, ratio, View->near_plane, View->far_plane);
 			glm::mat4 view = glm::lookAt(View->position, View->target, View->up);
@@ -119,16 +124,27 @@ namespace Degen
 
 		void cRenderer::RenderObject(Shaders::cShaderManager::cShaderProgram* shader_program, Component::Render* rend_comp, glm::mat4 transform, glm::mat4 parent_matrix)
 		{
-			glEnable(GL_BLEND);
+			glDisable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glCullFace(GL_BACK);
 
-			glm::mat4 matWorldCurrentGO = parent_matrix * (transform * glm::scale(glm::mat4(1.f), rend_comp->scale));
+			glm::mat4 matWorldCurrentGO =  (transform * glm::scale(glm::mat4(1.f), rend_comp->scale));
 			glUniformMatrix4fv(shader_program->GetUniformLocationID("matModel"), 1, GL_FALSE, glm::value_ptr(matWorldCurrentGO));
 
 			glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(matWorldCurrentGO));
 			glUniformMatrix4fv(shader_program->GetUniformLocationID("matModelInverseTranspose"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
 
+			GLuint texSamp0_UL = TextureManager->getTextureIDFromName(rend_comp->texture);
+			glActiveTexture(GL_TEXTURE0);				
+			glBindTexture(GL_TEXTURE_2D, texSamp0_UL);
+			glUniform1i(shader_program->GetUniformLocationID("texture00"), 0);
+			glUniform4f(shader_program->GetUniformLocationID("texture_ratios"),
+						rend_comp->texture_amount,		// 1.0
+						rend_comp->diffuse_amount,
+						0.f,
+						0.f);
+
+			
 			glUniform4f(shader_program->GetUniformLocationID("diffuseColour"),
 						rend_comp->diffuse_colour.r,
 						rend_comp->diffuse_colour.g,
@@ -156,7 +172,7 @@ namespace Degen
 
 			glUniform4f(shader_program->GetUniformLocationID("boolModifiers"),
 						0.f,
-						GL_FALSE,
+						ignore_lighting,
 						use_diffuse,
 						0);
 

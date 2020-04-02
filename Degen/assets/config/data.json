@@ -1,5 +1,11 @@
 {
-  "Textures": [],
+  "Textures": [
+    {
+      "name": "grid",
+      "file": "gridtexture.png",
+      "format": "png"
+    }
+  ],
   "Models": [
     {
       "name": "sphere",
@@ -10,11 +16,6 @@
     {
       "name": "quad",
       "file": "flat.ply",
-      "is_basic": true
-    },
-    {
-      "name": "dalek",
-      "file": "dalek.ply",
       "is_basic": true
     },
     {
@@ -44,27 +45,25 @@
       ]
     },
     {
-      "name": "x",
+      "name": "shpere",
       "components": [
         {
           "component": "position",
-          "position": [ 0.0, 0.0, 0.0 ]
+          "position": [ 0.0, -1.0, 0.0 ]
         },
         {
           "component": "rotation",
-          "rotation": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "velocity",
-          "velocity": [ 0.0, 0.0, 0.0 ]
+          "rotation": [ 180.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
-          "mesh": "dalek",
-          "texture": "",
+          "mesh": "sphere",
+          "texture": "grid",
+          "texture_amount": 1.0,
           "diffuse": [ 1.0, 0.8, 0.2, 1.0 ],
-          "specular": [ 1.0, 1.0, 1.0, 0.9 ],
-          "scale": [ 0.4, 0.4, 0.4 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
+          "scale": [ 1, 1, 1 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -74,11 +73,39 @@
       ]
     },
     {
-      "name": "Object 2",
+      "name": "cube",
+      "components": [
+        {
+          "component": "position",
+          "position": [ 0.0, 1.5, 0.0 ]
+        },
+        {
+          "component": "rotation",
+          "rotation": [ 180.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "cube",
+          "texture": "grid",
+          "texture_amount": 0.5,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
+          "scale": [ 1, 1, 1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "gatherer"
+        }
+      ]
+    },
+    {
+      "name": "light 1",
       "components": [
         {
           "component": "transform",
-          "pos": [ 10.0, 100.0, 0.0 ],
+          "pos": [ -30.0, 100.0, 0.0 ],
           "rot": [ 0.0, 0.0, 0.0 ]
         },
         {
@@ -91,6 +118,30 @@
           "quad_atten": 0.000001,
           "direction": [ 0.0, -1.0, 0.0 ],
           "position": [ 0.0, 50.0, 0.0 ],
+          "type": 0,
+          "inner_angle": 5.0,
+          "outer_angle": 10.0
+        }
+      ]
+    },
+    {
+      "name": "light 2",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 30.0, -100.0, 0.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "light",
+          "on": true,
+          "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
+          "specular": [ 1.0, 1.0, 1.0, 1.0 ],
+          "const_atten": 0.0000001,
+          "linear_atten": 0.012,
+          "quad_atten": 0.000001,
+          "direction": [ 0.0, -1.0, 0.0 ],
+          "position": [ 0.0, -50.0, 0.0 ],
           "type": 0,
           "inner_angle": 5.0,
           "outer_angle": 10.0

@@ -93,10 +93,8 @@ namespace Degen
 						   this->width,				// g_FBO_SizeInPixes
 						   this->height);			// g_FBO_SizeInPixes
 
-
-
-
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
 
@@ -105,6 +103,7 @@ namespace Degen
 				// Create the depth buffer (texture)
 			glGenTextures(1, &(this->depthTexture_ID));			//g_FBO_depthTexture
 			glBindTexture(GL_TEXTURE_2D, this->depthTexture_ID);
+			
 
 			//glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32F, ]
 
@@ -202,7 +201,7 @@ namespace Degen
 		void cFBO::clearAllBuffers(void)
 		{
 			glViewport(0, 0, this->width, this->height);
-			GLfloat	zero = 0.0f;
+			GLfloat	zero = 1.0f;
 			GLfloat one = 1.0f;
 			glClearBufferfv(GL_COLOR, 0, &zero);
 			glClearBufferfv(GL_COLOR, 1, &zero);

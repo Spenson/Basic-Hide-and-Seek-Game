@@ -16,6 +16,7 @@
 #include "Entity/cEntityManager.h"
 #include "sView.h"
 #include "BasicMotion/cBasicMotion.h"
+#include "Texture/cTextureManager.h"
 
 
 namespace Degen
@@ -26,6 +27,7 @@ namespace Degen
 	Shaders::cShaderManager* ShaderManager; // managers all shaders created
 	FileReading::cModelLoader* ModelLoader; // manages files loded with assimp
 	Entity::cEntityManager* EntityManager; // creats and cleans up entities
+	Texture::cTextureManager* TextureManager;
 	sView* View;
 
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -133,6 +135,7 @@ namespace Degen
 		ShaderManager = new Shaders::cShaderManager();
 		ModelLoader = new FileReading::cModelLoader();
 		EntityManager = new Entity::cEntityManager();
+		TextureManager = new Texture::cTextureManager();
 		View = new sView();
 
 		{
@@ -187,10 +190,10 @@ namespace Degen
 		mCamera = new Camera::cCamera();
 		mInput = new Input::cInput(mWindow);
 
-		if(jsonRoot["ai_map"].isString())
+		/*if(jsonRoot["ai_map"].isString())
 		{
 			mIntelligence = new AI::cIntelligence(jsonRoot["ai_map"].asString());
-		}
+		}*/
 		mBasicMotion = new BasicMotion::cBasicMotion();
 
 		return true;
@@ -214,6 +217,11 @@ namespace Degen
 		}
 
 		// TODO: TEXTURES
+		if (!Load::LoadTextures(jsonRoot["Textures"]))
+		{
+			printf("Could not load textures.\n");
+			return false;
+		}
 
 		if (!Load::LoadModels(jsonRoot["Models"], mShaderName))
 		{
@@ -233,7 +241,7 @@ namespace Degen
 		{
 			mRenderer->AddEntity(entity);
 			mCamera->AddEntity(entity);
-			mIntelligence->AddEntity(entity);
+			//mIntelligence->AddEntity(entity);
 			mBasicMotion->AddEntity(entity);
 		}
 
@@ -264,7 +272,7 @@ namespace Degen
 			previous_time = time;
 
 			mInput->Update(delta_time);
-			mIntelligence->Update(delta_time);
+			//mIntelligence->Update(delta_time);
 			mBasicMotion->Update(delta_time);
 			mCamera->Update(delta_time);
 			mRenderer->Update(delta_time);

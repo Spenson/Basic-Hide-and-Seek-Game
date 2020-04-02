@@ -42,10 +42,10 @@ uniform sampler2D textureNormal;
 uniform sampler2D texturePosition;
 uniform sampler2D textureSpecular;
 
-layout(location = 0) out vec4 colourOut;			// RGB A   (0 to 1) 
-layout(location = 1) out vec4 normalOut;
-layout(location = 2) out vec4 worldPosOut;
-layout(location = 3) out vec4 specularOut;
+out vec4 colourOut;			// RGB A   (0 to 1) 
+out vec4 normalOut;
+out vec4 worldPosOut;
+out vec4 specularOut;
 
 
 // Fragment shader
@@ -98,6 +98,13 @@ void Pass02(void);
 
 void main()
 {
+	colourOut = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	normalOut = vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	worldPosOut = fVertWorldLocation;
+	worldPosOut.w = 1;
+	specularOut = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+
 	if (passNumber == 1)
 	{
 		Pass01();
@@ -278,9 +285,7 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal,
 
 void Pass00(void)
 {
-	// needed
-	//vec3 vertexMaterialColour, vec3 vertexNormal,
-	//	vec3 vertexWorldPos, vec4 vertexSpecular
+
 
 	// Shader Type #2 Imposters
 	if (int(boolModifiers.x) == IMPOSTER_RENDER_MODE)
@@ -357,8 +362,6 @@ void Pass00(void)
 	}
 
 
-
-
 	if (diffuseColour.a <= 0.01f)		// Basically "invisable"
 	{
 		discard;
@@ -366,26 +369,29 @@ void Pass00(void)
 
 	vec4 materialColour = diffuseColour;
 
-	if (boolModifiers.z == 0.0f)
-	{
-		vec3 tex0_RGB = texture(texture00, fUVx2.st).rgb;
-		vec3 tex1_RGB = texture(texture01, fUVx2.st).rgb;
-		vec3 tex2_RGB = texture(texture02, fUVx2.st).rgb;
-		vec3 tex3_RGB = texture(texture03, fUVx2.st).rgb;
+	vec3 tex0_RGB = texture(texture00, fUVx2.st).rgb;
+	materialColour.rgb = (tex0_RGB * texture_ratios.x).rgb + (diffuseColour * texture_ratios.y).rgb;
 
-		vec3 texRGB = (texture_ratios.x * tex0_RGB)
-			+ (texture_ratios.y * tex1_RGB)
-			+ (texture_ratios.z * tex2_RGB)
-			+ (texture_ratios.w * tex3_RGB);
-
-		materialColour.rgb = texRGB;
-	}
+	//if (boolModifiers.z == 0.0f)
+	//{
+	//	vec3 tex0_RGB = texture(texture00, fUVx2.st).rgb;
+	//	//vec3 tex1_RGB = texture(texture01, fUVx2.st).rgb;
+	//	//vec3 tex2_RGB = texture(texture02, fUVx2.st).rgb;
+	//	//vec3 tex3_RGB = texture(texture03, fUVx2.st).rgb;
+	//
+	//	//vec3 texRGB = (texture_ratios.x * tex0_RGB)
+	//	//	+ (texture_ratios.y * tex1_RGB)
+	//	//	+ (texture_ratios.z * tex2_RGB)
+	//	//	+ (texture_ratios.w * tex3_RGB);
+	//
+	//	//materialColour.rgb = texRGB;
+	//	materialColour.rgb = tex0_RGB;
+	//}
 
 	colourOut = materialColour;
-	colourOut.a = diffuseColour.a;
+	colourOut.a = 1.f;
 
 	normalOut.xyz = fNormal.xyz;
-
 	if (boolModifiers.y == 0.0f)	normalOut.w = 1.f;
 	else							normalOut.w = 0.f;
 
@@ -394,8 +400,11 @@ void Pass00(void)
 	worldPosOut.w = 1.f;
 
 	specularOut.rgb = specularColour.rgb;
-	specularOut.w = specularColour.w;
+	specularOut.w = specularColour.w * (1.0f / 10000.0f);
+	if (specularOut.w > 1.f) specularOut.w = 1.f;
+	if (specularOut.w < 0.f) specularOut.w = 0.f;
 
+	return;
 }
 
 void Pass01(void)
@@ -413,9 +422,12 @@ void Pass01(void)
 
 	if (normal.a == 1.f)
 	{
-		vec4 colour = calcualteLightContrib(vertexcolour.rgb, normal.xyz, position.xyz, specular);
+		specular.w *= 10000.f;
+		vec4 colour = calcualteLightContrib(vertexcolour.rgb, normalize(normal.xyz), position.xyz, specular);
 		colourOut.rgb = colour.rgb;
 		colourOut.a = 1.0f;
+
+		//colourOut.rgb = normal.rgb;
 	}
 	else
 	{

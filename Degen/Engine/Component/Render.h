@@ -16,7 +16,9 @@ namespace Degen
 
 			std::string mesh; //Model
 			std::string texture;
+			float texture_amount;
 			glm::vec4 diffuse_colour;
+			float diffuse_amount;
 			glm::vec4 specular_colour;
 			//glm::vec3 position;
 			//glm::quat roatation;

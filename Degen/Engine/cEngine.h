@@ -18,10 +18,10 @@ namespace Degen
 	{
 		class cInput;
 	}
-	namespace AI
+	/*namespace AI
 	{
 		class cIntelligence;
-	}
+	}*/
 	namespace BasicMotion
 	{
 		class cBasicMotion;
@@ -43,7 +43,7 @@ namespace Degen
 		Render::cRenderer* mRenderer;
 		Camera::cCamera* mCamera;
 		Input::cInput* mInput;
-		AI::cIntelligence* mIntelligence;
+		//AI::cIntelligence* mIntelligence;
 		BasicMotion::cBasicMotion* mBasicMotion;
 
 		// Needed for loading

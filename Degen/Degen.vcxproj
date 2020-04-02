@@ -203,6 +203,7 @@
     <ClCompile Include="Engine\Texture\C24BitBMPpixel.cpp" />
     <ClCompile Include="Engine\Texture\cBasicTextureManager.cpp" />
     <ClCompile Include="Engine\Texture\CTextureFromBMP.cpp" />
+    <ClCompile Include="Engine\Texture\cTextureManager.cpp" />
     <ClCompile Include="Engine\Texture\lodepng.cpp" />
     <ClCompile Include="Engine\VAO and Meshes\cVAOManager.cpp" />
     <ClCompile Include="Engine\VAO and Meshes\sComplexVertex.cpp" />
@@ -248,6 +249,8 @@
     <ClInclude Include="Engine\Texture\cBasicTextureManager.h" />
     <ClInclude Include="Engine\Texture\CTextureFromBMP.h" />
     <ClInclude Include="Engine\Texture\cTextureFromPNG.h" />
+    <ClInclude Include="Engine\Texture\sTextureInfo.h" />
+    <ClInclude Include="Engine\Texture\cTextureManager.h" />
     <ClInclude Include="Engine\Texture\lodepng.h" />
     <ClInclude Include="Engine\VAO and Meshes\cVAOManager.h" />
     <ClInclude Include="Engine\VAO and Meshes\sComplexVertex.h" />
