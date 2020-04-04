@@ -31,6 +31,8 @@ namespace Degen
 			float min_yaw;
 			
 			float distance;
+			float max_distance;
+			float min_distance;
 		};
 	}
 }

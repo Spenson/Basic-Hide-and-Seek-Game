@@ -7,6 +7,7 @@ namespace Degen
 	namespace Load
 	{
 		bool LoadTextures(const Json::Value& jsonTextures);
+		bool LoadCubemaps(const Json::Value& jsonCubemaps);
 		bool LoadModels(const Json::Value& jsonModels, const std::string& shader_name);
 		bool LoadEntities(const Json::Value& jsonEntities);
 	}

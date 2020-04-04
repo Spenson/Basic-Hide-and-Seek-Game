@@ -176,9 +176,11 @@
     <ClCompile Include="Engine\AI\BMP Loader\ResourceManager.cpp" />
     <ClCompile Include="Engine\AI\cIntelligence.cpp" />
     <ClCompile Include="Engine\AI\Graph.cpp" />
+    <ClCompile Include="Engine\Animation\cAnimator.cpp" />
     <ClCompile Include="Engine\BasicMotion\cBasicMotion.cpp" />
     <ClCompile Include="Engine\Camera\cCamera.cpp" />
     <ClCompile Include="Engine\cEngine.cpp" />
+    <ClCompile Include="Engine\Component\Animation.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Gatherer.cpp" />
     <ClCompile Include="Engine\Component\Light.cpp" />
@@ -215,9 +217,11 @@
     <ClInclude Include="Engine\AI\BMP Loader\ResourceManager.h" />
     <ClInclude Include="Engine\AI\cIntelligence.h" />
     <ClInclude Include="Engine\AI\Graph.h" />
+    <ClInclude Include="Engine\Animation\cAnimator.h" />
     <ClInclude Include="Engine\BasicMotion\cBasicMotion.h" />
     <ClInclude Include="Engine\Camera\cCamera.h" />
     <ClInclude Include="Engine\cEngine.h" />
+    <ClInclude Include="Engine\Component\Animation.h" />
     <ClInclude Include="Engine\Component\Camera.h" />
     <ClInclude Include="Engine\Component\ComponentCheatSheat.txt" />
     <ClInclude Include="Engine\Component\Gatherer.h" />

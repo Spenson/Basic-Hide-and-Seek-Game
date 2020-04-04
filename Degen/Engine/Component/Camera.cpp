@@ -20,7 +20,9 @@ namespace Degen
 			yaw(0.f),
 			max_yaw(361.f),
 			min_yaw(-361.f),
-			distance(10.f)
+			distance(10.f),
+			max_distance(50.f),
+			min_distance(1.f)
 		{
 		}
 
@@ -35,6 +37,8 @@ namespace Degen
 			JsonHelp::Set(json["max_yaw"], max_yaw);
 			JsonHelp::Set(json["min_yaw"], min_yaw);
 			JsonHelp::Set(json["distance"], distance);
+			JsonHelp::Set(json["max_distance"], max_distance);
+			JsonHelp::Set(json["min_distance"], min_distance);
 			return true;
 		}
 

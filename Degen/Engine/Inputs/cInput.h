@@ -13,8 +13,10 @@ namespace Degen
 			void Update(double dt);
 			
 			GLFWwindow* window;
-			float last_x = 0, last_y = 0;
+			float mouse_position_x = 0, mouse_position_y = 0;
 			static bool mouse_on_window;
+			static double mouse_scroll_x_offset;
+			static double mouse_scroll_y_offset;
 		};
 	}
 }

@@ -19,7 +19,7 @@ namespace Degen
 			{
 				current_state = (state)istate;
 			}
-			JsonHelp::Set(json["time"], time);
+			JsonHelp::Set(json["playing_time"], time);
 
 			return false;
 		}

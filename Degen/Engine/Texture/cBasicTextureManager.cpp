@@ -57,7 +57,7 @@ GLuint cBasicTextureManager::getTextureIDFromName( std::string textureFileName )
 	{
 		return 0;
 	}
-	// Reutrn texture number (from OpenGL genTexture)
+	// Reutrn texture1 number (from OpenGL genTexture)
 	return itTexture->second->getTextureNumber();
 }
 
@@ -72,7 +72,7 @@ void cBasicTextureManager::m_appendErrorStringLine( std::string nextErrorTextLin
 }
 
 
-// Picks a random texture from the textures loaded
+// Picks a random texture1 from the textures loaded
 std::string cBasicTextureManager::PickRandomTexture(void)
 {
 	if ( this->m_map_TexNameToTexture.empty() )

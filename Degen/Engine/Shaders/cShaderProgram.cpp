@@ -48,7 +48,7 @@ namespace Degen
 
 			int uniformlocation = 0;
 
-			for (int index = 0; index != numberOfActiveUniforms; index++)
+			for (int index = 0; index < numberOfActiveUniforms; index++)
 			{
 				const int BUFFERSIZE = 1000;
 				char myBuffer[BUFFERSIZE] = { 0 };
@@ -90,6 +90,7 @@ namespace Degen
 			}
 
 			// Didn't find it.
+			printf("No Uniform Location for %s\n", uniformname.c_str());
 			return -1;
 		}
 	}

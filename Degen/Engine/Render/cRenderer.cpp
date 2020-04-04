@@ -60,6 +60,22 @@ namespace Degen
 
 			glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
+			// doing because of ones below
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glUniform1i(mShaderProgram->GetUniformLocationID("texture00"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glUniform1i(mShaderProgram->GetUniformLocationID("texture01"), 0);
+			//must be bound before first render of cube map texture sampling "texture(skybox00, vOut.normal.xyz)" will cause crash
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+			glUniform1i(mShaderProgram->GetUniformLocationID("skybox00"), 0);
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+			glUniform1i(mShaderProgram->GetUniformLocationID("skybox01"), 0);
+
+
 		}
 
 		void cRenderer::Update(double dt)
@@ -124,27 +140,52 @@ namespace Degen
 
 		void cRenderer::RenderObject(Shaders::cShaderManager::cShaderProgram* shader_program, Component::Render* rend_comp, glm::mat4 transform, glm::mat4 parent_matrix)
 		{
+			if (rend_comp->cull_face_back) { glEnable(GL_CULL_FACE); }
+			else { glDisable(GL_CULL_FACE); }
+
 			glDisable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glCullFace(GL_BACK);
 
-			glm::mat4 matWorldCurrentGO =  (transform * glm::scale(glm::mat4(1.f), rend_comp->scale));
+			glm::mat4 matWorldCurrentGO = (transform * glm::scale(glm::mat4(1.f), rend_comp->scale));
 			glUniformMatrix4fv(shader_program->GetUniformLocationID("matModel"), 1, GL_FALSE, glm::value_ptr(matWorldCurrentGO));
 
 			glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(matWorldCurrentGO));
-			glUniformMatrix4fv(shader_program->GetUniformLocationID("matModelInverseTranspose"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
+			glUniformMatrix4fv(shader_program->GetUniformLocationID("matInvTrans"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
 
-			GLuint texSamp0_UL = TextureManager->getTextureIDFromName(rend_comp->texture);
-			glActiveTexture(GL_TEXTURE0);				
-			glBindTexture(GL_TEXTURE_2D, texSamp0_UL);
-			glUniform1i(shader_program->GetUniformLocationID("texture00"), 0);
-			glUniform4f(shader_program->GetUniformLocationID("texture_ratios"),
-						rend_comp->texture_amount,		// 1.0
+
+			if (rend_comp->is_cubemap_textures)
+			{
+				glActiveTexture(GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_CUBE_MAP, TextureManager->getTextureIDFromName(rend_comp->texture1));
+				glUniform1i(shader_program->GetUniformLocationID("skybox00"), 2);
+				if (!rend_comp->texture2.empty())
+				{
+					glActiveTexture(GL_TEXTURE3);
+					glBindTexture(GL_TEXTURE_CUBE_MAP, TextureManager->getTextureIDFromName(rend_comp->texture2));
+					glUniform1i(shader_program->GetUniformLocationID("skybox01"), 3);
+				}
+			}
+			else
+			{
+				GLuint texSamp0_UL = TextureManager->getTextureIDFromName(rend_comp->texture1);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texSamp0_UL);
+				glUniform1i(shader_program->GetUniformLocationID("texture00"), 0);
+
+				if (!rend_comp->texture2.empty())
+				{
+					glActiveTexture(GL_TEXTURE1);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->texture2));
+					glUniform1i(shader_program->GetUniformLocationID("texture01"), 1);
+				}
+			}
+			glUniform4f(shader_program->GetUniformLocationID("colour_ratios"),
 						rend_comp->diffuse_amount,
-						0.f,
+						rend_comp->texture1_amount,
+						rend_comp->texture2_amount,
 						0.f);
 
-			
 			glUniform4f(shader_program->GetUniformLocationID("diffuseColour"),
 						rend_comp->diffuse_colour.r,
 						rend_comp->diffuse_colour.g,
@@ -168,13 +209,13 @@ namespace Degen
 			{
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
 			}
-			float use_diffuse = true; //pCurrentObject->UseDiffuse();
+			//float use_diffuse = true; //pCurrentObject->UseDiffuse();
 
-			glUniform4f(shader_program->GetUniformLocationID("boolModifiers"),
-						0.f,
+			glUniform4f(shader_program->GetUniformLocationID("modifiers"),
+						rend_comp->is_cubemap_textures ? GL_TRUE : GL_FALSE,
 						ignore_lighting,
-						use_diffuse,
-						0);
+						0.f,
+						0.f);
 
 			glUniform1f(shader_program->GetUniformLocationID("isSkinnedMesh"), (float)GL_FALSE);
 
@@ -237,24 +278,22 @@ namespace Degen
 			glUniform1f(mShaderProgram->GetUniformLocationID("Width"), (float)WINDOW_WIDTH);
 			glUniform1f(mShaderProgram->GetUniformLocationID("Height"), (float)WINDOW_HEIGHT);
 
-			glUniform1f(mShaderProgram->GetUniformLocationID("blur"), 0.f);
-			glUniform1f(mShaderProgram->GetUniformLocationID("nightvision"), 0.f);
 
 			glm::mat4 matWorldCurrentGO = glm::scale(glm::mat4(1.f), glm::vec3(50.f));
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matModel"), 1, GL_FALSE, glm::value_ptr(matWorldCurrentGO));
 			glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(matWorldCurrentGO));
-			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matModelInverseTranspose"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
+			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matInvTrans"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
 
-			glActiveTexture(GL_TEXTURE9);				
+			glActiveTexture(GL_TEXTURE9);
 			glBindTexture(GL_TEXTURE_2D, mFBO.colourTexture_ID);
-			glActiveTexture(GL_TEXTURE10);			
-			glBindTexture(GL_TEXTURE_2D, mFBO.normalTexture_ID);	
-			glActiveTexture(GL_TEXTURE11);				
+			glActiveTexture(GL_TEXTURE10);
+			glBindTexture(GL_TEXTURE_2D, mFBO.normalTexture_ID);
+			glActiveTexture(GL_TEXTURE11);
 			glBindTexture(GL_TEXTURE_2D, mFBO.positionTexture_ID);
-			glActiveTexture(GL_TEXTURE12);				
-			glBindTexture(GL_TEXTURE_2D, mFBO.specularTexture_ID);	
+			glActiveTexture(GL_TEXTURE12);
+			glBindTexture(GL_TEXTURE_2D, mFBO.specularTexture_ID);
 
-			// Tie the texture units to the samplers in the shader
+			// Tie the texture1 units to the samplers in the shader
 			glUniform1i(mShaderProgram->GetUniformLocationID("textureColour"), 9);	// Texture unit 0
 			glUniform1i(mShaderProgram->GetUniformLocationID("textureNormal"), 10);	// Texture unit 1
 			glUniform1i(mShaderProgram->GetUniformLocationID("texturePosition"), 11);	// Texture unit 2
@@ -264,7 +303,7 @@ namespace Degen
 			glUniform4f(mShaderProgram->GetUniformLocationID("specularColour"), 1.f, 1.f, 1.f, 1.f);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
 
-			glUniform4f(mShaderProgram->GetUniformLocationID("boolModifiers"), 0.f, 1.f, 0.f, 0.f);
+			glUniform4f(mShaderProgram->GetUniformLocationID("modifiers"), 0.f, 1.f, 0.f, 0.f);
 			glDisable(GL_DEPTH_TEST);
 			glDepthMask(GL_FALSE);
 			glUniform1f(mShaderProgram->GetUniformLocationID("isSkinnedMesh"), (float)GL_FALSE);

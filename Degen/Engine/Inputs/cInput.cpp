@@ -8,6 +8,8 @@ namespace Degen
 	namespace Input
 	{
 		bool cInput::mouse_on_window = false;
+		double cInput::mouse_scroll_x_offset = 0;
+		double cInput::mouse_scroll_y_offset = 0;
 
 		void cursor_enter_callback(GLFWwindow* window, int entered)
 		{
@@ -22,25 +24,39 @@ namespace Degen
 			return;
 		}
 
+		void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+		{
+			cInput::mouse_scroll_x_offset += xoffset;
+			cInput::mouse_scroll_y_offset += yoffset;
+		}
+
 		cInput::cInput(GLFWwindow* window) : window(window)
 		{
 			glfwSetCursorEnterCallback(window, cursor_enter_callback);
+			glfwSetScrollCallback(window, scroll_callback);
 		}
+
+
 		void cInput::Update(double dt)
 		{
 			double x, y;
 			glfwGetCursorPos(window, &x, &y);
 			if ((glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) && mouse_on_window)
 			{
-				float diffX = x - last_x;
-				float diffY = y - last_y;
+				float diffX = x - mouse_position_x;
+				float diffY = y - mouse_position_y;
 				Component::Camera* camera = dynamic_cast<Component::Camera*>(Entity::cEntityManager::GetEntity(1000)->GetComponent(Component::CAMERA_COMPONENT));
 				camera->pitch -= (diffY * 0.5f);
 				camera->yaw -= (diffX * 0.5f);
+
+				camera->distance -= mouse_scroll_y_offset;
+
 			}
-			last_x = x;
-			last_y = y;
-			
+			mouse_scroll_x_offset = 0;
+			mouse_scroll_y_offset = 0;
+			mouse_position_x = x;
+			mouse_position_y = y;
+
 			if (glfwGetKey(window, GLFW_KEY_W))
 			{
 				glm::vec3 movement = View->target - View->position;

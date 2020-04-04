@@ -17,9 +17,11 @@ namespace Degen
 		bool LoadTextures(const Json::Value& jsonTextures)
 		{
 			if (!jsonTextures.isArray()) { return false; }
+			TextureManager->SetBasePath("assets/textures/");
 			std::string texture_file;
 			std::string texture_name;
 			std::string texture_format;
+			std::string error_info;
 			
 			for(unsigned int idx = 0; idx < jsonTextures.size(); idx++)
 			{
@@ -28,10 +30,52 @@ namespace Degen
 				JsonHelp::Set(jsonTextures[idx]["format"], texture_format);
 				if(texture_format == "png")
 				{
-					TextureManager->Create2DTextureFromPNGFile(texture_file, texture_name);
+					if(!TextureManager->Create2DTextureFromPNGFile(texture_file, texture_name, error_info))
+					{
+						printf("Texture %s not loaded.\n\t%s\n", texture_name.c_str(), error_info.c_str());
+					}
 				}
 			}
 			
+			return true;
+		}
+		bool LoadCubemaps(const Json::Value& jsonCubemaps)
+		{
+			if (!jsonCubemaps.isArray()) { return false; }
+			TextureManager->SetBasePath("assets/textures/cubemaps/");
+			std::string texture_file_posX;
+			std::string texture_file_negX;
+			std::string texture_file_posY;
+			std::string texture_file_negY;
+			std::string texture_file_posZ;
+			std::string texture_file_negZ;
+			std::string cubemap_name;
+			std::string cubemap_format;
+			std::string error_info;
+
+			for (unsigned int idx = 0; idx < jsonCubemaps.size(); idx++)
+			{
+				JsonHelp::Set(jsonCubemaps[idx]["name"], cubemap_name);
+				JsonHelp::Set(jsonCubemaps[idx]["+x"], texture_file_posX);
+				JsonHelp::Set(jsonCubemaps[idx]["-x"], texture_file_negX);
+				JsonHelp::Set(jsonCubemaps[idx]["+y"], texture_file_posY);
+				JsonHelp::Set(jsonCubemaps[idx]["-y"], texture_file_negY);
+				JsonHelp::Set(jsonCubemaps[idx]["+z"], texture_file_posZ);
+				JsonHelp::Set(jsonCubemaps[idx]["-z"], texture_file_negZ);
+				JsonHelp::Set(jsonCubemaps[idx]["format"], cubemap_format);
+				if (cubemap_format == "png")
+				{
+					if (!TextureManager->CreateCubeTextureFromPNGFiles(cubemap_name, 
+																	   texture_file_posX, texture_file_negX, 
+																	   texture_file_posY, texture_file_negY, 
+																	   texture_file_posZ, texture_file_negZ, 
+																	   true, error_info))
+					{
+						printf("Texture %s not loaded.\n\t%s\n", cubemap_name.c_str(), error_info.c_str());
+					}
+				}
+			}
+
 			return true;
 		}
 		bool LoadModels(const Json::Value& jsonModels, const std::string& shader_name)

@@ -32,7 +32,7 @@ extern const char* LODEPNG_VERSION_STRING;
 
 /*
 The following #defines are used to create code sections. They can be disabled
-to disable code sections, which can give faster compile time and smaller binary.
+to disable code sections, which can give faster compile playing_time and smaller binary.
 The "NO_COMPILE" defines are designed to be used to pass as defines to the
 compiler command to disable them without modifying this header, e.g.
 -DLODEPNG_NO_COMPILE_ZLIB for gcc.
@@ -492,7 +492,7 @@ typedef struct LodePNGInfo
     char** itext_transkeys; /*keyword translated to the international language - UTF-8 string*/
     char** itext_strings; /*the actual international text - UTF-8 string*/
 
-    /*time chunk (tIME)*/
+    /*playing_time chunk (tIME)*/
     unsigned time_defined; /*set to 1 to make the encoder generate a tIME chunk*/
     LodePNGTime time;
 
@@ -528,7 +528,7 @@ typedef struct LodePNGInfo
     unsigned chrm_blue_y;  /* Blue y times 100000 */
 
     /*
-    sRGB chunk: optional. May not appear at the same time as iCCP.
+    sRGB chunk: optional. May not appear at the same playing_time as iCCP.
     If gAMA is also present gAMA must contain value 45455.
     If cHRM is also present cHRM must contain respectively 31270,32900,64000,33000,30000,60000,15000,6000.
     */
@@ -536,7 +536,7 @@ typedef struct LodePNGInfo
     unsigned srgb_intent;  /* Rendering intent: 0=perceptual, 1=rel. colorimetric, 2=saturation, 3=abs. colorimetric */
 
     /*
-    iCCP chunk: optional. May not appear at the same time as sRGB.
+    iCCP chunk: optional. May not appear at the same playing_time as sRGB.
 
     LodePNG does not parse or use the ICC profile (except its color space header field for an edge case), a
     separate library to handle the ICC data (not included in LodePNG) format is needed to use it for color
@@ -1177,7 +1177,7 @@ The following features are supported by the decoder:
     iTXt: international textual information
     bKGD: suggested background color
     pHYs: physical dimensions
-    tIME: modification time
+    tIME: modification playing_time
     cHRM: RGB chromaticities
     gAMA: RGB gamma correction
     iCCP: ICC color profile
@@ -1316,7 +1316,7 @@ but it's possible to choose it yourself given the right settings.
 The encoder will not always exactly match the LodePNGInfo struct you give,
 it tries as close as possible. Some things are ignored by the encoder. The
 encoder uses, for example, the following settings from it when applicable:
-colortype and bitdepth, text chunks, time chunk, the color key, the palette, the
+colortype and bitdepth, text chunks, playing_time chunk, the color key, the palette, the
 background color, the interlace method, unknown chunks, ...
 
 When encoding to a PNG with colortype 3, the encoder will generate a PLTE chunk.
@@ -1709,7 +1709,7 @@ int main(int argc, char *argv[]) {
   //if there's an error, display it
   if(error) std::cout << "decoder error " << error << ": " << lodepng_error_text(error) << std::endl;
 
-  //the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture, draw it, ...
+  //the pixels are now in the vector "image", 4 bytes per pixel, ordered RGBARGBA..., use it as texture1, draw it, ...
 }
 
 10.2. decoder C example

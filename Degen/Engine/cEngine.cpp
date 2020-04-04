@@ -143,7 +143,8 @@ namespace Degen
 			if (jsonRoot["shader"].isObject())jsonShader = jsonRoot["shader"];
 
 			std::string name;
-			if (jsonShader["name"].isString()) name = jsonRoot["name"].asString();
+
+			JsonHelp::Set(jsonShader["name"], name);
 
 			Shaders::cShaderManager::cShader vertexShad;
 			if (jsonShader["vert"].isString()) vertexShad.fileName = "assets/shaders/" + jsonShader["vert"].asString();
@@ -216,7 +217,14 @@ namespace Degen
 			}
 		}
 
-		// TODO: TEXTURES
+
+		if (!Load::LoadCubemaps(jsonRoot["Cubemaps"]))
+		{
+			printf("Could not load cubemaps.\n");
+			return false;
+		}
+
+		
 		if (!Load::LoadTextures(jsonRoot["Textures"]))
 		{
 			printf("Could not load textures.\n");

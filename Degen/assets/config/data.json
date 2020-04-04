@@ -1,8 +1,25 @@
 {
+  "Cubemaps": [
+    {
+      "name": "spacey-space",
+      "+x": "drakeq_lf.png",
+      "-x": "drakeq_rt.png",
+      "+y": "drakeq_up.png",
+      "-y": "drakeq_dn.png",
+      "+z": "drakeq_ft.png",
+      "-z": "drakeq_bk.png",
+      "format": "png"
+    }
+  ],
   "Textures": [
     {
       "name": "grid",
       "file": "gridtexture.png",
+      "format": "png"
+    },
+    {
+      "name": "PolygonScifi_01_A",
+      "file": "PolygonScifi_01_A.png",
       "format": "png"
     }
   ],
@@ -36,11 +53,27 @@
           "position": [ 0.0, 0.0, 0.0 ]
         },
         {
+          "component": "render",
+          "mesh": "sphere",
+          "texture1": "spacey-space",
+          "texture1_amount": 1.0,
+          "is_cubemap_texture": true,
+          "diffuse": [ 1.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
+          "scale": [ 100.0, 100.0, 100.0 ],
+          "ignore_lighting": true,
+          "is_wireframe": false,
+          "cull_face_back": false
+        },
+        {
           "component": "camera",
           "active": true,
           "pitch": 0.0,
           "yaw": 0.0,
-          "distance": 20.0
+          "distance": 20.0,
+          "max_distance": 40.0,
+          "min_distance": 0.0
         }
       ]
     },
@@ -49,23 +82,11 @@
       "components": [
         {
           "component": "position",
-          "position": [ 0.0, -1.0, 0.0 ]
+          "position": [ 0.0, 0.0, 0.0 ]
         },
         {
           "component": "rotation",
-          "rotation": [ 180.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "sphere",
-          "texture": "grid",
-          "texture_amount": 1.0,
-          "diffuse": [ 1.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
-          "scale": [ 1, 1, 1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
+          "rotation": [ 0.0, 0.0, 0.0 ]
         },
         {
           "component": "gatherer"
@@ -86,11 +107,11 @@
         {
           "component": "render",
           "mesh": "cube",
-          "texture": "grid",
-          "texture_amount": 0.5,
+          "texture1": "PolygonScifi_01_A",
+          "texture1_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
-          "specular": [ 1.0, 1.0, 1.0, 100.0 ],
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
           "scale": [ 1, 1, 1 ],
           "ignore_lighting": false,
           "is_wireframe": false

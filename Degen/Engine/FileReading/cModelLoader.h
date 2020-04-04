@@ -16,11 +16,13 @@ namespace Degen
 		public:
 			cModelLoader() = default;
 			~cModelLoader() = default;
-			// Imports all meshes in file then abandons Importer
-			//VAOAndModel::sModelDrawInfo* LoadBasicModel(std::string	file_name, std::string friendly_name, std::string& error);
+
 			VAOAndModel::sModelDrawInfo* LoadBasicModel(std::string	file_name, std::string friendly_name, std::string& error, const unsigned int meshIndex = 0);
 			VAOAndModel::sModelDrawInfo* LoadModel(std::string	file_name, std::string friendly_name, std::string& error, const unsigned int meshIndex = 0);
 
+
+			
+			// Previous testing
 			VAOAndModel::sModelDrawInfo* LoadPlyModel(std::string file_name, std::string friendly_name, std::string& error);
 		};
 

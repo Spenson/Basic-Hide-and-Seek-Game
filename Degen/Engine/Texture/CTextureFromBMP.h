@@ -25,7 +25,7 @@ class CTextureFromBMP
 public:
 	CTextureFromBMP();
 	~CTextureFromBMP();
-	// Returns true if able to load texture and store it
+	// Returns true if able to load texture1 and store it
 	// Updated: December 2010 for ATI cards, too!
 	bool CreateNewTextureFromBMPFile2( std::string textureName, std::string fileNameFullPath, /*GLenum textureUnit,*/ bool bGenerateMIPMap );		
 
@@ -53,12 +53,12 @@ public:
 	void SetDebug_cout_output( bool bHave_cout_output );
 
 	bool ResizeBitmap(int DesiredHeight, int DesiredWidth);
-	// Returns true if texture exists and can be applied
+	// Returns true if texture1 exists and can be applied
 	bool MakeTextureActive(void);
 	//	new Texture replacement mode.
 	// Call this to set a new replacement mode: GL_MODULATE, GL_DECAL, GL_REPLACE, GL_BLEND
 	bool SetTextureEnvironmentMode(GLint textureReplacementMode);
-	// Call this after you are done with the texture replacement mode
+	// Call this after you are done with the texture1 replacement mode
 	bool RestoreOldTextureEnvironmentMode(void);
 	// This is for displaying the image as a raster image...
 	void DisplayTextureAsRasterBitmap(GLfloat xOrigin, GLfloat yOrigin, GLfloat xMove, GLfloat yMove);
@@ -102,10 +102,10 @@ private:
 	C24BitBMPpixel* m_p_theImages;	
 	//C32BitBMPpixel* m_p_theImages32;	
 	
-	GLuint m_textureNumber;				// The texture number
+	GLuint m_textureNumber;				// The texture1 number
 	std::string m_textureName;
 	std::string m_fileNameFullPath;
-	//GLenum m_textureUnit;				// The actual texture unit it's loaded to
+	//GLenum m_textureUnit;				// The actual texture1 unit it's loaded to
 	GLint m_oldTextureEnvironmentMode;
 	bool m_bIsCubeMap;
 	bool m_bIs2DTexture;

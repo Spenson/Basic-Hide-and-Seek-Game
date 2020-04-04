@@ -1720,7 +1720,7 @@ static unsigned getHash(const unsigned char* data, size_t size, size_t pos)
     {
         /*A simple shift and xor hash is used. Since the data of PNGs is dominated
         by zeroes due to the filters, a better hash does not have a significant
-        effect on speed in traversing the chain, and causes more time spend on
+        effect on speed in traversing the chain, and causes more playing_time spend on
         calculating the hash.*/
         result ^= ((unsigned)data[pos + 0] << 0u);
         result ^= ((unsigned)data[pos + 1] << 4u);

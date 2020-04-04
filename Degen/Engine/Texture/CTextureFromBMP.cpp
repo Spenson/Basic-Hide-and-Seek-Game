@@ -65,7 +65,7 @@ bool CTextureFromBMP::CreateNewTextureFromBMPFile2( std::string textureName, std
 	// Clear any old openGL errors???
 	int IHateYou = glGetError();
 
-	// Pick a texture number...
+	// Pick a texture1 number...
 //	GLuint textureNum = 0;
 	this->m_textureNumber = 0;
 	glGenTextures( 1, &(this->m_textureNumber) );
@@ -85,12 +85,12 @@ bool CTextureFromBMP::CreateNewTextureFromBMPFile2( std::string textureName, std
 	this->m_fileNameFullPath = fileNameFullPath;
 	this->m_textureName = textureName;
 
-	// Good to go (valid texture ID and loaded bitmap...
-	// Now set the texture...
+	// Good to go (valid texture1 ID and loaded bitmap...
+	// Now set the texture1...
 	//glActiveTexture( textureUnit );	// GL_TEXTURE0, GL_TEXTURE1, etc.
 	glBindTexture(GL_TEXTURE_2D, this->m_textureNumber);
 
-	// In case texture is oddly aligned, set the client alignment to 1 byte (default is 4)
+	// In case texture1 is oddly aligned, set the client alignment to 1 byte (default is 4)
 	GLint GL_UNPACK_ALIGNMENT_old = 0;
 	glGetIntegerv( GL_UNPACK_ALIGNMENT, &GL_UNPACK_ALIGNMENT_old );
 	// Set alignment to 1 byte
@@ -187,7 +187,7 @@ bool CTextureFromBMP::CreateNewCubeTextureFromBMPFiles( std::string cubeMapName,
 
 	// Do the magic...
 
-	// Pick a texture number...
+	// Pick a texture1 number...
 	//GLuint textureNum = 0;
 	glGenTextures( 1, &(this->m_textureNumber) );
 	// Worked?
@@ -392,7 +392,7 @@ bool CTextureFromBMP::SaveBMP( std::string fileName )
 	//int filesize = 54 + 3*w*h
 
 
-	std::cout << "Writing texture to BMP" << std::endl;
+	std::cout << "Writing texture1 to BMP" << std::endl;
 	theFile << 'B' << 'M';
 	this->WriteAsUnsignedLong( this->m_FileSize, theFile );	//	theFile << this->m_FileSize;
 	this->WriteAsUnsignedShort( this->m_reserved1, theFile );			// 0
@@ -494,7 +494,7 @@ bool CTextureFromBMP::LoadBMP2( std::string fileName )
 	std::ifstream theFile;
 	if ( this->m_bHave_cout_output )
 	{
-		std::cout << "Reading texture file: " << fileName;
+		std::cout << "Reading texture1 file: " << fileName;
 	}
 	theFile.open(fileName.c_str(), std::ios_base::binary);
 	if ( !theFile )
@@ -646,7 +646,7 @@ bool CTextureFromBMP::LoadBMP2( std::string fileName )
 //	// Indicate we are reading...
 //	if ( this->m_bHave_cout_output )
 //	{
-//		std::cout << "Reading texture file: " << fileName;
+//		std::cout << "Reading texture1 file: " << fileName;
 //	}
 //	// Note: This is set to binary mode - i.e. read the chars (bytes) as 
 //	//	binary - set in the ios_base (i/o stream base class 'openmode' setting.
@@ -765,7 +765,7 @@ bool CTextureFromBMP::LoadBMP2( std::string fileName )
 //					}
 //					// BMP file is read....
 //
-//					//// Now set the texture...
+//					//// Now set the texture1...
 //					//glBindTexture(GL_TEXTURE_2D, m_textureNumber);
 //					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, /*GL_CLAMP*/ GL_REPEAT );
 //					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, /*GL_CLAMP*/ GL_REPEAT );
@@ -802,13 +802,13 @@ bool CTextureFromBMP::LoadBMP2( std::string fileName )
 //| |  | | (_| |   <  __/| |  __/>  <| |_| |_| | | |  __// ___ \ (__| |_| |\ V /  __/
 //|_|  |_|\__,_|_|\_\___||_|\___/_/\_\\__|\__,_|_|  \___/_/   \_\___|\__|_| \_/ \___|
 //
-// Returns true if texture exists and can be applied
+// Returns true if texture1 exists and can be applied
 bool CTextureFromBMP::MakeTextureActive(void)
 {
 	bool bReturnVal = true;
 	// Check if texturing is enabled?
 	GLboolean bOldTextureMode = glIsEnabled(GL_TEXTURE_2D);
-	// Set the texture mode...
+	// Set the texture1 mode...
 	if (bOldTextureMode != GL_FALSE)
 	{
 		glEnable(GL_TEXTURE_2D);
@@ -816,7 +816,7 @@ bool CTextureFromBMP::MakeTextureActive(void)
 	// No implementation yet.
 	glBindTexture(GL_TEXTURE_2D, m_textureNumber);
 
-	// Restore the initial texture mode...
+	// Restore the initial texture1 mode...
 	if (bOldTextureMode != GL_TRUE)
 	{
 		glDisable(GL_TEXTURE_2D);

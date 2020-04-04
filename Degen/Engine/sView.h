@@ -12,6 +12,6 @@ namespace Degen
 
 		float fovy = 0.7f;
 		float near_plane = 0.1f;
-		float far_plane = 1000.f;
+		float far_plane = 10000.f;
 	};
 }

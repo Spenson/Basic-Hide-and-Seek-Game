@@ -47,13 +47,16 @@ namespace Degen
 
 			if (cam->pitch > cam->max_pitch) { cam->pitch = cam->max_pitch; }
 			if (cam->pitch < cam->min_pitch) { cam->pitch = cam->min_pitch; }
-			
+
 			if (cam->yaw > 360.f) { cam->yaw -= 360.f; }
 			if (cam->yaw < -360.f) { cam->yaw += 360.f; }
-			
+
 			if (cam->yaw > cam->max_yaw) { cam->yaw = cam->max_yaw; }
 			if (cam->yaw < cam->min_yaw) { cam->yaw = cam->min_yaw; }
 
+			if (cam->distance > cam->max_distance) { cam->distance = cam->max_distance; }
+			if (cam->distance < cam->min_distance) { cam->distance = cam->min_distance; }
+			if (cam->distance == 0.f) { cam->distance = 0.01f; }
 
 
 			glm::vec3 up(0.f, 1.f, 0.f);

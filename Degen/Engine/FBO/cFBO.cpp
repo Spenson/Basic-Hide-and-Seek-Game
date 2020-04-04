@@ -100,7 +100,7 @@ namespace Degen
 
 			//***************************************************************
 
-				// Create the depth buffer (texture)
+				// Create the depth buffer (texture1)
 			glGenTextures(1, &(this->depthTexture_ID));			//g_FBO_depthTexture
 			glBindTexture(GL_TEXTURE_2D, this->depthTexture_ID);
 			

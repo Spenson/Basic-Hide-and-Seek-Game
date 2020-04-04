@@ -1,22 +1,29 @@
 #pragma once
 #include <string>
 #include <glad\glad.h>
+#include <vector>
 
 
 namespace Degen
 {
 	namespace Texture
 	{
+		struct File
+		{
+			std::string name = "";
+			unsigned height = 0;
+			unsigned width = 0;
+		};
 		struct sTextureInfo
 		{
 			std::string name = "";
-			std::string file_name = "";
 
-			bool is_cubemap = false;
 			bool is_2D_texture = false;
-			unsigned height = 0;
-			unsigned width = 0;
-
+			File file;
+			
+			bool is_cubemap = false;
+			std::vector<File> cube_files;
+			
 			GLuint texture_number = 0;
 
 		};

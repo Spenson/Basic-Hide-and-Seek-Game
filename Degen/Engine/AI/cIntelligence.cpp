@@ -243,7 +243,7 @@ namespace Degen
 					rend->mesh = "cube";
 					rend->is_wireframe = false;
 					rend->scale = glm::vec3(0.48f);
-					rend->texture = "";
+					rend->texture1 = "";
 
 					Entity::cEntityManager::entities.push_back(ent);
 					current_node->entity = ent;
