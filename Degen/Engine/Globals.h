@@ -5,6 +5,9 @@
 #include "VAO and Meshes/cVAOManager.h"
 #include "sView.h"
 #include "Texture/cTextureManager.h"
+#include "Animation/cAnimationManager.h"
+#include "physics/interfaces/iPhysicsFactory.h"
+
 
 namespace Degen
 {
@@ -17,4 +20,7 @@ namespace Degen
 	extern Entity::cEntityManager* EntityManager; // creats and cleans up entities
 	extern sView* View; // view for rendering updated by camera
 	extern Texture::cTextureManager* TextureManager;
+	extern Animation::cAnimationManager* AnimationManager;
+	extern Physics::iPhysicsFactory* PhysicsFactory;
+	
 }

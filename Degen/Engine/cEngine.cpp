@@ -17,6 +17,9 @@
 #include "sView.h"
 #include "BasicMotion/cBasicMotion.h"
 #include "Texture/cTextureManager.h"
+#include "Animation/cAnimator.h"
+#include "Physics/CreatePhysics.h"
+#include "Physics/cPhysics.h"
 
 
 namespace Degen
@@ -28,6 +31,9 @@ namespace Degen
 	FileReading::cModelLoader* ModelLoader; // manages files loded with assimp
 	Entity::cEntityManager* EntityManager; // creats and cleans up entities
 	Texture::cTextureManager* TextureManager;
+	Animation::cAnimationManager* AnimationManager;
+	Physics::iPhysicsFactory* PhysicsFactory;
+
 	sView* View;
 
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -131,11 +137,19 @@ namespace Degen
 			return false;
 		}
 
+		PhysicsFactory = Physics::CreatePhysicsFactory();
+		if (!PhysicsFactory)
+		{
+			printf("Unable to create Physics Factory.\n");
+		}
+
+
 		VAOManager = new VAOAndModel::cVAOManager();
 		ShaderManager = new Shaders::cShaderManager();
 		ModelLoader = new FileReading::cModelLoader();
 		EntityManager = new Entity::cEntityManager();
 		TextureManager = new Texture::cTextureManager();
+		AnimationManager = new Animation::cAnimationManager();
 		View = new sView();
 
 		{
@@ -188,14 +202,15 @@ namespace Degen
 		}
 
 
+
+		glm::vec3 gravity(0.f, 5.f, 0.f);
+		JsonHelp::Set(jsonRoot["gravity"], gravity);
+		mPhysics = new Physics::cPhysics(gravity);
+		
 		mCamera = new Camera::cCamera();
 		mInput = new Input::cInput(mWindow);
-
-		/*if(jsonRoot["ai_map"].isString())
-		{
-			mIntelligence = new AI::cIntelligence(jsonRoot["ai_map"].asString());
-		}*/
 		mBasicMotion = new BasicMotion::cBasicMotion();
+		mAnimator = new Animation::cAnimator();
 
 		return true;
 	}
@@ -224,7 +239,7 @@ namespace Degen
 			return false;
 		}
 
-		
+
 		if (!Load::LoadTextures(jsonRoot["Textures"]))
 		{
 			printf("Could not load textures.\n");
@@ -237,8 +252,12 @@ namespace Degen
 			return false;
 		}
 
-		// TODO: Animations
-	
+		if (!Load::LoadAnimations(jsonRoot["Animations"]))
+		{
+			printf("Could not load animation.\n");
+			return false;
+		}
+
 		if (!Load::LoadEntities(jsonRoot["Entities"]))
 		{
 			printf("Could not load entities.\n");
@@ -251,6 +270,8 @@ namespace Degen
 			mCamera->AddEntity(entity);
 			//mIntelligence->AddEntity(entity);
 			mBasicMotion->AddEntity(entity);
+			mAnimator->AddEntity(entity);
+			mPhysics->AddEntity(entity);
 		}
 
 		return true;
@@ -284,7 +305,8 @@ namespace Degen
 			mBasicMotion->Update(delta_time);
 			mCamera->Update(delta_time);
 			mRenderer->Update(delta_time);
-
+			mAnimator->Update(delta_time);
+			mPhysics->Update(delta_time);
 
 			//Swap buffers
 			glfwSwapBuffers(mWindow);

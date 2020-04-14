@@ -3,6 +3,7 @@
 #include <assimp/scene.h>			// To handle the scene, mesh, etc. object
 #include <assimp/postprocess.h>		// For generating normals, etc.
 #include <iostream>
+#include "../Globals.h"
 
 #include <array>
 #include <vector>
@@ -15,6 +16,14 @@ namespace Degen
 {
 	namespace FileReading
 	{
+		glm::mat4 AIMatrixToGLMMatrix(const aiMatrix4x4& mat)
+		{
+			return glm::mat4(mat.a1, mat.b1, mat.c1, mat.d1,
+							 mat.a2, mat.b2, mat.c2, mat.d2,
+							 mat.a3, mat.b3, mat.c3, mat.d3,
+							 mat.a4, mat.b4, mat.c4, mat.d4);
+		}
+
 
 		static const int MAX_BONES_PER_VERTEX = 4;
 		struct sVertexBoneData
@@ -68,7 +77,7 @@ namespace Degen
 				pScene = mImporters[file_name].GetScene();
 			}
 
-			
+
 			if (!pScene->HasMeshes())
 			{
 				error = "Scene has no meshes";
@@ -183,7 +192,6 @@ namespace Degen
 				pScene = mImporters[file_name].GetScene();
 			}
 
-			char* temp =(char*) pScene->mRootNode->mChildren[1]->mName.data;
 
 			if (!pScene->HasMeshes())
 			{
@@ -191,29 +199,47 @@ namespace Degen
 				mImporters.erase(file_name);
 				return nullptr;
 			}
-			if (pScene->mNumMeshes <= meshIndex)
+			if (pScene->mNumMeshes < meshIndex)
 			{
 				error = "Mesh Index Out Of Range";
 				return nullptr;
 			}
 
-			
-			aiMesh*	mesh = pScene->mMeshes[meshIndex];
 
-			if(!mesh->HasBones())
+			aiMesh* mesh = pScene->mMeshes[meshIndex];
+
+			if (!mesh->HasBones())
 			{
 				error = "Mesh has no bones (" + std::to_string(pScene->mNumMeshes) + ")";
-				return nullptr;
+				//return nullptr;
 			}
 
 			std::string name = file_name;
-			
+
 			std::vector<sVertexBoneData> vertexBoneData;
+			Animation::sModelBoneInfo* bone_info = new Animation::sModelBoneInfo();
+
+			bone_info->mGlobalInverseTransformation = AIMatrixToGLMMatrix(pScene->mRootNode->mTransformation);
+			bone_info->mGlobalInverseTransformation = glm::inverse(bone_info->mGlobalInverseTransformation);
 			vertexBoneData.resize(mesh->mNumVertices);
 			for (unsigned int boneIndex = 0; boneIndex != mesh->mNumBones; boneIndex++)
 			{
 				unsigned int BoneIndex = 0;
 				std::string BoneName(mesh->mBones[boneIndex]->mName.data);
+
+				std::map<std::string, unsigned int>::iterator it = bone_info->bone_name_index.find(BoneName);
+				if (it == bone_info->bone_name_index.end())
+				{
+					BoneIndex = bone_info->bone_count;
+					bone_info->bone_count++;
+					bone_info->bone_name_index[BoneName] = BoneIndex;
+
+					bone_info->Offsets.push_back(AIMatrixToGLMMatrix(mesh->mBones[boneIndex]->mOffsetMatrix));
+				}
+				else
+				{
+					BoneIndex = it->second;
+				}
 
 				for (unsigned int WeightIndex = 0; WeightIndex != mesh->mBones[boneIndex]->mNumWeights; WeightIndex++)
 				{
@@ -222,6 +248,8 @@ namespace Degen
 					vertexBoneData[VertexID].AddBoneData(BoneIndex, Weight);
 				}
 			}
+
+
 
 			VAOAndModel::sModelDrawInfo* draw_info = new VAOAndModel::sModelDrawInfo();
 
@@ -300,6 +328,12 @@ namespace Degen
 				pCurVert->bone_weights[1] = vertexBoneData[vertIndex].weights[1];
 				pCurVert->bone_weights[2] = vertexBoneData[vertIndex].weights[2];
 				pCurVert->bone_weights[3] = vertexBoneData[vertIndex].weights[3];
+				
+				if (vertexBoneData[vertIndex].ids[0] == 0 && vertexBoneData[vertIndex].ids[1] == 0 && vertexBoneData[vertIndex].ids[2] == 0 && vertexBoneData[vertIndex].ids[3] == 0)
+				{
+					pCurVert->bone_id[0] = 1;
+					pCurVert->bone_weights[0] = 1;
+				}
 
 
 			}//for ( int vertIndex
@@ -330,10 +364,64 @@ namespace Degen
 			}//for ( unsigned int triIndex...
 
 			draw_info->mesh_name = friendly_name;
+			AnimationManager->model_bones[friendly_name] = bone_info;
+
 			return draw_info;
 		}
-	
-		
+
+		Animation::sAnimationInfo* cModelLoader::LoadAnimation(std::string file_name, std::string friendly_name, std::string model_name, std::string& error, const unsigned int animationIndex)
+		{
+			const aiScene* pScene;
+			if (mImporters.find(file_name) == mImporters.end())
+			{
+				unsigned int Flags = aiProcess_Triangulate |
+					aiProcess_OptimizeMeshes |
+					aiProcess_OptimizeGraph |
+					aiProcess_JoinIdenticalVertices |
+					aiProcess_GenNormals |
+					aiProcess_CalcTangentSpace;
+
+				pScene = mImporters[file_name].ReadFile((base_path + file_name).c_str(), Flags);
+				if (!pScene)
+				{
+					error = "File Not Loaded: " + std::string(mImporters[file_name].GetErrorString());
+					mImporters.erase(file_name);
+					return nullptr;
+				}
+			}
+			else
+			{
+				pScene = mImporters[file_name].GetScene();
+			}
+
+			if (!pScene->HasAnimations())
+			{
+				error = "Scene has no animations";
+				mImporters.erase(file_name);
+				return nullptr;
+			}
+			if (pScene->mNumAnimations < animationIndex)
+			{
+				error = "Animation Index Out Of Range";
+				return nullptr;
+			}
+
+			Animation::sAnimationInfo* animation_info = new Animation::sAnimationInfo();
+			animation_info->animation = pScene->mAnimations[animationIndex];
+			
+			animation_info->scene = pScene;
+			
+			
+			animation_info->name = friendly_name;
+			animation_info->file = file_name;
+			animation_info->model = model_name;
+
+			animation_info->animation_index = animationIndex;
+
+			return animation_info;
+		}
+
+
 		VAOAndModel::sModelDrawInfo* cModelLoader::LoadPlyModel(std::string file_name, std::string friendly_name, std::string& error)
 		{
 
@@ -382,7 +470,7 @@ namespace Degen
 				}
 			}// while ( theFile >> temp ) 
 
-			
+
 			VAOAndModel::sModelDrawInfo* draw_info = new VAOAndModel::sModelDrawInfo();
 			draw_info->number_of_vertices = numberOfVertices;
 			draw_info->vertices = new VAOAndModel::sComplexVertex[draw_info->number_of_vertices];
@@ -410,10 +498,10 @@ namespace Degen
 
 
 			draw_info->number_of_triangles = numberOfTriangles;
-			draw_info->number_of_indices = numberOfTriangles*3;
+			draw_info->number_of_indices = numberOfTriangles * 3;
 
 			draw_info->indices = new unsigned int[draw_info->number_of_indices];
-			for (unsigned int index = 0; index != draw_info->number_of_indices; index+=3)
+			for (unsigned int index = 0; index != draw_info->number_of_indices; index += 3)
 			{
 				// 3 166 210 265 
 				int discardThis;
@@ -421,8 +509,8 @@ namespace Degen
 
 				theFile >> discardThis
 					>> draw_info->indices[index]
-					>> draw_info->indices[index+1]
-					>> draw_info->indices[index+2];
+					>> draw_info->indices[index + 1]
+					>> draw_info->indices[index + 2];
 
 				// Add this triangle
 				//theMesh.vecTriangles.push_back(tempTriangle);

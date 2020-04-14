@@ -3,16 +3,8 @@
 #include "../Shaders/cShaderManager.h"
 #include "../FBO/cFBO.h"
 #include "../Component/Render.h"
-#include <glm/common.hpp>
-#include <glm/common.hpp>
-#include <glm/gtx/compatibility.hpp>
-#include <glm/gtx/compatibility.hpp>
-
-namespace Degen {
-	namespace Entity {
-		class cEntity;
-	}
-}
+#include "../Component/Animation.h"
+#include "../Entity/cEntity.h"
 
 namespace Degen
 {
@@ -26,6 +18,7 @@ namespace Degen
 			void Update(double dt = 0.);
 			
 			void RenderObject(Shaders::cShaderManager::cShaderProgram* shader_program, Component::Render* rend_comp, glm::mat4 transform, glm::mat4 parent_matrix = glm::mat4(1.0f));
+			void RenderObject(Shaders::cShaderManager::cShaderProgram* shader_program, Component::Render* rend_comp, Component::Animation* animation, glm::mat4 transform, glm::mat4 parent_matrix = glm::mat4(1.0f));
 
 			void AddEntity(Entity::cEntity* entity);
 

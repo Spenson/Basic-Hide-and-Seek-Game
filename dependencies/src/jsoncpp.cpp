@@ -2147,7 +2147,7 @@ static void getValidReaderKeys(std::set<String>* valid_keys) {
 bool CharReaderBuilder::validate(Json::Value* invalid) const {
   Json::Value my_invalid;
   if (!invalid)
-    invalid = &my_invalid; // so we do not need to test for NULL
+    invalid = &my_invalid; // so we do not need to sModelBoneInfo for NULL
   Json::Value& inv = *invalid;
   std::set<String> valid_keys;
   getValidReaderKeys(&valid_keys);
@@ -5263,7 +5263,7 @@ static void getValidWriterKeys(std::set<String>* valid_keys) {
 bool StreamWriterBuilder::validate(Json::Value* invalid) const {
   Json::Value my_invalid;
   if (!invalid)
-    invalid = &my_invalid; // so we do not need to test for NULL
+    invalid = &my_invalid; // so we do not need to sModelBoneInfo for NULL
   Json::Value& inv = *invalid;
   std::set<String> valid_keys;
   getValidWriterKeys(&valid_keys);

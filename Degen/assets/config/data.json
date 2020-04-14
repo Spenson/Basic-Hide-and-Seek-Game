@@ -21,6 +21,11 @@
       "name": "PolygonScifi_01_A",
       "file": "PolygonScifi_01_A.png",
       "format": "png"
+    },
+    {
+      "name": "forest guard diffuse",
+      "file": "forest guard diffuse.png",
+      "format": "png"
     }
   ],
   "Models": [
@@ -32,16 +37,41 @@
     },
     {
       "name": "quad",
-      "file": "flat.ply",
+      "file": "quad_2_sided.ply",
       "is_basic": true
     },
     {
       "name": "cube",
       "file": "cube.ply",
       "is_basic": true
+    },
+    {
+      "name": "forest_guard",
+      "file": "forest_guard.FBX",
+      "is_basic": false
+    },
+    {
+      "name": "forest_guard_eyes",
+      "file": "forest_guard.FBX",
+      "mesh_number": 1,
+      "is_basic": false
     }
   ],
-  "Animations": [],
+  "Animations": [
+    {
+      "name": "forest_guard@idle",
+      "file": "forest_guard@idle.FBX",
+      "index": 0,
+      "model": "forest_guard"
+    },
+    {
+      "name": "forest_guard@walk",
+      "file": "forest_guard@walk.FBX",
+      "index": 0,
+      "model": "forest_guard"
+
+    }
+  ],
   "Lights": [],
   "Entities": [
     {
@@ -50,7 +80,7 @@
       "components": [
         {
           "component": "position",
-          "position": [ 0.0, 0.0, 0.0 ]
+          "position": [ 0.0, 10.0, -15.0 ]
         },
         {
           "component": "render",
@@ -69,47 +99,151 @@
         {
           "component": "camera",
           "active": true,
-          "pitch": 0.0,
-          "yaw": 0.0,
-          "distance": 20.0,
-          "max_distance": 40.0,
-          "min_distance": 0.0
+          "pitch": -60.0,
+          "yaw": 180.0,
+          "distance": 40.0,
+          "max_distance": 80.0,
+          "min_distance": 20.0
         }
       ]
     },
+    //{
+    //  "name": "forest guard",
+    //  "components": [
+    //    {
+    //      "component": "transform",
+    //      "pos": [ 0.0, 0.0, 0.0 ],
+    //      "rot": [ 0.0, 0.0, 0.0 ]
+    //    },
+    //    {
+    //      "component": "render",
+    //      "mesh": "forest_guard",
+    //      "texture1": "forest guard diffuse",
+    //      "texture1_amount": 1.0,
+    //      "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+    //      "diffuse_amount": 0.0,
+    //      "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+    //      "scale": [ 0.1, 0.1, 0.1 ],
+    //      "ignore_lighting": false,
+    //      "is_wireframe": false
+    //    },
+    //    {
+    //      "component": "render",
+    //      "mesh": "forest_guard_eyes",
+    //      "texture1": "forest guard diffuse",
+    //      "texture1_amount": 1.0,
+    //      "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+    //      "diffuse_amount": 0.0,
+    //      "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+    //      "scale": [ 0.1, 0.1, 0.1 ],
+    //      "ignore_lighting": false,
+    //      "is_wireframe": false
+    //    },
+    //    {
+    //      "component": "animation",
+    //      "default_animation": "forest_guard@idle",
+    //      "default_blend_time": 0.3
+    //    }
+    //  ]
+    //},
     {
-      "name": "shpere",
+      "name": "plane",
       "components": [
         {
-          "component": "position",
-          "position": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "rotation",
-          "rotation": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "gatherer"
-        }
-      ]
-    },
-    {
-      "name": "cube",
-      "components": [
-        {
-          "component": "position",
-          "position": [ 0.0, 1.5, 0.0 ]
-        },
-        {
-          "component": "rotation",
-          "rotation": [ 180.0, 0.0, 0.0 ]
+          "component": "transform",
+          "pos": [ 0.0, -5.0, 0.0 ],
+          "rot": [ 90.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
-          "mesh": "cube",
-          "texture1": "PolygonScifi_01_A",
+          "mesh": "quad",
+          "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 15, 20, 10 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "plane",
+          "normal": [ 0.0, 1.0, 0.0 ],
+          "constant": -5.0
+        }
+      ]
+    },
+
+    {
+      "name": "plane",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, -3.0, 30.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "quad",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 15, 2, 10 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "plane",
+          "normal": [ 0.0, 0.0, -1.0 ],
+          "constant": -30.0
+        }
+      ]
+    },
+
+    {
+      "name": "plane",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, -3.0, -30.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "quad",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 15, 2, 10 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "plane",
+          "normal": [ 0.0, 0.0, 1.0 ],
+          "constant": -30.0
+        }
+      ]
+    },
+    {
+      "name": "Ball1",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "sphere",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
           "scale": [ 1, 1, 1 ],
@@ -117,7 +251,11 @@
           "is_wireframe": false
         },
         {
-          "component": "gatherer"
+          "component": "physics",
+          "type": "ball",
+          "position": [ 0.0, 0.0, 0.0 ],
+          "mass": 5.0,
+          "radius": 1.0
         }
       ]
     },

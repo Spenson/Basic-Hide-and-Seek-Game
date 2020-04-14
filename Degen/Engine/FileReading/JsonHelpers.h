@@ -43,6 +43,13 @@ namespace Degen
 			val = jsonVal.asFloat();
 			return true;
 		}
+		// set a double
+		inline bool Set(const Json::Value& jsonVal, double& val)
+		{
+			if (!jsonVal.isNumeric()) return false;
+			val = jsonVal.asDouble();
+			return true;
+		}
 		// set a size_t
 		inline bool Set(const Json::Value& jsonVal, size_t& val)
 		{

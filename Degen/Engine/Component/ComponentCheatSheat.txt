@@ -13,5 +13,6 @@ namespace Degen
 		constexpr unsigned int GATHERER_COMPONENT = 7;
 		constexpr unsigned int VELOCITY_COMPONENT = 8;
 		constexpr unsigned int ANIMATION_COMPONENT = 9;
+		constexpr unsigned int PHYSICS_COMPONENT = 10;
 	}
 }

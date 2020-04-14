@@ -2,6 +2,7 @@
 #include "../Globals.h"
 #include "../Component/Position.h"
 #include "../Component/Camera.h"
+#include "../Component/Animation.h"
 
 namespace Degen
 {
@@ -112,6 +113,16 @@ namespace Degen
 				movement *= 5.f * dt;
 				dynamic_cast<Component::Position*>(Entity::cEntityManager::GetEntity(1000)->GetComponent(Component::POSITION_COMPONENT))->position += movement;
 
+			}
+
+
+			if (glfwGetKey(window, GLFW_KEY_SPACE))
+			{
+				Component::Animation* animation = dynamic_cast<Component::Animation*>(Entity::cEntityManager::GetEntity("forest guard")->GetComponent(Component::ANIMATION_COMPONENT));
+
+				animation->next_animation = "forest_guard@walk";
+				//animation->play_through = true;
+				animation->next_animation_blend_time = 0.4;
 			}
 		}
 	}

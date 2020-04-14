@@ -9,6 +9,8 @@
 #include "Component/Light.h"
 #include "Component/Velocity.h"
 #include "Component/Gatherer.h"
+#include "Component/Animation.h"
+#include "Component/Physics.h"
 
 namespace Degen
 {
@@ -22,21 +24,21 @@ namespace Degen
 			std::string texture_name;
 			std::string texture_format;
 			std::string error_info;
-			
-			for(unsigned int idx = 0; idx < jsonTextures.size(); idx++)
+
+			for (unsigned int idx = 0; idx < jsonTextures.size(); idx++)
 			{
 				JsonHelp::Set(jsonTextures[idx]["name"], texture_name);
 				JsonHelp::Set(jsonTextures[idx]["file"], texture_file);
 				JsonHelp::Set(jsonTextures[idx]["format"], texture_format);
-				if(texture_format == "png")
+				if (texture_format == "png")
 				{
-					if(!TextureManager->Create2DTextureFromPNGFile(texture_file, texture_name, error_info))
+					if (!TextureManager->Create2DTextureFromPNGFile(texture_file, texture_name, error_info))
 					{
 						printf("Texture %s not loaded.\n\t%s\n", texture_name.c_str(), error_info.c_str());
 					}
 				}
 			}
-			
+
 			return true;
 		}
 		bool LoadCubemaps(const Json::Value& jsonCubemaps)
@@ -65,10 +67,10 @@ namespace Degen
 				JsonHelp::Set(jsonCubemaps[idx]["format"], cubemap_format);
 				if (cubemap_format == "png")
 				{
-					if (!TextureManager->CreateCubeTextureFromPNGFiles(cubemap_name, 
-																	   texture_file_posX, texture_file_negX, 
-																	   texture_file_posY, texture_file_negY, 
-																	   texture_file_posZ, texture_file_negZ, 
+					if (!TextureManager->CreateCubeTextureFromPNGFiles(cubemap_name,
+																	   texture_file_posX, texture_file_negX,
+																	   texture_file_posY, texture_file_negY,
+																	   texture_file_posZ, texture_file_negZ,
 																	   true, error_info))
 					{
 						printf("Texture %s not loaded.\n\t%s\n", cubemap_name.c_str(), error_info.c_str());
@@ -95,7 +97,7 @@ namespace Degen
 				if (jsonCurModel["is_basic"].isBool()) is_basic = jsonCurModel["is_basic"].asBool();
 				if (jsonCurModel["mesh_number"].isUInt())
 					meshidx = jsonCurModel["mesh_number"].asUInt();
-				
+
 				VAOAndModel::sModelDrawInfo* mdi = nullptr;
 
 				if (is_basic)
@@ -178,10 +180,49 @@ namespace Degen
 							Component::iComponent* comp = ent->AddComponent<Component::Gatherer>();
 							comp->Deserialize(components[i]);
 						}
+						else if (components[i]["component"] == "animation")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Animation>();
+							comp->Deserialize(components[i]);
+						}
+						else if (components[i]["component"] == "physics")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Physics>();
+							comp->Deserialize(components[i]);
+						}
 					}
 				}
 			}
 
+			return true;
+		}
+		bool LoadAnimations(const Json::Value& jsonAnimations)
+		{
+			if (!jsonAnimations.isArray()) { return false; }
+
+			std::string model_name;
+			std::string animation_file;
+			std::string animation_name;
+			unsigned animation_idx = 0;
+			std::string error;
+
+			for (unsigned int idx = 0; idx < jsonAnimations.size(); idx++)
+			{
+				Json::Value jsonCurModel = jsonAnimations[idx];
+				if (jsonCurModel["name"].isString()) animation_name = jsonCurModel["name"].asString();
+				if (jsonCurModel["file"].isString()) animation_file = jsonCurModel["file"].asString();
+				if (jsonCurModel["model"].isString()) model_name = jsonCurModel["model"].asString();
+				if (jsonCurModel["index"].isUInt())
+					animation_idx = jsonCurModel["index"].asUInt();
+
+
+				Animation::sAnimationInfo* ani = ModelLoader->LoadAnimation(animation_file, animation_name, model_name, error, animation_idx);
+				if (ani)
+				{
+					AnimationManager->AddAnimation(ani);
+				}
+
+			}
 			return true;
 		}
 	}

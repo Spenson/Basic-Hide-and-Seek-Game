@@ -1051,7 +1051,7 @@ namespace lodepng
 
 /*
 TODO:
-[.] test if there are no memory leaks or security exploits - done a lot but needs to be checked often
+[.] sModelBoneInfo if there are no memory leaks or security exploits - done a lot but needs to be checked often
 [.] check compatibility with various compilers  - done but needs to be redone for every newer version
 [X] converting color to 16-bit per channel types
 [X] support color profile chunk types (but never let them touch RGB values by default)
@@ -1699,7 +1699,7 @@ examples can be found on the LodePNG website.
 #include <iostream>
 
 int main(int argc, char *argv[]) {
-  const char* filename = argc > 1 ? argv[1] : "test.png";
+  const char* filename = argc > 1 ? argv[1] : "sModelBoneInfo.png";
 
   //load and decode
   std::vector<unsigned char> image;
@@ -1721,7 +1721,7 @@ int main(int argc, char *argv[]) {
   unsigned error;
   unsigned char* image;
   size_t width, height;
-  const char* filename = argc > 1 ? argv[1] : "test.png";
+  const char* filename = argc > 1 ? argv[1] : "sModelBoneInfo.png";
 
   error = lodepng_decode32_file(&image, &width, &height, filename);
 
@@ -1900,7 +1900,7 @@ https://github.com/lvandeve/lodepng
     Fixed a bug where the end code of a block had length 0 in the Huffman tree.
 *) 26 feb 2007: Huffman compression with dynamic trees (BTYPE 2) now implemented
     and supported by the encoder, resulting in smaller PNGs at the output.
-*) 27 jan 2007: Made the Adler-32 test faster so that a timewaste is gone.
+*) 27 jan 2007: Made the Adler-32 sModelBoneInfo faster so that a timewaste is gone.
 *) 24 jan 2007: gave encoder an error interface. Added color conversion from any
     greyscale type to 8-bit greyscale with or without alpha.
 *) 21 jan 2007: (!) Totally changed the interface. It allows more color types

@@ -6,6 +6,7 @@
 
 namespace Degen
 {
+	// ... I should really make these systems
 	namespace Render
 	{
 		class cRenderer;
@@ -18,14 +19,23 @@ namespace Degen
 	{
 		class cInput;
 	}
-	/*namespace AI
-	{
-		class cIntelligence;
-	}*/
 	namespace BasicMotion
 	{
 		class cBasicMotion;
 	}
+	namespace Animation
+	{
+		class cAnimator;
+	}
+
+	namespace Physics
+	{
+		class cPhysics;
+	}
+
+
+
+
 	
 	class cEngine
 	{
@@ -45,6 +55,8 @@ namespace Degen
 		Input::cInput* mInput;
 		//AI::cIntelligence* mIntelligence;
 		BasicMotion::cBasicMotion* mBasicMotion;
+		Animation::cAnimator* mAnimator;
+		Physics::cPhysics* mPhysics;
 
 		// Needed for loading
 		std::string mShaderName;

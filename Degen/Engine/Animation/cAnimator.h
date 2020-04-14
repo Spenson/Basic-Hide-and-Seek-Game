@@ -1,41 +1,12 @@
 #pragma once
 #include "../Entity/cEntityManager.h"
 #include "../Component/Animation.h"
-#include <assimp/anim.h>
-
+#include "../Globals.h"
 
 namespace Degen
 {
 	namespace Animation
 	{
-		struct sAnimationInfo
-		{
-			// loader created
-			aiAnimation* animation;
-
-			double frames;
-			unsigned frames_per_sec;
-
-			double animation_time;
-			
-
-			//read in from assets
-			std::string name;
-			std::string file;
-
-			int animation_index; //index in file
-
-			bool update_position_x;
-			bool update_position_y;
-			bool update_position_z;
-
-			bool update_rotation_x;
-			bool update_rotation_y;
-			bool update_rotation_z;
-			
-
-		};
-
 		class cAnimator
 		{
 		public:
@@ -46,10 +17,24 @@ namespace Degen
 
 			void CalculateTransforms(Entity::cEntity* entity, double dt);
 
-			std::map<std::string, sAnimationInfo*> animations;
 			std::vector<Entity::cEntity*> entities;
 		private:
-			bool GetAnimation1(Component::Animation* animation_comp, std::string& animation1);
+			void BoneTransform(float TimeInSeconds, sAnimationInfo* animation_info,
+							   std::vector<glm::mat4>& FinalTransformation,
+							   std::vector<glm::mat4>& Globals,
+							   std::vector<glm::mat4>& Offsets);
+			const aiNodeAnim* FindNodeAnimationChannel(const aiAnimation* pAnimation, aiString boneName);
+			void ReadNodeHeirarchy(float AnimationTime, sAnimationInfo* animation_info, sModelBoneInfo* bone_info, const aiNode* pNode, const glm::mat4& parentTransformMatrix,
+								   std::vector<glm::mat4>& FinalTransformation, std::vector<glm::mat4>& Globals);
+
+			void CalcGLMInterpolatedRotation(float AnimationTime, const aiNodeAnim* pNodeAnim, glm::quat& out);
+			void CalcGLMInterpolatedPosition(float AnimationTime, const aiNodeAnim* pNodeAnim, glm::vec3& out);
+			void CalcGLMInterpolatedScaling(float AnimationTime, const aiNodeAnim* pNodeAnim, glm::vec3& out);
+
+			unsigned int FindRotation(float AnimationTime, const aiNodeAnim* pNodeAnim);
+			unsigned int FindPosition(float AnimationTime, const aiNodeAnim* pNodeAnim);
+			unsigned int FindScaling(float AnimationTime, const aiNodeAnim* pNodeAnim);
+
 		};
 	}
 }

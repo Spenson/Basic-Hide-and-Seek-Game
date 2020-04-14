@@ -1834,7 +1834,7 @@ static unsigned encodeLZ77(uivector* out, Hash* hash,
             prev_offset = current_offset;
             if (current_offset > 0)
             {
-                /*test the next characters*/
+                /*sModelBoneInfo the next characters*/
                 foreptr = &in[pos];
                 backptr = &in[pos - current_offset];
 
@@ -3740,7 +3740,7 @@ static void getPixelColorRGBA8(unsigned char* r, unsigned char* g,
 }
 
 /*Similar to getPixelColorRGBA8, but with all the for loops inside of the color
-mode test cases, optimized to convert the colors much faster, when converting
+mode sModelBoneInfo cases, optimized to convert the colors much faster, when converting
 to the common case of RGBA with 8 bit per channel. buffer must be RGBA with
 enough memory.*/
 static void getPixelColorsRGBA8(unsigned char* LODEPNG_RESTRICT buffer, size_t numpixels,

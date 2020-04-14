@@ -60,9 +60,9 @@ void main()
 		//in vec4 vBoneID;				// For skinned mesh (FBX)
 		//in vec4 vBoneWeight;			// For skinned mesh (FBX)
 		mat4 BoneTransform = animation[int(vBoneID[0])] * vBoneWeight[0];
-		BoneTransform1 += animation[int(vBoneID[1])] * vBoneWeight[1];
-		BoneTransform1 += animation[int(vBoneID[2])] * vBoneWeight[2];
-		BoneTransform1 += animation[int(vBoneID[3])] * vBoneWeight[3];
+		BoneTransform += animation[int(vBoneID[1])] * vBoneWeight[1];
+		BoneTransform += animation[int(vBoneID[2])] * vBoneWeight[2];
+		BoneTransform += animation[int(vBoneID[3])] * vBoneWeight[3];
 
 
 		// position after animation
