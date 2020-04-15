@@ -14,17 +14,29 @@
 
 # Build results
 Degen/x64/[Dd]ebug/
+BulletPhayicsWrapper/x64/[Dd]ebug/
+DegenPhysicsInterfaces/x64/[Dd]ebug/
 x64/[Dd]ebug/
 Degen/x86/[Dd]ebug/
+BulletPhayicsWrapper/x86/[Dd]ebug/
+DegenPhysicsInterfaces/x86/[Dd]ebug/
 x86/[Dd]ebug/
 [Dd]ebugPublic/
 Degen/x64/[Rr]elease/
+BulletPhayicsWrapper/x64/[Rr]elease/
+DegenPhysicsInterfaces/x64/[Rr]elease/
 x64/[Rr]elease/
 Degen/x86/[Rr]elease/
+BulletPhayicsWrapper/x86/[Rr]elease/
+DegenPhysicsInterfaces/x86/[Rr]elease/
 x86/[Rr]elease/
 [Rr]eleases/
 Degen/x64/
+BulletPhayicsWrapper/x64/
+DegenPhysicsInterfaces/x64/
 Degen/x86/
+BulletPhayicsWrapper/x86/
+DegenPhysicsInterfaces/x86/
 bld/
 [Bb]in/
 [Oo]bj/
