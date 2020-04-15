@@ -304,9 +304,9 @@ namespace Degen
 			//mIntelligence->Update(delta_time);
 			mBasicMotion->Update(delta_time);
 			mCamera->Update(delta_time);
-			mRenderer->Update(delta_time);
 			mAnimator->Update(delta_time);
 			mPhysics->Update(delta_time);
+			mRenderer->Update(delta_time);
 
 			//Swap buffers
 			glfwSwapBuffers(mWindow);

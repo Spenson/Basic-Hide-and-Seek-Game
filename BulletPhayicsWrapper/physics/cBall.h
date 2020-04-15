@@ -1,9 +1,9 @@
 #pragma once
 /**
- *	\file	cSphere.h
+ *	\file	cBall.h
  *	\brief	Class header file
  *
- *	\desc	Contains the cSphere wrapper class definition
+ *	\desc	Contains the cBall wrapper class definition
  */
 #include <glm.hpp>
 #include <physics/interfaces/iBallComponent.h>
@@ -12,31 +12,31 @@
 namespace DegenBulletPhysicsWrapper
 {
 	/**
-	 * \class	cSphere
+	 * \class	cBall
 	 * \brief	Wrapper class
 	 *
-	 * \desc	A wrapper for a cRigidBody object containing a cSphere: iShape. Maintaining a pointer to the body to access and the shape for cleanup.
+	 * \desc	A wrapper for a cRigidBody object containing a cBall: iShape. Maintaining a pointer to the body to access and the shape for cleanup.
 	 */
 	
-	class cSphere: public Degen::Physics::iBallComponent
+	class cBall: public Degen::Physics::iBallComponent
 	{
 	public:
 		btRigidBody* mBody;	// \desc	pointer to wrapped object to allow access
 		
 		/**
-		 * \method		~cSphere
-		 * \fullname	DegenMyPhysicsWrapper::cSphere::~cSphere
+		 * \method		~cBall
+		 * \fullname	DegenMyPhysicsWrapper::cBall::~cBall
 		 * \brief		dtor
 		 *
 		 * \access		virtual public 
 		 *
 		 * \desc		cleans up mBody and mShape
 		 */
-		virtual ~cSphere();
+		virtual ~cBall();
 
 		/**
-		 * \method		cSphere
-		 * \fullname	DegenMyPhysicsWrapper::cSphere::cSphere
+		 * \method		cBall
+		 * \fullname	DegenMyPhysicsWrapper::cBall::cBall
 		 * \brief		ctor
 		 *
 		 * \access		public 
@@ -44,11 +44,11 @@ namespace DegenBulletPhysicsWrapper
 		 *
 		 * \desc		creates Rigid body and sphere shape based off values in def
 		 */
-		cSphere(Degen::Physics::sBallDef def);
+		cBall(Degen::Physics::sBallDef def);
 		
 		/**
 		 * \method		GetTransform
-		 * \fullname	DegenMyPhysicsWrapper::cSphere::GetTransform
+		 * \fullname	DegenMyPhysicsWrapper::cBall::GetTransform
 		 * \brief		mBody GetTransform wrapper
 		 *
 		 * \access		virtual public 
@@ -60,7 +60,7 @@ namespace DegenBulletPhysicsWrapper
 		
 		/**
 		 * \method		ApplyForce
-		 * \fullname	DegenMyPhysicsWrapper::cSphere::ApplyForce
+		 * \fullname	DegenMyPhysicsWrapper::cBall::ApplyForce
 		 * \brief		mBody ApplyForce Wrapper
 		 *
 		 * \access		virtual public 

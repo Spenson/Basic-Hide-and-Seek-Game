@@ -13,6 +13,7 @@ namespace Degen
 			float Height;
 			float Radius;
 			glm::vec3 Position;
+			glm::quat Rotation;
 		};
 
 		class iConeComponent : public iPhysicsComponent
@@ -24,7 +25,7 @@ namespace Degen
 			virtual void ApplyImpulse(const glm::vec3& impulse) = 0;
 
 		protected:
-			iConeComponent() : iPhysicsComponent(eComponentType::cylinder) {}
+			iConeComponent() : iPhysicsComponent(eComponentType::cone) {}
 		private:
 			iConeComponent(const iConeComponent& other) = delete;
 			iConeComponent& operator=(const iConeComponent& other) = delete;

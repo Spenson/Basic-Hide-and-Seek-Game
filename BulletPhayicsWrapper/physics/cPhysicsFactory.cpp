@@ -8,12 +8,16 @@
 
 #include "cPhysicsFactory.h"
 #include "cPhysicsWorld.h"
-#include "cSphere.h"
+#include "cBall.h"
 #include "cPlane.h"
 #include "cBox.h"
+#include "cCone.h"
+#include "cCylinder.h"
+#include "cPaddle.h"
 
 namespace DegenBulletPhysicsWrapper
 {
+
 	/**
 	 * \method    CreateWorld
 	 * \fullname  DegenMyPhysicsWrapper::cPhysicsFactory::CreateWorld
@@ -42,7 +46,7 @@ namespace DegenBulletPhysicsWrapper
 	 */
 	Degen::Physics::iBallComponent* cPhysicsFactory::CreateBall(const Degen::Physics::sBallDef& def)
 	{
-		return new cSphere(def);
+		return new cBall(def);
 	}
 
 	/**
@@ -64,6 +68,21 @@ namespace DegenBulletPhysicsWrapper
 	Degen::Physics::iBoxComponent* cPhysicsFactory::CreateBox(const Degen::Physics::sBoxDef& def)
 	{
 		return new cBox(def);
+	}
+
+	Degen::Physics::iConeComponent* cPhysicsFactory::CreateCone(const Degen::Physics::sConeDef& def)
+	{
+		return new cCone(def);
+	}
+
+	Degen::Physics::iCylinderComponent* cPhysicsFactory::CreateCylinder(const Degen::Physics::sCylinderDef& def)
+	{
+		return new cCylinder(def);
+	}
+
+	Degen::Physics::iPaddleComponent* cPhysicsFactory::CreatePaddle(const Degen::Physics::sPaddleDef& def)
+	{
+		return new cPaddle(def);
 	}
 
 }

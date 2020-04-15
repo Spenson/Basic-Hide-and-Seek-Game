@@ -6,3 +6,6 @@
 #include "iPhysicsWorld.h"
 #include "iPhysicsFactory.h"
 #include "iBoxComponent.h"
+#include "iCylinderComponent.h"
+#include "iConeComponent.h"
+#include "iPaddleComponent.h"

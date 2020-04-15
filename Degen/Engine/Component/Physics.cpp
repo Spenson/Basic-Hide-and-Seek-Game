@@ -13,22 +13,9 @@ namespace Degen
 		{
 		}
 
-		bool Degen::Component::Physics::Deserialize(Json::Value& json)
+		bool Physics::Deserialize(Json::Value& json)
 		{
-			std::string type;
-			JsonHelp::Set(json["type"], type);
-			if (type == "ball")
-			{
-				comp = Degen::Physics::CreateBallPhysicsComponent(json);
-			}
-			if (type == "plane")
-			{
-				comp = Degen::Physics::CreatePlanePhysicsComponent(json);
-			}
-			if (type == "box")
-			{
-				comp = Degen::Physics::CreateBoxPhysicsComponent(json);
-			}
+			comp = Degen::Physics::CreatePhysicsComponent(json);
 
 			return true;
 		}

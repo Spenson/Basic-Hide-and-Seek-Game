@@ -71,5 +71,8 @@ namespace DegenBulletPhysicsWrapper
 
 
 		Degen::Physics::iBoxComponent* CreateBox(const Degen::Physics::sBoxDef& def) override;
+		Degen::Physics::iConeComponent* CreateCone(const Degen::Physics::sConeDef& def) override;
+		Degen::Physics::iCylinderComponent* CreateCylinder(const Degen::Physics::sCylinderDef& def) override;
+		Degen::Physics::iPaddleComponent* CreatePaddle(const Degen::Physics::sPaddleDef& def) override;
 	};
 }

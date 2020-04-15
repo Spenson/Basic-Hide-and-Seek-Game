@@ -149,6 +149,7 @@
     <ClInclude Include="physics\interfaces\iConeComponent.h" />
     <ClInclude Include="physics\interfaces\iCylinderComponent.h" />
     <ClInclude Include="physics\interfaces\iDebugRenderer.h" />
+    <ClInclude Include="physics\interfaces\iPaddleComponent.h" />
     <ClInclude Include="physics\interfaces\iPhysicsComponent.h" />
     <ClInclude Include="physics\interfaces\iPhysicsFactory.h" />
     <ClInclude Include="physics\interfaces\iPhysicsWorld.h" />

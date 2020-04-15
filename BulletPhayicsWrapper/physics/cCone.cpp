@@ -13,7 +13,7 @@ namespace DegenBulletPhysicsWrapper
 	}
 	cCone::cCone(Degen::Physics::sConeDef def)
 	{
-		btCollisionShape* shape = new btConeShape(def.Radius, def.Height);
+		btCollisionShape* shape = new btConeShape(def.Radius, def.Height * 2.f);
 
 		btTransform transform;
 		transform.setIdentity();

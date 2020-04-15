@@ -12,6 +12,7 @@ namespace Degen
 			float Mass;
 			float Radius;
 			glm::vec3 Position;
+			glm::quat Rotation;
 		};
 
 		class iBallComponent : public iPhysicsComponent

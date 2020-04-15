@@ -12,6 +12,7 @@ namespace Degen
 			float Mass;
 			glm::vec3 Size;
 			glm::vec3 Position;
+			glm::quat Rotation;
 		};
 
 		class iCylinderComponent : public iPhysicsComponent

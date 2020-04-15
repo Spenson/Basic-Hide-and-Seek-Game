@@ -62,4 +62,10 @@ namespace nConvert
 	}
 
 
+
+	inline btQuaternion ToBullet(const glm::quat& quat)
+	{
+		return {quat.x, quat.y, quat.z, quat.w};
+	}
+
 }

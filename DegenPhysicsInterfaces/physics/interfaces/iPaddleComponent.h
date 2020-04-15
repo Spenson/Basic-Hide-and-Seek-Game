@@ -8,27 +8,29 @@ namespace Degen
 
 	namespace Physics
 	{
-		struct sBoxDef
+		struct sPaddleDef
 		{
 			float Mass;
 			glm::vec3 Size;
 			glm::vec3 Position;
 			glm::quat Rotation;
+
+			bool HingeOnPositiveX; 
 		};
 
-		class iBoxComponent : public iPhysicsComponent
+		class iPaddleComponent : public iPhysicsComponent
 		{
 		public:
-			virtual ~iBoxComponent() {}
+			virtual ~iPaddleComponent() {}
 
 			virtual void ApplyForce(const glm::vec3& force) = 0;
 			virtual void ApplyImpulse(const glm::vec3& impulse) = 0;
 
 		protected:
-			iBoxComponent() : iPhysicsComponent(eComponentType::box) {}
+			iPaddleComponent() : iPhysicsComponent(eComponentType::paddle) {}
 		private:
-			iBoxComponent(const iBoxComponent& other) = delete;
-			iBoxComponent& operator=(const iBoxComponent& other) = delete;
+			iPaddleComponent(const iPaddleComponent& other) = delete;
+			iPaddleComponent& operator=(const iPaddleComponent& other) = delete;
 		};
 	}
 

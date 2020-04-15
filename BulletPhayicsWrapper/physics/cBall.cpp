@@ -1,27 +1,27 @@
 /**
- * \file	cSphere.cpp
+ * \file	cBall.cpp
  * \path	D:\GDP\Degenerate\DegenMyPhysicsWrapper\physics
  * \brief	Class Implementation File
  *
- * \desc	contains the implementation of cSphere class
+ * \desc	contains the implementation of cBall class
  */
 
-#include "cSphere.h"
+#include "cBall.h"
 #include "nConvert.h"
 
 
 namespace DegenBulletPhysicsWrapper
 {
 	/**
-	 * \method		~cSphere
-	 * \fullname	DegenMyPhysicsWrapper::cSphere::~cSphere
+	 * \method		~cBall
+	 * \fullname	DegenMyPhysicsWrapper::cBall::~cBall
 	 * \brief		dtor
 	 *
 	 * \access		virtual public
 	 *
 	 * \desc		cleans up mBody and mShape
 	 */
-	cSphere::~cSphere()
+	cBall::~cBall()
 	{
 		mBody->setUserPointer(nullptr);
 		delete mBody->getCollisionShape();
@@ -31,8 +31,8 @@ namespace DegenBulletPhysicsWrapper
 	}
 
 	/**
-	 * \method		cSphere
-	 * \fullname	DegenMyPhysicsWrapper::cSphere::cSphere
+	 * \method		cBall
+	 * \fullname	DegenMyPhysicsWrapper::cBall::cBall
 	 * \brief		ctor
 	 *
 	 * \access		public
@@ -40,13 +40,14 @@ namespace DegenBulletPhysicsWrapper
 	 *
 	 * \desc		creates Rigid body and sphere shape based off values in def
 	 */
-	cSphere::cSphere(Degen::Physics::sBallDef def)
+	cBall::cBall(Degen::Physics::sBallDef def)
 	{
 		btCollisionShape* shape = new btSphereShape(def.Radius);
 		
 		btTransform transform;
 		transform.setIdentity();
 		transform.setOrigin(nConvert::ToBullet(def.Position));
+		transform.setRotation(nConvert::ToBullet(def.Rotation));
 
 		btScalar mass(def.Mass);
 
@@ -75,7 +76,7 @@ namespace DegenBulletPhysicsWrapper
 
 	/**
 	 * \method		GetTransform
-	 * \fullname	DegenMyPhysicsWrapper::cSphere::GetTransform
+	 * \fullname	DegenMyPhysicsWrapper::cBall::GetTransform
 	 * \brief		mBody GetTransform wrapper
 	 *
 	 * \access		virtual public
@@ -83,7 +84,7 @@ namespace DegenBulletPhysicsWrapper
 	 *
 	 * \desc		Get the transform calculation for rendering the object
 	 */
-	void cSphere::GetTransform(glm::mat4& transformOut)
+	void cBall::GetTransform(glm::mat4& transformOut)
 	{
 		btTransform transform;
 		mBody->getMotionState()->getWorldTransform(transform);
@@ -92,7 +93,7 @@ namespace DegenBulletPhysicsWrapper
 
 	/**
 	 * \method		ApplyForce
-	 * \fullname	DegenMyPhysicsWrapper::cSphere::ApplyForce
+	 * \fullname	DegenMyPhysicsWrapper::cBall::ApplyForce
 	 * \brief		mBody ApplyForce Wrapper
 	 *
 	 * \access		virtual public
@@ -101,13 +102,13 @@ namespace DegenBulletPhysicsWrapper
 	 *
 	 * \desc		add force to the acceleration of the object
 	 */
-	void cSphere::ApplyForce(const glm::vec3& force)
+	void cBall::ApplyForce(const glm::vec3& force)
 	{
 		mBody->activate(true);
 		mBody->applyCentralForce(nConvert::ToBullet(force));
 	}
 
-	void cSphere::ApplyImpulse(const glm::vec3& impulse)
+	void cBall::ApplyImpulse(const glm::vec3& impulse)
 	{
 		mBody->activate(true);
 		mBody->applyCentralImpulse(nConvert::ToBullet(impulse));

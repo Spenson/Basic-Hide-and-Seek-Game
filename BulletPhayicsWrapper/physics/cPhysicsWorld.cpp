@@ -8,9 +8,12 @@
 
 #include "cPhysicsWorld.h"
 #include "cPlane.h"
-#include "cSphere.h"
+#include "cBall.h"
 #include "nConvert.h"
 #include "cBox.h"
+#include "cCylinder.h"
+#include "cCone.h"
+#include "cPaddle.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -117,10 +120,20 @@ namespace DegenBulletPhysicsWrapper
 				mWorld->addRigidBody(dynamic_cast<cPlane*>(component)->mBody);
 				break;
 			case Degen::Physics::eComponentType::ball:
-				mWorld->addRigidBody(dynamic_cast<cSphere*>(component)->mBody);
+				mWorld->addRigidBody(dynamic_cast<cBall*>(component)->mBody);
 				break;
 			case Degen::Physics::eComponentType::box:
 				mWorld->addRigidBody(dynamic_cast<cBox*>(component)->mBody);
+				break;
+			case Degen::Physics::eComponentType::cylinder:
+				mWorld->addRigidBody(dynamic_cast<cCylinder*>(component)->mBody);
+				break;
+			case Degen::Physics::eComponentType::cone:
+				mWorld->addRigidBody(dynamic_cast<cCone*>(component)->mBody);
+				break;
+			case Degen::Physics::eComponentType::paddle:{}
+				mWorld->addRigidBody(dynamic_cast<cPaddle*>(component)->mBody);
+				mWorld->addConstraint(dynamic_cast<cPaddle*>(component)->mConstraint);
 				break;
 		}
 		return true;
@@ -151,7 +164,20 @@ namespace DegenBulletPhysicsWrapper
 				mWorld->removeRigidBody(dynamic_cast<cPlane*>(component)->mBody);
 				break;
 			case Degen::Physics::eComponentType::ball:
-				mWorld->removeRigidBody(dynamic_cast<cSphere*>(component)->mBody);
+				mWorld->removeRigidBody(dynamic_cast<cBall*>(component)->mBody);
+				break;
+			case Degen::Physics::eComponentType::box:
+				mWorld->removeRigidBody(dynamic_cast<cBox*>(component)->mBody);
+				break;
+			case Degen::Physics::eComponentType::cylinder:
+				mWorld->removeRigidBody(dynamic_cast<cCylinder*>(component)->mBody);
+				break;
+			case Degen::Physics::eComponentType::cone:
+				mWorld->removeRigidBody(dynamic_cast<cCone*>(component)->mBody);
+				break;
+			case Degen::Physics::eComponentType::paddle:
+				mWorld->removeRigidBody(dynamic_cast<cPaddle*>(component)->mBody);
+				mWorld->removeConstraint(dynamic_cast<cPaddle*>(component)->mConstraint);
 				break;
 		}
 		return true;

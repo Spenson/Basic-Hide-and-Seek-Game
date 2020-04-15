@@ -480,9 +480,6 @@
     <ClCompile Include="physics\CreatePhysicsFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cSphere.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="physics\cBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -490,6 +487,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="physics\cCylinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\cPaddle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\cBall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1202,9 +1205,6 @@
     <ClInclude Include="physics\CreatePhysicsFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\cSphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="physics\nConvert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1215,6 +1215,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="physics\cCylinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\cPaddle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\cBall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

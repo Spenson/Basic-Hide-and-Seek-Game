@@ -1,25 +1,25 @@
-#include "cBox.h"
+#include "cPaddle.h"
 #include "nConvert.h"
 
 namespace DegenBulletPhysicsWrapper
 {
-	cBox::~cBox()
+	cPaddle::~cPaddle()
 	{
+		delete mConstraint;
+		mConstraint = 0;
 		mBody->setUserPointer(nullptr);
 		delete mBody->getCollisionShape();
 		delete mBody->getMotionState();
 		delete mBody;
 		mBody = nullptr;
 	}
-	cBox::cBox(Degen::Physics::sBoxDef def)
+	cPaddle::cPaddle(Degen::Physics::sPaddleDef def)
 	{
 		btCollisionShape* shape = new btBoxShape(nConvert::ToBullet(def.Size));
-		
+
 		btTransform transform;
 		transform.setIdentity();
 		transform.setOrigin(nConvert::ToBullet(def.Position));
-		transform.setRotation(nConvert::ToBullet(def.Rotation));
-		
 
 		btScalar mass(def.Mass);
 
@@ -39,19 +39,31 @@ namespace DegenBulletPhysicsWrapper
 
 		mBody = new btRigidBody(rbInfo);
 		mBody->setUserPointer(this);
+
+		if(def.HingeOnPositiveX)
+		{
+			mConstraint = new btHingeConstraint(*mBody, btVector3(def.Size.x * 1.f,0.f,0.f), btVector3(0.f,1.f,0.f));
+			mConstraint->setLimit(-.3f, .4f);
+		}
+		else
+		{
+			mConstraint = new btHingeConstraint(*mBody, btVector3(def.Size.x * -1.f, 0.f, 0.f), btVector3(0.f, 1.f, 0.f));
+			mConstraint->setLimit(-.4f, .3f);
+		}
+		
 	}
-	void cBox::GetTransform(glm::mat4& transformOut)
+	void cPaddle::GetTransform(glm::mat4& transformOut)
 	{
 		btTransform transform;
 		mBody->getMotionState()->getWorldTransform(transform);
 		nConvert::ToGLM(transform, transformOut);
 	}
-	void cBox::ApplyForce(const glm::vec3& force)
+	void cPaddle::ApplyForce(const glm::vec3& force)
 	{
 		mBody->activate(true);
 		mBody->applyCentralForce(nConvert::ToBullet(force));
 	}
-	void cBox::ApplyImpulse(const glm::vec3& impulse)
+	void cPaddle::ApplyImpulse(const glm::vec3& impulse)
 	{
 		mBody->activate(true);
 		mBody->applyCentralImpulse(nConvert::ToBullet(impulse));

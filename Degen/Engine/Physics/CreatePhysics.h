@@ -10,8 +10,13 @@ namespace Degen
 		iPhysicsFactory* CreatePhysicsFactory();
 		void DestroyPhysicsFactory(iPhysicsFactory* factory);
 
+		iPhysicsComponent* CreatePhysicsComponent(const Json::Value& json);
+		
 		iBallComponent* CreateBallPhysicsComponent(const Json::Value& jsonBall);
 		iPlaneComponent* CreatePlanePhysicsComponent(const Json::Value& jsonPlane);
 		iBoxComponent* CreateBoxPhysicsComponent(const Json::Value& jsonBox);
+		iCylinderComponent* CreateCylinderPhysicsComponent(const Json::Value& jsonCylinder);
+		iConeComponent* CreateConePhysicsComponent(const Json::Value& jsonCone);
+		iPaddleComponent* CreatePaddlePhysicsComponent(const Json::Value& jsonPaddle);
 	}
 }

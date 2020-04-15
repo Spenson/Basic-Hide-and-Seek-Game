@@ -56,6 +56,38 @@ namespace Degen
 				hGetPhysicsProckDll = 0;
 			}
 		}
+
+		iPhysicsComponent* CreatePhysicsComponent(const Json::Value& json)
+		{
+			std::string type;
+			JsonHelp::Set(json["type"], type);
+			if (type == "ball")
+			{
+				return CreateBallPhysicsComponent(json);
+			}
+			if (type == "plane")
+			{
+				return CreatePlanePhysicsComponent(json);
+			}
+			if (type == "box")
+			{
+				return CreateBoxPhysicsComponent(json);
+			}
+
+
+			if (type == "cylinder")
+			{
+				return CreateCylinderPhysicsComponent(json);
+			}
+			if (type == "cone")
+			{
+				return CreateConePhysicsComponent(json);
+			}
+			if (type == "paddle")
+			{
+				return CreatePaddlePhysicsComponent(json);
+			}
+		}
 		
 		iBallComponent* CreateBallPhysicsComponent(const Json::Value& jsonBall)
 		{
@@ -64,7 +96,8 @@ namespace Degen
 			sBallDef def;
 			if (JsonHelp::Set(jsonBall["position"], def.Position)
 				&& JsonHelp::Set(jsonBall["mass"], def.Mass)
-				&& JsonHelp::Set(jsonBall["radius"], def.Radius))
+				&& JsonHelp::Set(jsonBall["radius"], def.Radius)
+				&& JsonHelp::Set(jsonBall["rotation"], def.Rotation))
 			{
 				return PhysicsFactory->CreateBall(def);
 			}
@@ -98,9 +131,54 @@ namespace Degen
 			sBoxDef def;
 			if (JsonHelp::Set(jsonBox["position"], def.Position)
 				&& JsonHelp::Set(jsonBox["mass"], def.Mass)
-				&& JsonHelp::Set(jsonBox["size"], def.Size))
+				&& JsonHelp::Set(jsonBox["size"], def.Size)
+				&& JsonHelp::Set(jsonBox["rotation"], def.Rotation))
 			{
 				return PhysicsFactory->CreateBox(def);
+			}
+			return 0;
+		}
+		iCylinderComponent* CreateCylinderPhysicsComponent(const Json::Value& jsonCylincer)
+		{
+			if (!jsonCylincer.isObject()) return 0;
+
+			sCylinderDef def;
+			if (JsonHelp::Set(jsonCylincer["position"], def.Position)
+				&& JsonHelp::Set(jsonCylincer["mass"], def.Mass)
+				&& JsonHelp::Set(jsonCylincer["size"], def.Size)
+				&& JsonHelp::Set(jsonCylincer["rotation"], def.Rotation))
+			{
+				return PhysicsFactory->CreateCylinder(def);
+			}
+			return 0;
+		}
+		iConeComponent* CreateConePhysicsComponent(const Json::Value& jsonCone)
+		{
+			if (!jsonCone.isObject()) return 0;
+
+			sConeDef def;
+			if (JsonHelp::Set(jsonCone["position"], def.Position)
+				&& JsonHelp::Set(jsonCone["mass"], def.Mass)
+				&& JsonHelp::Set(jsonCone["height"], def.Height)
+				&& JsonHelp::Set(jsonCone["radius"], def.Radius)
+				&& JsonHelp::Set(jsonCone["rotation"], def.Rotation))
+			{
+				return PhysicsFactory->CreateCone(def);
+			}
+			return 0;
+		}
+		iPaddleComponent* CreatePaddlePhysicsComponent(const Json::Value& jsonPaddle)
+		{
+			if (!jsonPaddle.isObject()) return 0;
+
+			sPaddleDef def;
+			if (JsonHelp::Set(jsonPaddle["position"], def.Position)
+				&& JsonHelp::Set(jsonPaddle["mass"], def.Mass)
+				&& JsonHelp::Set(jsonPaddle["size"], def.Size)
+				&& JsonHelp::Set(jsonPaddle["hinge_pos_x"], def.HingeOnPositiveX)
+				&& JsonHelp::Set(jsonPaddle["rotation"], def.Rotation))
+			{
+				return PhysicsFactory->CreatePaddle(def);
 			}
 			return 0;
 		}

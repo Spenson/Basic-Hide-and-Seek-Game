@@ -13,6 +13,7 @@ namespace Degen
 			val = jsonVal.asInt();
 			return true;
 		}
+		
 		// set a unsigned
 		inline bool Set(const Json::Value& jsonVal, unsigned& val)
 		{
@@ -20,15 +21,15 @@ namespace Degen
 			val = jsonVal.asUInt();
 			return true;
 		}
+		
 		// set a string
 		inline bool Set(const Json::Value& jsonVal, std::string& val)
 		{
-
-			
 			if (!jsonVal.isString()) return false;
 			val = jsonVal.asString();
 			return true;
 		}
+		
 		// set a bool
 		inline bool Set(const Json::Value& jsonVal, bool& val)
 		{
@@ -36,6 +37,7 @@ namespace Degen
 			val = jsonVal.asBool();
 			return true;
 		}
+		
 		// set a float
 		inline bool Set(const Json::Value& jsonVal, float& val)
 		{
@@ -43,6 +45,7 @@ namespace Degen
 			val = jsonVal.asFloat();
 			return true;
 		}
+		
 		// set a double
 		inline bool Set(const Json::Value& jsonVal, double& val)
 		{
@@ -50,6 +53,7 @@ namespace Degen
 			val = jsonVal.asDouble();
 			return true;
 		}
+		
 		// set a size_t
 		inline bool Set(const Json::Value& jsonVal, size_t& val)
 		{
@@ -57,6 +61,7 @@ namespace Degen
 			val = (size_t)jsonVal.asUInt();
 			return true;
 		}
+		
 		// set a vec3
 		inline bool Set(const Json::Value& jsonVal, glm::vec3& val)
 		{
@@ -69,6 +74,7 @@ namespace Degen
 			val.z = jsonVal[2].asFloat();
 			return true;
 		}
+		
 		// set a vec4
 		inline bool Set(const Json::Value& jsonVal, glm::vec4& val)
 		{
@@ -83,17 +89,25 @@ namespace Degen
 			val.w = jsonVal[3].asFloat();
 			return true;
 		}
-		
+
+
+		// set a vec4
+		inline bool Set(const Json::Value& jsonVal, glm::quat& val)
+		{
+			if (!jsonVal[0].isNumeric()
+				|| !jsonVal[1].isNumeric()
+				|| !jsonVal[2].isNumeric()) return false;
+
+			val = glm::quat(glm::radians(glm::vec3(jsonVal[0].asFloat(), jsonVal[1].asFloat(), jsonVal[2].asFloat())));
+			
+			return true;
+		}
 	}
 
 
 	
 	namespace FileReading
 	{
-
-
-
-
 		inline bool FileExists(const char* fileName)
 		{
 			struct stat buffer;

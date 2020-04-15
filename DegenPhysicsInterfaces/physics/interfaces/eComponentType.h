@@ -12,7 +12,8 @@ namespace Physics
 		plane,
 		box,
 		cylinder,
-		cone
+		cone,
+		paddle
 	};
 }
 }
