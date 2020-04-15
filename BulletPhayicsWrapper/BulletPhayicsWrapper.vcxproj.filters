@@ -483,6 +483,15 @@
     <ClCompile Include="physics\cSphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="physics\cBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\cCone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\cCylinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="physics\bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.h">
@@ -1197,6 +1206,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="physics\nConvert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\cBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\cCone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\cCylinder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -91,5 +91,18 @@ namespace Degen
 			}
 			return 0;
 		}
+		iBoxComponent* CreateBoxPhysicsComponent(const Json::Value& jsonBox)
+		{
+			if (!jsonBox.isObject()) return 0;
+
+			sBoxDef def;
+			if (JsonHelp::Set(jsonBox["position"], def.Position)
+				&& JsonHelp::Set(jsonBox["mass"], def.Mass)
+				&& JsonHelp::Set(jsonBox["size"], def.Size))
+			{
+				return PhysicsFactory->CreateBox(def);
+			}
+			return 0;
+		}
 	}
 }

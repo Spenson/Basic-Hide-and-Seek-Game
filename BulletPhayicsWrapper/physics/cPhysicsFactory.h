@@ -68,5 +68,8 @@ namespace DegenBulletPhysicsWrapper
 		 * \desc      Override iPhysicsFactory method. Creates plane based off def and returns ptr
 		 */
 		Degen::Physics::iPlaneComponent* CreatePlane(const Degen::Physics::sPlaneDef& def) override;
+
+
+		Degen::Physics::iBoxComponent* CreateBox(const Degen::Physics::sBoxDef& def) override;
 	};
 }

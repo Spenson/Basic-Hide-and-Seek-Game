@@ -10,6 +10,7 @@
 #include "cPhysicsWorld.h"
 #include "cSphere.h"
 #include "cPlane.h"
+#include "cBox.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -58,6 +59,11 @@ namespace DegenBulletPhysicsWrapper
 	Degen::Physics::iPlaneComponent* cPhysicsFactory::CreatePlane(const Degen::Physics::sPlaneDef& def)
 	{
 		return new cPlane(def);
+	}
+
+	Degen::Physics::iBoxComponent* cPhysicsFactory::CreateBox(const Degen::Physics::sBoxDef& def)
+	{
+		return new cBox(def);
 	}
 
 }

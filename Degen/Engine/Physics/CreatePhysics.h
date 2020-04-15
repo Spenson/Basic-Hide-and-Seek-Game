@@ -12,5 +12,6 @@ namespace Degen
 
 		iBallComponent* CreateBallPhysicsComponent(const Json::Value& jsonBall);
 		iPlaneComponent* CreatePlanePhysicsComponent(const Json::Value& jsonPlane);
+		iBoxComponent* CreateBoxPhysicsComponent(const Json::Value& jsonBox);
 	}
 }

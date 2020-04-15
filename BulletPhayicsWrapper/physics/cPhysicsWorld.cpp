@@ -10,6 +10,7 @@
 #include "cPlane.h"
 #include "cSphere.h"
 #include "nConvert.h"
+#include "cBox.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -117,6 +118,9 @@ namespace DegenBulletPhysicsWrapper
 				break;
 			case Degen::Physics::eComponentType::ball:
 				mWorld->addRigidBody(dynamic_cast<cSphere*>(component)->mBody);
+				break;
+			case Degen::Physics::eComponentType::box:
+				mWorld->addRigidBody(dynamic_cast<cBox*>(component)->mBody);
 				break;
 		}
 		return true;

@@ -80,7 +80,7 @@
       "components": [
         {
           "component": "position",
-          "position": [ 0.0, 10.0, -15.0 ]
+          "position": [ 0.0, 20.0, -20.0 ]
         },
         {
           "component": "render",
@@ -162,7 +162,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 15, 20, 10 ],
+          "scale": [ 15, 30, 10 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -259,6 +259,49 @@
         }
       ]
     },
+
+
+    {
+      "name": "Box1",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cube",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 4.5, 1.5, 0.2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "box",
+          "position": [ 0.0, 5.0, 0.0 ],
+          "mass": 10.0,
+          "size": [ 4.5, 1.5, 0.2 ]
+        }
+      ]
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     {
       "name": "light 1",
       "components": [

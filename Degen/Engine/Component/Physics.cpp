@@ -25,6 +25,10 @@ namespace Degen
 			{
 				comp = Degen::Physics::CreatePlanePhysicsComponent(json);
 			}
+			if (type == "box")
+			{
+				comp = Degen::Physics::CreateBoxPhysicsComponent(json);
+			}
 
 			return true;
 		}

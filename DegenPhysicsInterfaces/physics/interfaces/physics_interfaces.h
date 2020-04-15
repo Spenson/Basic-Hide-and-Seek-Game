@@ -5,3 +5,4 @@
 #include "iPlaneComponent.h"
 #include "iPhysicsWorld.h"
 #include "iPhysicsFactory.h"
+#include "iBoxComponent.h"

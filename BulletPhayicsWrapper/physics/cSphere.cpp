@@ -43,7 +43,7 @@ namespace DegenBulletPhysicsWrapper
 	cSphere::cSphere(Degen::Physics::sBallDef def)
 	{
 		btCollisionShape* shape = new btSphereShape(def.Radius);
-
+		
 		btTransform transform;
 		transform.setIdentity();
 		transform.setOrigin(nConvert::ToBullet(def.Position));

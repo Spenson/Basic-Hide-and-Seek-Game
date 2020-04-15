@@ -144,7 +144,10 @@
   <ItemGroup>
     <ClInclude Include="physics\interfaces\eComponentType.h" />
     <ClInclude Include="physics\interfaces\iBallComponent.h" />
+    <ClInclude Include="physics\interfaces\iBoxComponent.h" />
     <ClInclude Include="physics\interfaces\iCollisionListener.h" />
+    <ClInclude Include="physics\interfaces\iConeComponent.h" />
+    <ClInclude Include="physics\interfaces\iCylinderComponent.h" />
     <ClInclude Include="physics\interfaces\iDebugRenderer.h" />
     <ClInclude Include="physics\interfaces\iPhysicsComponent.h" />
     <ClInclude Include="physics\interfaces\iPhysicsFactory.h" />

@@ -42,5 +42,14 @@
     <ClInclude Include="physics\interfaces\physics_interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="physics\interfaces\iBoxComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\interfaces\iCylinderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\interfaces\iConeComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

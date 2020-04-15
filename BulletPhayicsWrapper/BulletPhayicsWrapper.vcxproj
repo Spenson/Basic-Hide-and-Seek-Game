@@ -302,6 +302,9 @@
     <ClCompile Include="physics\bullet\LinearMath\TaskScheduler\btTaskScheduler.cpp" />
     <ClCompile Include="physics\bullet\LinearMath\TaskScheduler\btThreadSupportPosix.cpp" />
     <ClCompile Include="physics\bullet\LinearMath\TaskScheduler\btThreadSupportWin32.cpp" />
+    <ClCompile Include="physics\cBox.cpp" />
+    <ClCompile Include="physics\cCone.cpp" />
+    <ClCompile Include="physics\cCylinder.cpp" />
     <ClCompile Include="physics\cPhysicsFactory.cpp" />
     <ClCompile Include="physics\cPhysicsWorld.cpp" />
     <ClCompile Include="physics\cPlane.cpp" />
@@ -541,6 +544,9 @@
     <ClInclude Include="physics\bullet\LinearMath\btVector3.h" />
     <ClInclude Include="physics\bullet\LinearMath\TaskScheduler\btThreadSupportInterface.h" />
     <ClInclude Include="physics\cCollisionListener.h" />
+    <ClInclude Include="physics\cBox.h" />
+    <ClInclude Include="physics\cCone.h" />
+    <ClInclude Include="physics\cCylinder.h" />
     <ClInclude Include="physics\cPhysicsFactory.h" />
     <ClInclude Include="physics\cPhysicsWorld.h" />
     <ClInclude Include="physics\cPlane.h" />
