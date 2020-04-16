@@ -303,6 +303,8 @@
     <ClCompile Include="physics\bullet\LinearMath\TaskScheduler\btThreadSupportPosix.cpp" />
     <ClCompile Include="physics\bullet\LinearMath\TaskScheduler\btThreadSupportWin32.cpp" />
     <ClCompile Include="physics\cBox.cpp" />
+    <ClCompile Include="physics\cLauncher.cpp" />
+    <ClCompile Include="physics\cLauncher.h" />
     <ClCompile Include="physics\cPaddle.cpp" />
     <ClCompile Include="physics\cCone.cpp" />
     <ClCompile Include="physics\cCylinder.cpp" />

@@ -12,7 +12,7 @@ namespace Degen
 		class cEntity
 		{
 		public:
-			cEntity() : id(0), name() {}
+			cEntity() : user_id(0), unique_id(next_id++), name() {}
 
 			template<class T> T* AddComponent();
 			Component::iComponent* GetComponent(unsigned int type);
@@ -20,10 +20,15 @@ namespace Degen
 			bool RemoveComponent(Component::iComponent* c);
 			bool HasComponent(unsigned int type);
 
-			unsigned int id;
+			// user set to identify object type or something use as you see fit
+			unsigned int user_id;
+			//generated id
+			unsigned int unique_id;
 			std::string name;
 
 			std::vector<Component::iComponent*> components;
+		private:
+			static unsigned int next_id;
 		};
 
 		template<class T>

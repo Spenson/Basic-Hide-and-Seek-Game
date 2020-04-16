@@ -495,6 +495,12 @@
     <ClCompile Include="physics\cBall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="physics\cLauncher.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\cLauncher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="physics\bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.h">

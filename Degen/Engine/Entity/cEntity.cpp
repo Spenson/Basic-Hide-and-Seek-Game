@@ -4,6 +4,8 @@ namespace Degen
 {
 	namespace Entity
 	{
+		unsigned int cEntity::next_id = 0;
+		
 		Component::iComponent* cEntity::GetComponent(unsigned int type)
 		{
 			for (unsigned int i = 0; i < components.size(); i++)

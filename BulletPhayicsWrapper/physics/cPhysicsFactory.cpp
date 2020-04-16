@@ -14,6 +14,7 @@
 #include "cCone.h"
 #include "cCylinder.h"
 #include "cPaddle.h"
+#include "cLauncher.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -83,6 +84,11 @@ namespace DegenBulletPhysicsWrapper
 	Degen::Physics::iPaddleComponent* cPhysicsFactory::CreatePaddle(const Degen::Physics::sPaddleDef& def)
 	{
 		return new cPaddle(def);
+	}
+
+	Degen::Physics::iLauncherComponent* cPhysicsFactory::CreateLauncher(const Degen::Physics::sLauncherDef& def)
+	{
+		return new cLauncher(def);
 	}
 
 }

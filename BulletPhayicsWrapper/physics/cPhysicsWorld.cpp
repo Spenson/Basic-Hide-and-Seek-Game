@@ -14,6 +14,7 @@
 #include "cCylinder.h"
 #include "cCone.h"
 #include "cPaddle.h"
+#include "cLauncher.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -131,9 +132,13 @@ namespace DegenBulletPhysicsWrapper
 			case Degen::Physics::eComponentType::cone:
 				mWorld->addRigidBody(dynamic_cast<cCone*>(component)->mBody);
 				break;
-			case Degen::Physics::eComponentType::paddle:{}
+			case Degen::Physics::eComponentType::paddle:
 				mWorld->addRigidBody(dynamic_cast<cPaddle*>(component)->mBody);
 				mWorld->addConstraint(dynamic_cast<cPaddle*>(component)->mConstraint);
+				break;
+			case Degen::Physics::eComponentType::launcher:
+				mWorld->addRigidBody(dynamic_cast<cLauncher*>(component)->mBody);
+				mWorld->addConstraint(dynamic_cast<cLauncher*>(component)->mConstraint);
 				break;
 		}
 		return true;
@@ -178,6 +183,10 @@ namespace DegenBulletPhysicsWrapper
 			case Degen::Physics::eComponentType::paddle:
 				mWorld->removeRigidBody(dynamic_cast<cPaddle*>(component)->mBody);
 				mWorld->removeConstraint(dynamic_cast<cPaddle*>(component)->mConstraint);
+				break;
+			case Degen::Physics::eComponentType::launcher:
+				mWorld->removeRigidBody(dynamic_cast<cLauncher*>(component)->mBody);
+				mWorld->removeConstraint(dynamic_cast<cLauncher*>(component)->mConstraint);
 				break;
 		}
 		return true;

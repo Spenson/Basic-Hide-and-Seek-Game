@@ -65,27 +65,29 @@ namespace Degen
 			{
 				return CreateBallPhysicsComponent(json);
 			}
-			if (type == "plane")
+			else if (type == "plane")
 			{
 				return CreatePlanePhysicsComponent(json);
 			}
-			if (type == "box")
+			else if (type == "box")
 			{
 				return CreateBoxPhysicsComponent(json);
 			}
-
-
-			if (type == "cylinder")
+			else if (type == "cylinder")
 			{
 				return CreateCylinderPhysicsComponent(json);
 			}
-			if (type == "cone")
+			else if (type == "cone")
 			{
 				return CreateConePhysicsComponent(json);
 			}
-			if (type == "paddle")
+			else if (type == "paddle")
 			{
 				return CreatePaddlePhysicsComponent(json);
+			}
+			else if (type == "launcher")
+			{
+				return CreateLauncherComponent(json);
 			}
 		}
 		
@@ -138,15 +140,15 @@ namespace Degen
 			}
 			return 0;
 		}
-		iCylinderComponent* CreateCylinderPhysicsComponent(const Json::Value& jsonCylincer)
+		iCylinderComponent* CreateCylinderPhysicsComponent(const Json::Value& jsonCylinder)
 		{
-			if (!jsonCylincer.isObject()) return 0;
+			if (!jsonCylinder.isObject()) return 0;
 
 			sCylinderDef def;
-			if (JsonHelp::Set(jsonCylincer["position"], def.Position)
-				&& JsonHelp::Set(jsonCylincer["mass"], def.Mass)
-				&& JsonHelp::Set(jsonCylincer["size"], def.Size)
-				&& JsonHelp::Set(jsonCylincer["rotation"], def.Rotation))
+			if (JsonHelp::Set(jsonCylinder["position"], def.Position)
+				&& JsonHelp::Set(jsonCylinder["mass"], def.Mass)
+				&& JsonHelp::Set(jsonCylinder["size"], def.Size)
+				&& JsonHelp::Set(jsonCylinder["rotation"], def.Rotation))
 			{
 				return PhysicsFactory->CreateCylinder(def);
 			}
@@ -179,6 +181,20 @@ namespace Degen
 				&& JsonHelp::Set(jsonPaddle["rotation"], def.Rotation))
 			{
 				return PhysicsFactory->CreatePaddle(def);
+			}
+			return 0;
+		}
+		iLauncherComponent* CreateLauncherComponent(const Json::Value& jsonLauncher)
+		{
+			if (!jsonLauncher.isObject()) return 0;
+
+			sLauncherDef def;
+			if (JsonHelp::Set(jsonLauncher["position"], def.Position)
+				&& JsonHelp::Set(jsonLauncher["mass"], def.Mass)
+				&& JsonHelp::Set(jsonLauncher["size"], def.Size)
+				&& JsonHelp::Set(jsonLauncher["rotation"], def.Rotation))
+			{
+				return PhysicsFactory->CreateLauncher(def);
 			}
 			return 0;
 		}

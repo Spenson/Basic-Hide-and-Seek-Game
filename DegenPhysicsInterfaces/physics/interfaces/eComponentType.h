@@ -13,7 +13,8 @@ namespace Physics
 		box,
 		cylinder,
 		cone,
-		paddle
+		paddle,
+		launcher
 	};
 }
 }

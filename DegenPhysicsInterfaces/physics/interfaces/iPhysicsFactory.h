@@ -6,6 +6,7 @@
 #include "iCylinderComponent.h"
 #include "iPaddleComponent.h"
 #include "iPhysicsWorld.h"
+#include "iLauncherComponent.h"
 
 namespace Degen
 {
@@ -24,6 +25,7 @@ namespace Physics
 		virtual iConeComponent* CreateCone(const sConeDef& def) = 0;
 		virtual iCylinderComponent* CreateCylinder(const sCylinderDef& def) = 0;
 		virtual iPaddleComponent* CreatePaddle(const sPaddleDef& def) = 0;
+		virtual iLauncherComponent* CreateLauncher(const sLauncherDef& def) = 0;
 	};
 }
 }

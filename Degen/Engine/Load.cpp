@@ -133,7 +133,7 @@ namespace Degen
 				//std::vector<std::string> component_names = jsonCurEntity.getMemberNames();
 
 				JsonHelp::Set(jsonCurEntity["name"], ent->name);
-				JsonHelp::Set(jsonCurEntity["id"], ent->id);
+				JsonHelp::Set(jsonCurEntity["id"], ent->user_id);
 
 				if (jsonCurEntity["components"].isArray())
 				{

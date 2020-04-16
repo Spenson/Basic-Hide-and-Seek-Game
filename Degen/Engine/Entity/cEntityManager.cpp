@@ -25,7 +25,7 @@ namespace Degen
 		{
 			for (auto* entity : entities)
 			{
-				if(entity->id == id) return entity;
+				if(entity->user_id == id) return entity;
 			}
 			return nullptr;
 		}

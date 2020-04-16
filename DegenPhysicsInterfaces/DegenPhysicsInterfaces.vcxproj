@@ -156,6 +156,9 @@
     <ClInclude Include="physics\interfaces\iPlaneComponent.h" />
     <ClInclude Include="physics\interfaces\physics_interfaces.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="physics\interfaces\iLauncherComponent.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
