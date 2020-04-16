@@ -17,5 +17,6 @@ namespace DegenBulletPhysicsWrapper
 
 		virtual void ApplyForce(const glm::vec3& force) override;
 		void ApplyImpulse(const glm::vec3& impulse) override;
+		void Hit(const glm::vec3& force) override;
 	};
 }

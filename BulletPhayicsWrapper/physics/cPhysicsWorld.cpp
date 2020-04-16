@@ -138,7 +138,7 @@ namespace DegenBulletPhysicsWrapper
 				break;
 			case Degen::Physics::eComponentType::launcher:
 				mWorld->addRigidBody(dynamic_cast<cLauncher*>(component)->mBody);
-				mWorld->addConstraint(dynamic_cast<cLauncher*>(component)->mConstraint);
+				mWorld->addConstraint(dynamic_cast<cLauncher*>(component)->mSpring);
 				break;
 		}
 		return true;
@@ -186,7 +186,8 @@ namespace DegenBulletPhysicsWrapper
 				break;
 			case Degen::Physics::eComponentType::launcher:
 				mWorld->removeRigidBody(dynamic_cast<cLauncher*>(component)->mBody);
-				mWorld->removeConstraint(dynamic_cast<cLauncher*>(component)->mConstraint);
+				mWorld->removeConstraint(dynamic_cast<cLauncher*>(component)->mSpring);
+				mWorld->removeConstraint(dynamic_cast<cLauncher*>(component)->mSlider);
 				break;
 		}
 		return true;

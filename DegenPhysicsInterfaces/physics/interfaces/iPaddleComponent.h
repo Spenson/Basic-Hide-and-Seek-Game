@@ -24,6 +24,7 @@ namespace Degen
 			virtual ~iPaddleComponent() {}
 
 			virtual void ApplyForce(const glm::vec3& force) = 0;
+			virtual void Hit(const glm::vec3& force) = 0;
 			virtual void ApplyImpulse(const glm::vec3& impulse) = 0;
 
 		protected:

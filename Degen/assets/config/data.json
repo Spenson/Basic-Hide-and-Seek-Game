@@ -90,7 +90,7 @@
       "components": [
         {
           "component": "position",
-          "position": [ 0.0, 20.0, -20.0 ]
+          "position": [ 0.0, 30.0, -30.0 ]
         },
         {
           "component": "render",
@@ -157,11 +157,11 @@
     //  ]
     //},
     {
-      "name": "plane",
+      "name": "Bottom",
       "components": [
         {
           "component": "transform",
-          "pos": [ 0.0, -5.0, 0.0 ],
+          "pos": [ 0.0, -5.0, -5.0 ],
           "rot": [ 90.0, 0.0, 0.0 ]
         },
         {
@@ -172,7 +172,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 15, 30, 1 ],
+          "scale": [ 15, 35, 1 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -186,11 +186,11 @@
     },
 
     {
-      "name": "plane",
+      "name": "Far Wall",
       "components": [
         {
           "component": "transform",
-          "pos": [ 0.0, -3.0, 30.0 ],
+          "pos": [ 0.0, -3.0, 30.2 ],
           "rot": [ 0.0, 0.0, 0.0 ]
         },
         {
@@ -201,7 +201,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 15, 2, 0.2 ],
+          "scale": [ 15.4, 2, 0.2 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -215,12 +215,10 @@
     },
 
     {
-      "name": "plane",
+      "name": "Close Wall",
       "components": [
         {
-          "component": "transform",
-          "pos": [ 0.0, -3.0, -30.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
+          "component": "transform"
         },
         {
           "component": "render",
@@ -230,24 +228,28 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 15, 2, 0.2 ],
+          "scale": [ 13, 2, 4.75 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
-          "type": "plane",
-          "normal": [ 0.0, 0.0, 1.0 ],
-          "constant": -30.0
+          "type": "box",
+          "position": [ -2, -3.0, -35.25 ],
+          "mass": 0.0,
+          "size": [ 13, 2, 4.75 ],
+          "rotation": [ 0, 0, 0 ]
         }
       ]
     },
+
+
     {
-      "name": "plane",
+      "name": "Right Wall",
       "components": [
         {
           "component": "transform",
-          "pos": [ -15.0, -3.0, 0.0 ],
+          "pos": [ -15.2, -3.0, -5.0 ],
           "rot": [ 0.0, 90.0, 0.0 ]
         },
         {
@@ -258,7 +260,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 30, 2, 0.2 ],
+          "scale": [ 35, 2, 0.2 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -271,11 +273,11 @@
       ]
     },
     {
-      "name": "plane",
+      "name": "Left Wall",
       "components": [
         {
           "component": "transform",
-          "pos": [ 15.0, -3.0, 0.0 ],
+          "pos": [ 15.2, -3.0, -5.0 ],
           "rot": [ 0.0, 90.0, 0.0 ]
         },
         {
@@ -286,7 +288,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 30, 2, 0.2 ],
+          "scale": [ 35, 2, 0.2 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -300,7 +302,7 @@
     },
 
     {
-      "name": "Ball1",
+      "name": "PinBall",
       "components": [
         {
           "component": "transform"
@@ -313,7 +315,7 @@
           "diffuse": [ 0.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1, 1, 1 ],
+          "scale": [ 1.1, 1.1, 1.1 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -322,7 +324,7 @@
           "type": "ball",
           "position": [ 0.0, 0.0, 0.0 ],
           "mass": 5.0,
-          "radius": 1.0,
+          "radius": 1.1,
           "rotation": [ 0, 0, 0 ]
         }
       ]
@@ -330,7 +332,7 @@
 
 
     {
-      "name": "Paddle Left",
+      "name": "Left Paddle",
       "components": [
         {
           "component": "transform"
@@ -350,7 +352,7 @@
         {
           "component": "physics",
           "type": "paddle",
-          "position": [ 5.0, -3.5, -20.0 ],
+          "position": [ 5.25, -3.5, -20.0 ],
           "mass": 10.0,
           "size": [ 5, 1.5, 0.2 ],
           "hinge_pos_x": true,
@@ -359,7 +361,7 @@
       ]
     },
     {
-      "name": "Paddle Right",
+      "name": "Right Paddle",
       "components": [
         {
           "component": "transform"
@@ -388,7 +390,7 @@
       ]
     },
     {
-      "name": "bottom board",
+      "name": "Bottom Board",
       "components": [
         {
           "component": "transform",
@@ -403,17 +405,134 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 13, 2.0, 0.2 ],
+          "scale": [ 13.75, 2.0, 0.2 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "box",
-          "position": [ -2.0, -2.5, -27.5 ],
+          "position": [ -1.7, -3, -27 ],
           "mass": 0.0,
-          "size": [ 13, 2.0, 0.2 ],
-          "rotation": [ 0, 10, 0 ]
+          "size": [ 13.75, 2.0, 0.2 ],
+          "rotation": [ 0, 15, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "Launch redirect",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cube",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 4, 2.0, 0.2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "box",
+          "position": [ 12.5, -3, 27.5 ],
+          "mass": 0.0,
+          "size": [ 4, 2.0, 0.2 ],
+          "rotation": [ 0, 45, 0 ]
+        }
+      ]
+    },
+
+    {
+      "name": "launch ball stop left",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cube",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 0.5, 2.0, 0.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "box",
+          "position": [ 14.5, -2.5, -34 ],
+          "mass": 0.0,
+          "size": [ 0.5, 2.0, 0.5 ],
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "launch ball stop right",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, -2.5, 0 ],
+          "rot": [ 0, 0, 0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "cube",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 0.5, 2.0, 0.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "box",
+          "position": [ 11.5, -2.5, -34 ],
+          "mass": 0.0,
+          "size": [ 0.5, 2.0, 0.5 ],
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "launch tunnel",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, -2.5, 0 ],
+          "rot": [ 0, 0, 0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "cube",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 0.2, 2.0, 20 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "box",
+          "position": [ 10.5, -2.5, -5 ],
+          "mass": 0.0,
+          "size": [ 0.2, 2.0, 20 ],
+          "rotation": [ 0, 0, 0 ]
         }
       ]
     },
@@ -434,16 +553,16 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 2, 1.5 ],
+          "scale": [ 1, 2, 1.5 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "launcher",
-          "position": [ 0.0, 5.0, 0.0 ],
+          "position": [ 13, -4, -33 ],
           "mass": 5.0,
-          "size": [ 1.5, 2, 1.5 ],
+          "size": [ 1, 2, 1.5 ],
           "rotation": [ 90, 0, 0 ]
         }
       ]
@@ -471,9 +590,9 @@
     //      "component": "physics",
     //      "type": "cone",
     //      "position": [ 0.0, 5.0, 0.0 ],
-    //      "mass": 5.0,
-    //      "height": 4.5,
-    //      "radius": 1.5,
+    //      "mass": 0.0,
+    //      "height": 0.5,
+    //      "radius": 1.0,
     //      "rotation": [ 0, 0, 0 ]
     //    }
     //  ]

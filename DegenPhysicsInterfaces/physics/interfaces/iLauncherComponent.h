@@ -25,6 +25,9 @@ namespace Degen
 
 			virtual void ApplyForce(const glm::vec3& force) = 0;
 			virtual void ApplyImpulse(const glm::vec3& impulse) = 0;
+			virtual void Pull(const glm::vec3& direction) = 0;
+			virtual void Release() = 0;
+			
 
 		protected:
 			iLauncherComponent() : iPhysicsComponent(eComponentType::launcher) {}

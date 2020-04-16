@@ -10,13 +10,15 @@ namespace DegenBulletPhysicsWrapper
 	{
 	public:
 		btRigidBody* mBody;
-		//btSliderConstraint* mConstraint;
-		btGeneric6DofSpringConstraint* mConstraint;
+		btSliderConstraint* mSlider;
+		btGeneric6DofSpringConstraint* mSpring;
 		virtual ~cLauncher();
 		cLauncher(Degen::Physics::sLauncherDef def);
 		virtual void GetTransform(glm::mat4& transformOut) override;
 
 		virtual void ApplyForce(const glm::vec3& force) override;
 		void ApplyImpulse(const glm::vec3& impulse) override;
+		void Pull(const glm::vec3& direction) override;
+		void Release() override;
 	};
 }

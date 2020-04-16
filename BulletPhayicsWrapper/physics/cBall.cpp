@@ -67,7 +67,7 @@ namespace DegenBulletPhysicsWrapper
 		
 		mBody = new btRigidBody(rbInfo);
 		mBody->setUserPointer(this);
-
+		mBody->setSleepingThresholds(0,0);
 		// impulse effected by mass velocity is dirrectly set
 		//mBody->applyCentralImpulse(nConvert::ToBullet(def.Velocity));
 		//mBody->setLinearVelocity(nConvert::ToBullet(def.Velocity));

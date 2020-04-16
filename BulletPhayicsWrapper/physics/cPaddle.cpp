@@ -16,7 +16,7 @@ namespace DegenBulletPhysicsWrapper
 	cPaddle::cPaddle(Degen::Physics::sPaddleDef def)
 	{
 		btCollisionShape* shape = new btBoxShape(nConvert::ToBullet(def.Size));
-
+		
 		btTransform transform;
 		transform.setIdentity();
 		transform.setOrigin(nConvert::ToBullet(def.Position));
@@ -67,5 +67,12 @@ namespace DegenBulletPhysicsWrapper
 	{
 		mBody->activate(true);
 		mBody->applyCentralImpulse(nConvert::ToBullet(impulse));
+	}
+	void cPaddle::Hit(const glm::vec3& force)
+	{
+		mBody->activate(true);
+
+		mBody->applyForce(nConvert::ToBullet(force), -mConstraint->getAFrame().getOrigin());
+		//mBody->applyTorqueTurnImpulse(nConvert::ToBullet(force));
 	}
 }

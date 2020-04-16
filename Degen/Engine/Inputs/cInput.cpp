@@ -3,6 +3,8 @@
 #include "../Component/Position.h"
 #include "../Component/Camera.h"
 #include "../Component/Animation.h"
+#include "../Component/Physics.h"
+#include <physics/interfaces/iLauncherComponent.h>
 
 namespace Degen
 {
@@ -115,14 +117,63 @@ namespace Degen
 
 			}
 
+			if (glfwGetKey(window, GLFW_KEY_LEFT))
+			{
+				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Left Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+
+				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+
+				paddle->Hit(glm::vec3(0, 0, 2000));
+			}
+			else
+			{
+				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Left Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+
+				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+
+				paddle->Hit(glm::vec3(0, 0, -200));
+				
+			}
+			
+			if (glfwGetKey(window, GLFW_KEY_RIGHT))
+			{
+				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Right Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+
+				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+
+				paddle->Hit(glm::vec3(0, 0, 2000));
+			}
+			else
+			{
+				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Right Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+
+				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+
+				paddle->Hit(glm::vec3(0, 0, -200));
+
+			}
 
 			if (glfwGetKey(window, GLFW_KEY_SPACE))
 			{
-				Component::Animation* animation = dynamic_cast<Component::Animation*>(Entity::cEntityManager::GetEntity("forest guard")->GetComponent(Component::ANIMATION_COMPONENT));
+				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Launcher")->GetComponent(Component::PHYSICS_COMPONENT));
 
-				animation->next_animation = "forest_guard@walk";
-				//animation->play_through = true;
-				animation->next_animation_blend_time = 0.4;
+				Physics::iLauncherComponent* launcher = dynamic_cast<Physics::iLauncherComponent*>(phys->comp);
+
+				launcher->Pull(glm::vec3(0,0,-1));
+				
+				//Component::Animation* animation = dynamic_cast<Component::Animation*>(Entity::cEntityManager::GetEntity("forest guard")->GetComponent(Component::ANIMATION_COMPONENT));
+
+				//animation->next_animation = "forest_guard@walk";
+				////animation->play_through = true;
+				//animation->next_animation_blend_time = 0.4;
+			}
+			else
+			{
+				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Launcher")->GetComponent(Component::PHYSICS_COMPONENT));
+
+				Physics::iLauncherComponent* launcher = dynamic_cast<Physics::iLauncherComponent*>(phys->comp);
+
+				launcher->Release();
 			}
 		}
 	}
