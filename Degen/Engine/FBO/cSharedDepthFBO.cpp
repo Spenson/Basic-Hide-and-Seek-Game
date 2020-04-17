@@ -1,10 +1,12 @@
-#include "cFBO.h"
+#include "cSharedDepthFBO.h"
 namespace Degen
 {
 	namespace Render
 	{
+		GLuint cSharedDepthFBO::depthTexture_ID = 0;
+
 		// Calls shutdown(), then init()
-		bool cFBO::reset(int width, int height, std::string& error)
+		bool cSharedDepthFBO::reset(int width, int height, std::string& error)
 		{
 			if (!this->shutdown())
 			{
@@ -15,17 +17,12 @@ namespace Degen
 			return this->init(width, height, error);
 		}
 
-		bool cFBO::shutdown(void)
+		bool cSharedDepthFBO::shutdown(void)
 		{
 			glDeleteTextures(1, &(this->texture_colour_ID));
 			glDeleteTextures(1, &(this->texture_normal_ID));
 			glDeleteTextures(1, &(this->texture_position_ID));
 			glDeleteTextures(1, &(this->texture_specular_ID));
-
-			glDeleteTextures(1, &(this->texture_alpha_colour_ID));
-			glDeleteTextures(1, &(this->texture_alpha_normal_ID));
-			glDeleteTextures(1, &(this->texture_alpha_position_ID));
-			glDeleteTextures(1, &(this->texture_alpha_specular_ID));
 
 			glDeleteTextures(1, &(this->depthTexture_ID));
 
@@ -35,7 +32,7 @@ namespace Degen
 		}
 
 
-		bool cFBO::init(int width, int height, std::string& error)
+		bool cSharedDepthFBO::init(int width, int height, std::string& error)
 		{
 			this->width = width;
 			this->height = height;
@@ -100,71 +97,15 @@ namespace Degen
 			//***************************************************************
 
 
-			// Alpha Textures
-			
-			glGenTextures(1, &(this->texture_alpha_colour_ID));
-			glBindTexture(GL_TEXTURE_2D, this->texture_alpha_colour_ID);
 
-			glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F,
-						   this->width,
-						   this->height);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			
-			glGenTextures(1, &(this->texture_alpha_normal_ID));
-			glBindTexture(GL_TEXTURE_2D, this->texture_alpha_normal_ID);
-
-			glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F,
-						   this->width,
-						   this->height);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			
-			glGenTextures(1, &(this->texture_alpha_position_ID));
-			glBindTexture(GL_TEXTURE_2D, this->texture_alpha_position_ID);
-
-			glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F,
-						   this->width,
-						   this->height);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			
-			glGenTextures(1, &(this->texture_alpha_specular_ID));
-			glBindTexture(GL_TEXTURE_2D, this->texture_alpha_specular_ID);
-
-			glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA32F,
-						   this->width,
-						   this->height);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			
 
 				// Create the depth buffer (texture1)
-			glGenTextures(1, &(this->depthTexture_ID));			//g_FBO_depthTexture
+			if (depthTexture_ID == 0)
+			{
+				glGenTextures(1, &(this->depthTexture_ID));			//g_FBO_depthTexture
+			}
 			glBindTexture(GL_TEXTURE_2D, this->depthTexture_ID);
-			
+
 
 			//glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32F, ]
 
@@ -202,24 +143,9 @@ namespace Degen
 								 this->texture_specular_ID, 0);
 
 
-			
-			glFramebufferTexture(GL_FRAMEBUFFER,
-								 GL_COLOR_ATTACHMENT4,			// Colour goes to #0
-								 this->texture_alpha_colour_ID, 0);
 
-			glFramebufferTexture(GL_FRAMEBUFFER,
-								 GL_COLOR_ATTACHMENT5,
-								 this->texture_alpha_normal_ID, 0);
 
-			glFramebufferTexture(GL_FRAMEBUFFER,
-								 GL_COLOR_ATTACHMENT6,
-								 this->texture_alpha_position_ID, 0);
 
-			glFramebufferTexture(GL_FRAMEBUFFER,
-								 GL_COLOR_ATTACHMENT7,
-								 this->texture_alpha_specular_ID, 0);
-
-			
 
 			//	glFramebufferTexture(GL_FRAMEBUFFER,
 			//						 GL_DEPTH_ATTACHMENT,
@@ -234,12 +160,8 @@ namespace Degen
 				GL_COLOR_ATTACHMENT1,
 				GL_COLOR_ATTACHMENT2,
 				GL_COLOR_ATTACHMENT3,
-				GL_COLOR_ATTACHMENT4,
-				GL_COLOR_ATTACHMENT5,
-				GL_COLOR_ATTACHMENT6,
-				GL_COLOR_ATTACHMENT7
 			};
-			glDrawBuffers(8, draw_buffers);		// There are 4 outputs now
+			glDrawBuffers(4, draw_buffers);		// There are 4 outputs now
 
 			// ***************************************************************
 
@@ -273,7 +195,7 @@ namespace Degen
 			return bFrameBufferIsGoodToGo;
 		}
 
-		void cFBO::clearColourBuffer(int bufferindex)
+		void cSharedDepthFBO::clearColourBuffer(int bufferindex)
 		{
 			glViewport(0, 0, this->width, this->height);
 			GLfloat	zero = 0.0f;
@@ -282,7 +204,7 @@ namespace Degen
 			return;
 		}
 
-		void cFBO::clearAllBuffers(void)
+		void cSharedDepthFBO::clearAllBuffers(void)
 		{
 			glViewport(0, 0, this->width, this->height);
 			GLfloat	zero = 1.0f;
@@ -311,7 +233,7 @@ namespace Degen
 		}
 
 
-		void cFBO::clearBuffers(bool bClearColour, bool bClearDepth)
+		void cSharedDepthFBO::clearBuffers(bool bClearColour, bool bClearDepth)
 		{
 			glViewport(0, 0, this->width, this->height);
 			GLfloat	zero = 0.0f;
@@ -353,7 +275,7 @@ namespace Degen
 		}
 
 
-		int cFBO::getMaxColourAttachments(void)
+		int cSharedDepthFBO::getMaxColourAttachments(void)
 		{
 			//  void glGetIntegerv(GLenum pname,
 			// 				       GLint * data);
@@ -364,7 +286,7 @@ namespace Degen
 			return maxColourAttach;
 		}
 
-		int cFBO::getMaxDrawBuffers(void)
+		int cSharedDepthFBO::getMaxDrawBuffers(void)
 		{
 			int maxDrawBuffers = 0;
 			glGetIntegerv(GL_MAX_DRAW_BUFFERS, &maxDrawBuffers);

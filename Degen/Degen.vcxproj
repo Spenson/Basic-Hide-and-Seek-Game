@@ -194,6 +194,7 @@
     <ClCompile Include="Engine\Entity\cEntity.cpp" />
     <ClCompile Include="Engine\Entity\cEntityManager.cpp" />
     <ClCompile Include="Engine\FBO\cFBO.cpp" />
+    <ClCompile Include="Engine\FBO\cSharedDepthFBO.cpp" />
     <ClCompile Include="Engine\FileReading\cModelLoader.cpp" />
     <ClCompile Include="Engine\FileReading\JsonHelpers.cpp" />
     <ClCompile Include="Engine\Inputs\cInput.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="Engine\Entity\cEntity.h" />
     <ClInclude Include="Engine\Entity\cEntityManager.h" />
     <ClInclude Include="Engine\FBO\cFBO.h" />
+    <ClInclude Include="Engine\FBO\cSharedDepthFBO.h" />
     <ClInclude Include="Engine\FileReading\cModelLoader.h" />
     <ClInclude Include="Engine\FileReading\JsonHelpers.h" />
     <ClInclude Include="Engine\Animation\sModelBoneInfo.h" />
@@ -273,6 +275,13 @@
   <ItemGroup>
     <None Include="assets\config\data.json" />
     <None Include="assets\config\init.json" />
+    <None Include="assets\shaders\1vertex.glsl" />
+    <None Include="assets\shaders\2tesselation_evaluation.glsl" />
+    <None Include="assets\shaders\3geometry.glsl" />
+    <None Include="assets\shaders\4fragment.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\shaders\2tesselation_control.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

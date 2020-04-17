@@ -77,6 +77,38 @@ namespace Degen
 			glUniform1i(mShaderProgram->GetUniformLocationID("skybox01"), 0);
 
 
+
+
+
+			glActiveTexture(GL_TEXTURE20);
+			glBindTexture(GL_TEXTURE_2D, mFBO.texture_colour_ID);
+			glActiveTexture(GL_TEXTURE21);
+			glBindTexture(GL_TEXTURE_2D, mFBO.texture_normal_ID);
+			glActiveTexture(GL_TEXTURE22);
+			glBindTexture(GL_TEXTURE_2D, mFBO.texture_position_ID);
+			glActiveTexture(GL_TEXTURE23);
+			glBindTexture(GL_TEXTURE_2D, mFBO.texture_specular_ID);
+
+			glActiveTexture(GL_TEXTURE24);
+			glBindTexture(GL_TEXTURE_2D, mFBO.texture_alpha_colour_ID);
+			glActiveTexture(GL_TEXTURE25);
+			glBindTexture(GL_TEXTURE_2D, mFBO.texture_alpha_normal_ID);
+			glActiveTexture(GL_TEXTURE26);
+			glBindTexture(GL_TEXTURE_2D, mFBO.texture_alpha_position_ID);
+			glActiveTexture(GL_TEXTURE27);
+			glBindTexture(GL_TEXTURE_2D, mFBO.texture_alpha_specular_ID);
+
+			// Tie the texture1 units to the samplers in the shader
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureColour"), 20);	// Texture unit 0
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureNormal"), 21);	// Texture unit 1
+			glUniform1i(mShaderProgram->GetUniformLocationID("texturePosition"), 22);	// Texture unit 2
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureSpecular"), 23);	// Texture unit 3
+
+			// Tie the texture1 units to the samplers in the shader
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaColour"), 24);	// Texture unit 0
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaNormal"), 25);	// Texture unit 1
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaPosition"), 26);	// Texture unit 2
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaSpecular"), 27);	// Texture unit 3
 		}
 
 		void cRenderer::Update(double dt)
@@ -89,10 +121,13 @@ namespace Degen
 					printf("FBO reset failed:\n\t%s\n", error.c_str());
 					return;
 				}
+
 			}
 
 			EntitySinglePassSort();
 
+			glUniform1f(mShaderProgram->GetUniformLocationID("Width"), (float)WINDOW_WIDTH);
+			glUniform1f(mShaderProgram->GetUniformLocationID("Height"), (float)WINDOW_HEIGHT);
 
 			glBindFramebuffer(GL_FRAMEBUFFER, mFBO.ID);
 			mFBO.clearBuffers(true, false);
@@ -112,9 +147,6 @@ namespace Degen
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//glClearStencil(0);
-			//glClear(GL_STENCIL_BUFFER_BIT);
-			//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 			glm::mat4 perspective = glm::perspective(View->fovy, ratio, View->near_plane, View->far_plane);
 			glm::mat4 view = glm::lookAt(View->position, View->target, View->up);
@@ -122,10 +154,17 @@ namespace Degen
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matView"), 1, GL_FALSE, glm::value_ptr(view));
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matProj"), 1, GL_FALSE, glm::value_ptr(perspective));
 
-
+			std::vector<Entity::cEntity*> alpha_objects;
+			
 			for (auto* entity : mRenderEntities)
 			{
 				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
+				if(dynamic_cast<Component::Render*>(rends[0])->diffuse_colour.a < 1.f)
+				{
+					alpha_objects.push_back(entity);
+					continue;
+				}
+				
 				glm::mat4 tranform = GetTransform(entity);
 				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 
@@ -142,22 +181,32 @@ namespace Degen
 						RenderObject(mShaderProgram, rend, animation, tranform);
 					}
 				}
-			/*	Component::Render* rend = dynamic_cast<Component::Render*>(entity->GetComponent(Component::RENDER_COMPONENT));
-				glm::mat4 tranform = GetTransform(entity);
+			}
+			
+			PassLights();
 
+			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 1);
+
+			for (auto* entity : alpha_objects)
+			{
+				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
+				glm::mat4 tranform = GetTransform(entity);
 				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 
-				if (!animation)
+				for (unsigned i = 0; i < rends.size(); i++)
 				{
-					RenderObject(mShaderProgram, rend, tranform);
-				}
-				else
-				{
-					RenderObject(mShaderProgram, rend, animation, tranform);
-				}*/
-			}
+					Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
 
-			PassLights();
+					if (!animation)
+					{
+						RenderObject(mShaderProgram, rend, tranform);
+					}
+					else
+					{
+						RenderObject(mShaderProgram, rend, animation, tranform);
+					}
+				}
+			}
 
 			if (!LastDrawPass())
 			{
@@ -170,7 +219,6 @@ namespace Degen
 		{
 			if (rend_comp->cull_face_back) { glEnable(GL_CULL_FACE); }
 			else { glDisable(GL_CULL_FACE); }
-
 			glDisable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glCullFace(GL_BACK);
@@ -388,7 +436,7 @@ namespace Degen
 			glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 1);
+			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 2);
 
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -405,8 +453,6 @@ namespace Degen
 
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matView"), 1, GL_FALSE, glm::value_ptr(view));
 
-			glUniform1f(mShaderProgram->GetUniformLocationID("Width"), (float)WINDOW_WIDTH);
-			glUniform1f(mShaderProgram->GetUniformLocationID("Height"), (float)WINDOW_HEIGHT);
 
 
 			glm::mat4 matWorldCurrentGO = glm::scale(glm::mat4(1.f), glm::vec3(50.f));
@@ -414,20 +460,6 @@ namespace Degen
 			glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(matWorldCurrentGO));
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matInvTrans"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
 
-			glActiveTexture(GL_TEXTURE9);
-			glBindTexture(GL_TEXTURE_2D, mFBO.colourTexture_ID);
-			glActiveTexture(GL_TEXTURE10);
-			glBindTexture(GL_TEXTURE_2D, mFBO.normalTexture_ID);
-			glActiveTexture(GL_TEXTURE11);
-			glBindTexture(GL_TEXTURE_2D, mFBO.positionTexture_ID);
-			glActiveTexture(GL_TEXTURE12);
-			glBindTexture(GL_TEXTURE_2D, mFBO.specularTexture_ID);
-
-			// Tie the texture1 units to the samplers in the shader
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureColour"), 9);	// Texture unit 0
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureNormal"), 10);	// Texture unit 1
-			glUniform1i(mShaderProgram->GetUniformLocationID("texturePosition"), 11);	// Texture unit 2
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureSpecular"), 12);	// Texture unit 3
 
 			glUniform4f(mShaderProgram->GetUniformLocationID("diffuseColour"), 1.f, 1.f, 1.f, 1.f);	// *********
 			glUniform4f(mShaderProgram->GetUniformLocationID("specularColour"), 1.f, 1.f, 1.f, 1.f);

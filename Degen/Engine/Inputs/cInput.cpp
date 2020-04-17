@@ -161,11 +161,6 @@ namespace Degen
 
 				launcher->Pull(glm::vec3(0,0,-1));
 				
-				//Component::Animation* animation = dynamic_cast<Component::Animation*>(Entity::cEntityManager::GetEntity("forest guard")->GetComponent(Component::ANIMATION_COMPONENT));
-
-				//animation->next_animation = "forest_guard@walk";
-				////animation->play_through = true;
-				//animation->next_animation_blend_time = 0.4;
 			}
 			else
 			{

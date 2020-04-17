@@ -150,6 +150,9 @@
     <ClCompile Include="Engine\Physics\cPhysics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\FBO\cSharedDepthFBO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AI\BMP Loader\BMPImage.h">
@@ -308,9 +311,19 @@
     <ClInclude Include="Engine\Physics\CreatePhysics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\FBO\cSharedDepthFBO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\config\data.json" />
     <None Include="assets\config\init.json" />
+    <None Include="assets\shaders\1vertex.glsl" />
+    <None Include="assets\shaders\2tesselation_evaluation.glsl" />
+    <None Include="assets\shaders\3geometry.glsl" />
+    <None Include="assets\shaders\4fragment.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\shaders\2tesselation_control.glsl" />
   </ItemGroup>
 </Project>

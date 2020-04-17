@@ -41,6 +41,8 @@ uniform samplerCube skybox01;
 
 
 
+// See through objects
+bool alphaObject;
 
 // deffered
 uniform sampler2D textureColour;
@@ -48,10 +50,22 @@ uniform sampler2D textureNormal;
 uniform sampler2D texturePosition;
 uniform sampler2D textureSpecular;
 
+uniform sampler2D textureAlphaColour;
+uniform sampler2D textureAlphaNormal;
+uniform sampler2D textureAlphaPosition;
+uniform sampler2D textureAlphaSpecular;
+
+
 out vec4 colourOut;			// RGB A   (0 to 1) 
 out vec4 normalOut;
 out vec4 worldPosOut;
 out vec4 specularOut;
+
+out vec4 alphaColourOut;			// RGB A   (0 to 1) 
+out vec4 alphaNormalOut;
+out vec4 alphaWorldPosOut;
+out vec4 alphaSpecularOut;
+
 
 
 // Lighting
@@ -84,9 +98,9 @@ const int DIRECTIONAL_LIGHT_TYPE = 2;
 
 
 // methods
-void Pass00(void);
-void Pass01(void);
-void Pass02(void);
+void SolidObjectsPass(void);
+void AlphaObjectsPass(void);
+void CombinePass(void);
 vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal, vec3 vertexWorldPos, vec4 vertexSpecular);
 
 
@@ -101,14 +115,26 @@ void main()
 
 	if (passNumber == 0)
 	{
-		Pass00();
+		SolidObjectsPass();
 		return;
 	}
 	if (passNumber == 1)
 	{
-		Pass01();
+		AlphaObjectsPass();
 		return;
 	}
+	if (passNumber == 2)
+	{
+		CombinePass();
+		return;
+	}
+	/*
+	Here or separate shader???
+	if (passNumber == 3)
+	{
+		TextPass();
+		return;
+	}*/
 
 
 	return;
@@ -280,7 +306,7 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal, vec3 ve
 
 
 
-void Pass00(void)
+void SolidObjectsPass(void)
 {
 	bool is_cube_texture = bool(modifiers.x);
 	bool ignore_lighting = bool(modifiers.y);
@@ -363,13 +389,6 @@ void Pass00(void)
 		(tex2 * colour_ratios.z);
 
 
-
-	if (diffuseColour.a <= 0.01f)		// Basically "invisable"
-	{
-		discard;
-	}
-
-
 	colourOut = materialColour;
 	colourOut.a = 1.f;
 
@@ -393,11 +412,91 @@ void Pass00(void)
 		if (specularOut.w < 0.f) specularOut.w = 0.f;
 	}
 
+	alphaColourOut = colourOut;
+	alphaNormalOut = normalOut;
+	alphaWorldPosOut = worldPosOut;
+	alphaSpecularOut = specularOut;
 
 	return;
 }
 
-void Pass01(void)
+
+void AlphaObjectsPass(void)
+{
+	bool is_cube_texture = bool(modifiers.x);
+	bool ignore_lighting = bool(modifiers.y);
+	bool TBD1 = bool(modifiers.z);
+	bool TBD2 = bool(modifiers.w);
+
+	vec4 tex1 = vec4(0.f, 0.f, 0.f, 0.f);
+	vec4 tex2 = vec4(0.f, 0.f, 0.f, 0.f);
+
+	// cube map textures
+	if (is_cube_texture)
+	{
+		tex1 = texture(skybox00, gOut.normal.xyz);
+		tex2 = texture(skybox01, gOut.normal.xyz);
+	}
+	// 2d textures
+	else
+	{
+		tex1 = texture(texture00, gOut.uv_x2.st);
+		tex2 = texture(texture01, gOut.uv_x2.st);
+	}
+
+	vec4 materialColour = diffuseColour;
+
+	materialColour =
+		(diffuseColour * colour_ratios.x) +
+		(tex1 * colour_ratios.y) +
+		(tex2 * colour_ratios.z);
+
+
+
+	if (diffuseColour.a <= 0.01f)		// Basically "invisable"
+	{
+		discard;
+	}
+
+
+	alphaColourOut = materialColour;
+	alphaColourOut.a = 0.0;//diffuseColour.a;// * materialColour.a;
+
+
+	alphaNormalOut.xyz = gOut.normal.xyz;
+	if (ignore_lighting)
+	{
+		alphaNormalOut.w = 0.f;
+	}
+	else
+	{
+		alphaNormalOut.w = 1.f;
+		alphaWorldPosOut.xyz = gOut.position.xyz;
+		alphaWorldPosOut.w = 1.f;
+
+
+		alphaSpecularOut.rgb = specularColour.rgb;
+
+		// scale specular power to fix blend issues
+		alphaSpecularOut.w = alphaSpecularOut.w * (1.0f / 10000.0f);
+		if (alphaSpecularOut.w > 1.f) alphaSpecularOut.w = 1.f;
+		if (alphaSpecularOut.w < 0.f) alphaSpecularOut.w = 0.f;
+	}
+
+	//get original colour for opage objecs or it will go black
+	vec2 uvs = gOut.uv_x2.st;
+	uvs.s = gl_FragCoord.x / float(Width);		// "u" or "x"
+	uvs.t = gl_FragCoord.y / float(Height);		// "v" or "y"
+	colourOut = texture(textureColour, uvs.st).rgba;
+	normalOut = texture(textureNormal, uvs.st).rgba;
+	worldPosOut = texture(texturePosition, uvs.st).rgba;
+	specularOut = texture(textureSpecular, uvs.st).rgba;
+
+	return;
+}
+
+
+void CombinePass(void)
 {
 	vec2 uvs = gOut.uv_x2.st;
 
@@ -405,27 +504,48 @@ void Pass01(void)
 	uvs.t = gl_FragCoord.y / float(Height);		// "v" or "y"
 
 
-	vec4 vertexcolour = texture(textureColour, uvs.st).rgba;
-	vec4 normal = texture(textureNormal, uvs.st).rgba;
+	vec4 diffuse = 	texture(textureColour, uvs.st).rgba;
+	vec4 normal = 	texture(textureNormal, uvs.st).rgba;
 	vec4 position = texture(texturePosition, uvs.st).rgba;
 	vec4 specular = texture(textureSpecular, uvs.st).rgba;
 
+
+	vec4 alphaDiffuse =	texture(textureAlphaColour, uvs.st).rgba;
+	vec4 alphaNormal =	texture(textureAlphaNormal, uvs.st).rgba;
+	vec4 alphaPosition =texture(textureAlphaPosition, uvs.st).rgba;
+	vec4 alphaSpecular =texture(textureAlphaSpecular, uvs.st).rgba;
+
+	vec4 colour;
 	if (normal.a == 1.f)
 	{
 		specular.w *= 10000.f;
-		vec4 colour = calcualteLightContrib(vertexcolour.rgb, normalize(normal.xyz), position.xyz, specular);
-		colourOut.rgb = colour.rgb;
-		colourOut.a = 1.0f;
-
-		//colourOut.rgb = normal.rgb;
+		colour = calcualteLightContrib(diffuse.rgb, normalize(normal.xyz), position.xyz, specular);
 	}
 	else
 	{
-		colourOut.rgb = vertexcolour.rgb;
-		colourOut.a = 1.0f;
+		colour = diffuse;
 	}
 
-
+	vec4 alphaColour;
+	if (alphaDiffuse.a > 0.f)
+	{
+		if (alphaNormal.a == 1.f)
+		{
+			alphaSpecular.w *= 10000.f;
+			alphaColour = calcualteLightContrib(alphaDiffuse.rgb, normalize(alphaNormal.xyz), alphaPosition.xyz, alphaSpecular);
+		}
+		else
+		{
+			alphaColour = alphaDiffuse;
+		}
+		colourOut = (colour * (1.f-alphaDiffuse.a)) + (alphaColour * alphaDiffuse.a);
+		colourOut.a = 1.0f;
+	}
+	else
+	{
+		colourOut = colour;
+		colourOut.a = 1.0f;
+	}
 
 	return;
 }

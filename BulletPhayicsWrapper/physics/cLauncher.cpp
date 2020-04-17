@@ -85,7 +85,7 @@ namespace DegenBulletPhysicsWrapper
 		mSpring->enableSpring(0, false);
 		btTransform transform = mBody->getWorldTransform();
 		btVector3 vec = transform.getOrigin();
-		transform.setOrigin(vec + nConvert::ToBullet(glm::normalize(direction)*2.f));
+		transform.setOrigin(vec + nConvert::ToBullet(glm::normalize(direction)*4.f));
 		
 		mBody->setWorldTransform(transform);
 	}

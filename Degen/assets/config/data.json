@@ -41,7 +41,7 @@
       "is_basic": true
     },
     {
-      "name": "cube",
+      "name": "box",
       "file": "cube.ply",
       "is_basic": true
     },
@@ -82,7 +82,12 @@
 
     }
   ],
-  "Lights": [],
+
+
+
+
+
+
   "Entities": [
     {
       "name": "FreeCamera",
@@ -195,7 +200,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1 ],
@@ -222,7 +227,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
@@ -254,7 +259,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
@@ -282,7 +287,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
@@ -323,7 +328,7 @@
           "component": "physics",
           "type": "ball",
           "position": [ 0.0, 0.0, 0.0 ],
-          "mass": 5.0,
+          "mass": 10.0,
           "radius": 1.1,
           "rotation": [ 0, 0, 0 ]
         }
@@ -339,7 +344,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
@@ -368,7 +373,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
@@ -399,7 +404,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
@@ -427,7 +432,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
@@ -456,7 +461,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
@@ -486,7 +491,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
@@ -516,7 +521,7 @@
         },
         {
           "component": "render",
-          "mesh": "cube",
+          "mesh": "box",
           "texture1": "grid",
           "texture1_amount": 1.0,
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
@@ -529,7 +534,7 @@
         {
           "component": "physics",
           "type": "box",
-          "position": [ 10.5, -2.5, -5 ],
+          "position": [ 11, -2.5, -5 ],
           "mass": 0.0,
           "size": [ 0.2, 2.0, 20 ],
           "rotation": [ 0, 0, 0 ]
@@ -564,6 +569,29 @@
           "mass": 5.0,
           "size": [ 1, 2, 1.5 ],
           "rotation": [ 90, 0, 0 ]
+        }
+      ]
+    },
+
+    {
+      "name": "Reset Zone",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0, 0, 0 ],
+          "rot": [ 0, 0, 0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "box",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.0, 1.0, 0.5 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1, 1, 1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
         }
       ]
     },
@@ -655,5 +683,8 @@
         }
       ]
     }
+
+
+
   ]
 }
