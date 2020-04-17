@@ -459,38 +459,38 @@ void AlphaObjectsPass(void)
 	}
 
 
-	alphaColourOut = materialColour;
-	alphaColourOut.a = 0.0;//diffuseColour.a;// * materialColour.a;
+	colourOut = materialColour;
+	colourOut.a = diffuseColour.a;// * materialColour.a;
 
 
-	alphaNormalOut.xyz = gOut.normal.xyz;
+	normalOut.xyz = gOut.normal.xyz;
 	if (ignore_lighting)
 	{
-		alphaNormalOut.w = 0.f;
+		normalOut.w = 0.f;
 	}
 	else
 	{
-		alphaNormalOut.w = 1.f;
-		alphaWorldPosOut.xyz = gOut.position.xyz;
-		alphaWorldPosOut.w = 1.f;
+		normalOut.w = 1.f;
+		worldPosOut.xyz = gOut.position.xyz;
+		worldPosOut.w = 1.f;
 
 
-		alphaSpecularOut.rgb = specularColour.rgb;
+		specularOut.rgb = specularColour.rgb;
 
 		// scale specular power to fix blend issues
-		alphaSpecularOut.w = alphaSpecularOut.w * (1.0f / 10000.0f);
-		if (alphaSpecularOut.w > 1.f) alphaSpecularOut.w = 1.f;
-		if (alphaSpecularOut.w < 0.f) alphaSpecularOut.w = 0.f;
+		specularOut.w = specularOut.w * (1.0f / 10000.0f);
+		if (specularOut.w > 1.f) specularOut.w = 1.f;
+		if (specularOut.w < 0.f) specularOut.w = 0.f;
 	}
 
-	//get original colour for opage objecs or it will go black
-	vec2 uvs = gOut.uv_x2.st;
-	uvs.s = gl_FragCoord.x / float(Width);		// "u" or "x"
-	uvs.t = gl_FragCoord.y / float(Height);		// "v" or "y"
-	colourOut = texture(textureColour, uvs.st).rgba;
-	normalOut = texture(textureNormal, uvs.st).rgba;
-	worldPosOut = texture(texturePosition, uvs.st).rgba;
-	specularOut = texture(textureSpecular, uvs.st).rgba;
+	// //get original colour for opage objecs or it will go black
+	// vec2 uvs = gOut.uv_x2.st;
+	// uvs.s = gl_FragCoord.x / float(Width);		// "u" or "x"
+	// uvs.t = gl_FragCoord.y / float(Height);		// "v" or "y"
+	// colourOut = texture(textureColour, uvs.st).rgba;
+	// normalOut = texture(textureNormal, uvs.st).rgba;
+	// worldPosOut = texture(texturePosition, uvs.st).rgba;
+	// specularOut = texture(textureSpecular, uvs.st).rgba;
 
 	return;
 }

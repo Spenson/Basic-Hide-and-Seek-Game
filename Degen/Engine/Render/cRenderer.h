@@ -5,6 +5,7 @@
 #include "../Component/Render.h"
 #include "../Component/Animation.h"
 #include "../Entity/cEntity.h"
+#include "../FBO/cSharedDepthFBO.h"
 
 namespace Degen
 {
@@ -28,7 +29,8 @@ namespace Degen
 			void EntitySinglePassSort();
 			glm::vec3 GetPosition(Entity::cEntity* entity);
 			glm::mat4 GetTransform(Entity::cEntity* entity);
-			cFBO mFBO;
+			cSharedDepthFBO mOpaquFBO;
+			cSharedDepthFBO mTransparentFBO;
 			Shaders::cShaderManager::cShaderProgram* mShaderProgram = nullptr;
 
 			std::vector<Entity::cEntity*> mRenderEntities;

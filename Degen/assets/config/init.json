@@ -5,6 +5,11 @@
 		"geo": "3geometry.glsl",
 		"frag": "4fragment.glsl"
 	},
+	"text_shader": {
+		"name": "text",
+		"vert": "simple_text_vert.glsl",
+		"frag": "simple_text_frag.glsl"
+	},
 
 	"width": 1280,
 	"height": 720,

@@ -37,10 +37,15 @@ namespace Degen
 			glm::vec4 param2;
 		} Lights[NUMBEROFLIGHTS];
 
-		cRenderer::cRenderer(Shaders::cShaderManager::cShaderProgram* shader) : mFBO(), mShaderProgram(shader)
+		cRenderer::cRenderer(Shaders::cShaderManager::cShaderProgram* shader) : mOpaquFBO(), mTransparentFBO(), mShaderProgram(shader)
 		{
 			std::string error;
-			if (!mFBO.init(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+			if (!mOpaquFBO.init(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+			{
+				printf("FBO init failed:\n\t%s\n", error.c_str());
+				return;
+			}
+			if (!mTransparentFBO.init(WINDOW_WIDTH, WINDOW_HEIGHT, error))
 			{
 				printf("FBO init failed:\n\t%s\n", error.c_str());
 				return;
@@ -81,22 +86,22 @@ namespace Degen
 
 
 			glActiveTexture(GL_TEXTURE20);
-			glBindTexture(GL_TEXTURE_2D, mFBO.texture_colour_ID);
+			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_colour_ID);
 			glActiveTexture(GL_TEXTURE21);
-			glBindTexture(GL_TEXTURE_2D, mFBO.texture_normal_ID);
+			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_normal_ID);
 			glActiveTexture(GL_TEXTURE22);
-			glBindTexture(GL_TEXTURE_2D, mFBO.texture_position_ID);
+			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_position_ID);
 			glActiveTexture(GL_TEXTURE23);
-			glBindTexture(GL_TEXTURE_2D, mFBO.texture_specular_ID);
+			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_specular_ID);
 
 			glActiveTexture(GL_TEXTURE24);
-			glBindTexture(GL_TEXTURE_2D, mFBO.texture_alpha_colour_ID);
+			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_colour_ID);
 			glActiveTexture(GL_TEXTURE25);
-			glBindTexture(GL_TEXTURE_2D, mFBO.texture_alpha_normal_ID);
+			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_normal_ID);
 			glActiveTexture(GL_TEXTURE26);
-			glBindTexture(GL_TEXTURE_2D, mFBO.texture_alpha_position_ID);
+			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_position_ID);
 			glActiveTexture(GL_TEXTURE27);
-			glBindTexture(GL_TEXTURE_2D, mFBO.texture_alpha_specular_ID);
+			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_specular_ID);
 
 			// Tie the texture1 units to the samplers in the shader
 			glUniform1i(mShaderProgram->GetUniformLocationID("textureColour"), 20);	// Texture unit 0
@@ -113,15 +118,23 @@ namespace Degen
 
 		void cRenderer::Update(double dt)
 		{
-			if (WINDOW_WIDTH != mFBO.width || WINDOW_HEIGHT != mFBO.height)
+			if (WINDOW_WIDTH != mOpaquFBO.width || WINDOW_HEIGHT != mOpaquFBO.height)
 			{
 				std::string error;
-				if (!mFBO.reset(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+				if (!mOpaquFBO.reset(WINDOW_WIDTH, WINDOW_HEIGHT, error))
 				{
 					printf("FBO reset failed:\n\t%s\n", error.c_str());
 					return;
 				}
-
+			}
+			if (WINDOW_WIDTH != mTransparentFBO.width || WINDOW_HEIGHT != mTransparentFBO.height)
+			{
+				std::string error;
+				if (!mTransparentFBO.reset(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+				{
+					printf("FBO reset failed:\n\t%s\n", error.c_str());
+					return;
+				}
 			}
 
 			EntitySinglePassSort();
@@ -129,11 +142,13 @@ namespace Degen
 			glUniform1f(mShaderProgram->GetUniformLocationID("Width"), (float)WINDOW_WIDTH);
 			glUniform1f(mShaderProgram->GetUniformLocationID("Height"), (float)WINDOW_HEIGHT);
 
-			glBindFramebuffer(GL_FRAMEBUFFER, mFBO.ID);
-			mFBO.clearBuffers(true, false);
+			glBindFramebuffer(GL_FRAMEBUFFER, mOpaquFBO.ID);
+			mOpaquFBO.clearBuffers(true, true);
 
 			glUseProgram(mShaderProgram->ID);
 			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 0);
+			
+			PassLights();
 
 			glEnable(GL_DEPTH);
 			glDepthMask(GL_TRUE);
@@ -183,8 +198,9 @@ namespace Degen
 				}
 			}
 			
-			PassLights();
 
+			glBindFramebuffer(GL_FRAMEBUFFER, mTransparentFBO.ID);
+			mTransparentFBO.clearBuffers(true, true);
 			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 1);
 
 			for (auto* entity : alpha_objects)
