@@ -187,8 +187,10 @@ namespace Degen
 						}
 						else if (components[i]["component"] == "physics")
 						{
-							Component::iComponent* comp = ent->AddComponent<Component::Physics>();
+							Component::Physics* comp = ent->AddComponent<Component::Physics>();
 							comp->Deserialize(components[i]);
+							comp->comp->SetEntityId(ent->unique_id);
+							comp->comp->SetSecondaryId(ent->user_id);
 						}
 					}
 				}

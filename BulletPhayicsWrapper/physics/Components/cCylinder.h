@@ -2,11 +2,12 @@
 
 #include <glm.hpp>
 #include "physics/interfaces/iCylinderComponent.h"
-#include "bullet/btBulletDynamicsCommon.h"
+#include "../iBulletComponent.h"
 
 namespace DegenBulletPhysicsWrapper
 {
-	class cCylinder : public Degen::Physics::iCylinderComponent
+	class cCylinder : public Degen::Physics::iCylinderComponent,
+		public iBulletComponent
 	{
 	public:
 		btRigidBody* mBody;
@@ -16,5 +17,12 @@ namespace DegenBulletPhysicsWrapper
 
 		virtual void ApplyForce(const glm::vec3& force) override;
 		void ApplyImpulse(const glm::vec3& impulse) override;
+
+		void SetEntityId(int id) override;
+		int GetEntityId() override;
+		void SetSecondaryId(int id) override;
+		int GetSecondaryId() override;
+		void AddToWorld(btDynamicsWorld* world) override;
+		void RemoveFromWorld(btDynamicsWorld* world) override;
 	};
 }

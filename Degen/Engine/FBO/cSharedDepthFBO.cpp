@@ -6,33 +6,36 @@ namespace Degen
 		GLuint cSharedDepthFBO::depthTexture_ID = 0;
 
 		// Calls shutdown(), then init()
-		bool cSharedDepthFBO::reset(int width, int height, std::string& error)
+		bool cSharedDepthFBO::reset(int width, int height, std::string& error, bool reset_depth)
 		{
-			if (!this->shutdown())
+			if (!this->shutdown(reset_depth))
 			{
 				error = "Could not shutdown";
 				return false;
 			}
 
-			return this->init(width, height, error);
+			return this->init(width, height, error, reset_depth);
 		}
 
-		bool cSharedDepthFBO::shutdown(void)
+		bool cSharedDepthFBO::shutdown(bool shutdown_depth)
 		{
 			glDeleteTextures(1, &(this->texture_colour_ID));
 			glDeleteTextures(1, &(this->texture_normal_ID));
 			glDeleteTextures(1, &(this->texture_position_ID));
 			glDeleteTextures(1, &(this->texture_specular_ID));
 
-			glDeleteTextures(1, &(this->depthTexture_ID));
-
+			if (shutdown_depth)
+			{
+				glDeleteTextures(1, &(this->depthTexture_ID));
+			}
+			
 			glDeleteFramebuffers(1, &(this->ID));
 
 			return true;
 		}
 
 
-		bool cSharedDepthFBO::init(int width, int height, std::string& error)
+		bool cSharedDepthFBO::init(int width, int height, std::string& error, bool init_depth)
 		{
 			this->width = width;
 			this->height = height;
@@ -100,31 +103,36 @@ namespace Degen
 
 
 				// Create the depth buffer (texture1)
-			if (depthTexture_ID == 0)
+			if (init_depth)
 			{
-				glGenTextures(1, &(this->depthTexture_ID));			//g_FBO_depthTexture
+				glGenTextures(1, &(depthTexture_ID));			//g_FBO_depthTexture
+
+				glBindTexture(GL_TEXTURE_2D, depthTexture_ID);
+
+
+				//glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32F, ]
+
+				// Note that, unless you specifically ask for it, the stencil buffer
+				// is NOT present... i.e. GL_DEPTH_COMPONENT32F DOESN'T have stencil
+
+				// These are:
+				// - GL_DEPTH32F_STENCIL8, which is 32 bit float depth + 8 bit stencil
+				// - GL_DEPTH24_STENCIL8,  which is 24 bit float depth + 8 bit stencil (more common?)
+				glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8,	//GL_DEPTH32F_STENCIL8,
+							   this->width,		//g_FBO_SizeInPixes
+							   this->height);
+				//	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_STENCIL_TEXTURE_MODE, GL_DEPTH_COMPONENT );
+				//	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_STENCIL_TEXTURE_MODE, GL_STENCIL_COMPONENT );
+				//	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, this->width, this->height, 0, GL_EXT_packe
+
+				//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH24_STENCIL8, GL_TEXTURE_2D, this->depthTexture_ID, 0);
+
 			}
-			glBindTexture(GL_TEXTURE_2D, this->depthTexture_ID);
-
-
-			//glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH_COMPONENT32F, ]
-
-			// Note that, unless you specifically ask for it, the stencil buffer
-			// is NOT present... i.e. GL_DEPTH_COMPONENT32F DOESN'T have stencil
-
-			// These are:
-			// - GL_DEPTH32F_STENCIL8, which is 32 bit float depth + 8 bit stencil
-			// - GL_DEPTH24_STENCIL8,  which is 24 bit float depth + 8 bit stencil (more common?)
-			glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8,	//GL_DEPTH32F_STENCIL8,
-						   this->width,		//g_FBO_SizeInPixes
-						   this->height);
-			//	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_STENCIL_TEXTURE_MODE, GL_DEPTH_COMPONENT );
-			//	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_STENCIL_TEXTURE_MODE, GL_STENCIL_COMPONENT );
-			//	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, this->width, this->height, 0, GL_EXT_packe
-
-			//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH24_STENCIL8, GL_TEXTURE_2D, this->depthTexture_ID, 0);
-
 			// ***************************************************************
+
+
+
+
 
 			glFramebufferTexture(GL_FRAMEBUFFER,
 								 GL_COLOR_ATTACHMENT0,			// Colour goes to #0
@@ -143,16 +151,11 @@ namespace Degen
 								 this->texture_specular_ID, 0);
 
 
-
-
-
-
-			//	glFramebufferTexture(GL_FRAMEBUFFER,
-			//						 GL_DEPTH_ATTACHMENT,
-			//						 this->depthTexture_ID, 0);
 			glFramebufferTexture(GL_FRAMEBUFFER,
 								 GL_DEPTH_STENCIL_ATTACHMENT,
-								 this->depthTexture_ID, 0);
+								 depthTexture_ID, 0);
+
+
 
 			static const GLenum draw_buffers[] =
 			{
@@ -213,10 +216,6 @@ namespace Degen
 			glClearBufferfv(GL_COLOR, 1, &zero);
 			glClearBufferfv(GL_COLOR, 2, &zero);
 			glClearBufferfv(GL_COLOR, 3, &zero);
-			glClearBufferfv(GL_COLOR, 4, &zero);
-			glClearBufferfv(GL_COLOR, 5, &zero);
-			glClearBufferfv(GL_COLOR, 6, &zero);
-			glClearBufferfv(GL_COLOR, 7, &zero);
 
 			glClearBufferfv(GL_DEPTH, 0, &one);
 
@@ -244,14 +243,21 @@ namespace Degen
 				glClearBufferfv(GL_COLOR, 1, &zero);		// Colour
 				glClearBufferfv(GL_COLOR, 2, &zero);		// Colour
 				glClearBufferfv(GL_COLOR, 3, &zero);		// Colour
-				glClearBufferfv(GL_COLOR, 4, &zero);		// Colour
-				glClearBufferfv(GL_COLOR, 5, &zero);		// Colour
-				glClearBufferfv(GL_COLOR, 6, &zero);		// Colour
-				glClearBufferfv(GL_COLOR, 7, &zero);		// Colour
 			}
 			if (bClearDepth)
 			{
 				glClearBufferfv(GL_DEPTH, 0, &one);		// Depth is normalized 0.0 to 1.0f
+
+				glStencilMask(0xFF);
+
+				{	// Clear stencil
+					//GLint intZero = 0;
+					//glClearBufferiv(GL_STENCIL, 0, &intZero );
+					glClearBufferfi(GL_DEPTH_STENCIL,
+									0,		// Must be zero
+									1.0f,	// Clear value for depth
+									0);	// Clear value for stencil
+				}
 			}
 			// If buffer is GL_STENCIL, drawbuffer must be zero, and value points to a 
 			//  single value to clear the stencil buffer to. Masking is performed in the 
@@ -259,17 +265,7 @@ namespace Degen
 			//  should be used to clear stencil buffers; be used to clear stencil buffers; 
 			//  other forms do not accept a buffer of GL_STENCIL.
 
-			// 
-			glStencilMask(0xFF);
-
-			{	// Clear stencil
-				//GLint intZero = 0;
-				//glClearBufferiv(GL_STENCIL, 0, &intZero );
-				glClearBufferfi(GL_DEPTH_STENCIL,
-								0,		// Must be zero
-								1.0f,	// Clear value for depth
-								0);	// Clear value for stencil
-			}
+			//
 
 			return;
 		}

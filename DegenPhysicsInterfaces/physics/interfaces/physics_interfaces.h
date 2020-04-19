@@ -10,3 +10,4 @@
 #include "iConeComponent.h"
 #include "iPaddleComponent.h"
 #include "iLauncherComponent.h"
+#include "iTriggerRegionComponent.h"

@@ -1,9 +1,9 @@
-#include "cCone.h"
-#include "nConvert.h"
+#include "cCylinder.h"
+#include "../nConvert.h"
 
 namespace DegenBulletPhysicsWrapper
 {
-	cCone::~cCone()
+	cCylinder::~cCylinder()
 	{
 		mBody->setUserPointer(nullptr);
 		delete mBody->getCollisionShape();
@@ -11,9 +11,9 @@ namespace DegenBulletPhysicsWrapper
 		delete mBody;
 		mBody = nullptr;
 	}
-	cCone::cCone(Degen::Physics::sConeDef def)
+	cCylinder::cCylinder(Degen::Physics::sCylinderDef def)
 	{
-		btCollisionShape* shape = new btConeShape(def.Radius, def.Height * 2.f);
+		btCollisionShape* shape = new btCylinderShape(nConvert::ToBullet(def.Size));
 
 		btTransform transform;
 		transform.setIdentity();
@@ -38,20 +38,44 @@ namespace DegenBulletPhysicsWrapper
 		mBody = new btRigidBody(rbInfo);
 		mBody->setUserPointer(this);
 	}
-	void cCone::GetTransform(glm::mat4& transformOut)
+	void cCylinder::GetTransform(glm::mat4& transformOut)
 	{
 		btTransform transform;
 		mBody->getMotionState()->getWorldTransform(transform);
 		nConvert::ToGLM(transform, transformOut);
 	}
-	void cCone::ApplyForce(const glm::vec3& force)
+	void cCylinder::ApplyForce(const glm::vec3& force)
 	{
 		mBody->activate(true);
 		mBody->applyCentralForce(nConvert::ToBullet(force));
 	}
-	void cCone::ApplyImpulse(const glm::vec3& impulse)
+	void cCylinder::ApplyImpulse(const glm::vec3& impulse)
 	{
 		mBody->activate(true);
 		mBody->applyCentralImpulse(nConvert::ToBullet(impulse));
+	}
+	void cCylinder::SetEntityId(int id)
+	{
+		mBody->setUserIndex(id);
+	}
+	int cCylinder::GetEntityId()
+	{
+		return mBody->getUserIndex();
+	}
+	void cCylinder::SetSecondaryId(int id)
+	{
+		mBody->setUserIndex2(id);
+	}
+	int cCylinder::GetSecondaryId()
+	{
+		return mBody->getUserIndex2();
+	}
+	void cCylinder::AddToWorld(btDynamicsWorld* world)
+	{
+		world->addRigidBody(mBody);
+	}
+	void cCylinder::RemoveFromWorld(btDynamicsWorld* world)
+	{
+		world->removeRigidBody(mBody);
 	}
 }

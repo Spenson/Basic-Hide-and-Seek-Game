@@ -6,7 +6,7 @@
  * \desc	contains the implementation of the cPhysicsFactory class
  */
 #include "cPlane.h"
-#include "nConvert.h"
+#include "../nConvert.h"
 
 
 namespace DegenBulletPhysicsWrapper
@@ -81,6 +81,36 @@ namespace DegenBulletPhysicsWrapper
 	//	/*btTransform transform;
 	//	mBody->getMotionState()->getWorldTransform(transform);
 	//	nConvert::ToGLM(transform, transformOut);*/
+	}
+
+	void cPlane::SetEntityId(int id)
+	{
+		mBody->setUserIndex(id);
+	}
+
+	int cPlane::GetEntityId()
+	{
+		return mBody->getUserIndex();
+	}
+
+	void cPlane::SetSecondaryId(int id)
+	{
+		mBody->setUserIndex2(id);
+	}
+
+	int cPlane::GetSecondaryId()
+	{
+		return mBody->getUserIndex2();
+	}
+
+	void cPlane::AddToWorld(btDynamicsWorld* world)
+	{
+		world->addRigidBody(mBody);
+	}
+
+	void cPlane::RemoveFromWorld(btDynamicsWorld* world)
+	{
+		world->removeRigidBody(mBody);
 	}
 
 	/**

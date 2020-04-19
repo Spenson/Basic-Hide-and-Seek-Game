@@ -20,6 +20,8 @@
 #include "Animation/cAnimator.h"
 #include "Physics/CreatePhysics.h"
 #include "Physics/cPhysics.h"
+#include "Render/cTextRenderer.h"
+#include "Game/PinBall.h"
 
 
 namespace Degen
@@ -33,6 +35,8 @@ namespace Degen
 	Texture::cTextureManager* TextureManager;
 	Animation::cAnimationManager* AnimationManager;
 	Physics::iPhysicsFactory* PhysicsFactory;
+
+	Render::cTextRenderer* TextRenderer;
 
 	sView* View;
 
@@ -54,7 +58,6 @@ namespace Degen
 	{
 		WINDOW_WIDTH = 800;
 		WINDOW_HEIGHT = 600;
-
 	}
 
 	cEngine::~cEngine()
@@ -113,6 +116,8 @@ namespace Degen
 
 	bool cEngine::Initialize(std::string file)
 	{
+
+
 		Json::Value jsonRoot;
 		{
 			std::string loadingErrors;
@@ -201,16 +206,46 @@ namespace Degen
 			mShaderName = name;
 		}
 
+		{
+			Json::Value jsonShader;
+			if (jsonRoot["text_shader"].isObject())jsonShader = jsonRoot["text_shader"];
 
+			std::string name;
 
+			JsonHelp::Set(jsonShader["name"], name);
+
+			Shaders::cShaderManager::cShader vertexShad;
+			if (jsonShader["vert"].isString()) vertexShad.fileName = "assets/shaders/" + jsonShader["vert"].asString();
+
+			Shaders::cShaderManager::cShader fragShader;
+			if (jsonShader["frag"].isString()) fragShader.fileName = "assets/shaders/" + jsonShader["frag"].asString();
+
+			if (vertexShad.fileName.empty() || fragShader.fileName.empty())
+			{
+				printf("vertex and fragment shaders required.\n");
+				return false;
+			}
+			
+			if (!ShaderManager->createProgramFromFile(name, vertexShad, fragShader))
+			{
+				printf("Could not create text shader\n");
+				printf("%s\n", ShaderManager->getLastError().c_str());
+				return false;
+			}
+			
+			TextRenderer = new Render::cTextRenderer(ShaderManager->pGetShaderProgramFromFriendlyName(name));
+		}
+
+		
 		glm::vec3 gravity(0.f, 5.f, 0.f);
 		JsonHelp::Set(jsonRoot["gravity"], gravity);
 		mPhysics = new Physics::cPhysics(gravity);
-		
+
 		mCamera = new Camera::cCamera();
 		mInput = new Input::cInput(mWindow);
 		mBasicMotion = new BasicMotion::cBasicMotion();
 		mAnimator = new Animation::cAnimator();
+		mPinball = new Game::Pinball();
 
 		return true;
 	}
@@ -306,7 +341,10 @@ namespace Degen
 			mCamera->Update(delta_time);
 			mAnimator->Update(delta_time);
 			mPhysics->Update(delta_time);
+			mPinball->Update(delta_time);
 			mRenderer->Update(delta_time);
+
+			TextRenderer->Update(delta_time);
 
 			//Swap buffers
 			glfwSwapBuffers(mWindow);

@@ -153,6 +153,12 @@
     <ClCompile Include="Engine\FBO\cSharedDepthFBO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Render\cTextRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Game\PinBall.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AI\BMP Loader\BMPImage.h">
@@ -314,6 +320,12 @@
     <ClInclude Include="Engine\FBO\cSharedDepthFBO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Render\cTextRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Game\PinBall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\config\data.json" />
@@ -322,8 +334,12 @@
     <None Include="assets\shaders\2tesselation_evaluation.glsl" />
     <None Include="assets\shaders\3geometry.glsl" />
     <None Include="assets\shaders\4fragment.glsl" />
+    <None Include="assets\shaders\text_1vertex.glsl" />
+    <None Include="assets\shaders\debug_1vertex.glsl" />
+    <None Include="assets\shaders\debug_4fragment.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\shaders\2tesselation_control.glsl" />
+    <Text Include="assets\shaders\text_4fragment.glsl" />
   </ItemGroup>
 </Project>

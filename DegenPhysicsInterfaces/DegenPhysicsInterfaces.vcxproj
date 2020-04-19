@@ -154,6 +154,7 @@
     <ClInclude Include="physics\interfaces\iPhysicsFactory.h" />
     <ClInclude Include="physics\interfaces\iPhysicsWorld.h" />
     <ClInclude Include="physics\interfaces\iPlaneComponent.h" />
+    <ClInclude Include="physics\interfaces\iTriggerRegionComponent.h" />
     <ClInclude Include="physics\interfaces\physics_interfaces.h" />
   </ItemGroup>
   <ItemGroup>

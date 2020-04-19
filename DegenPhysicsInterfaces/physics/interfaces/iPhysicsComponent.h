@@ -14,6 +14,11 @@ namespace Physics
 		inline const eComponentType& GetComponentType() { return mComponentType; }
 
 		virtual void GetTransform(glm::mat4& transformOut) = 0;
+
+		virtual void SetEntityId(int id) = 0;
+		virtual int GetEntityId() = 0;
+		virtual void SetSecondaryId(int id) = 0;
+		virtual int GetSecondaryId() = 0;
 		
 	protected:
 		iPhysicsComponent(eComponentType componentType)

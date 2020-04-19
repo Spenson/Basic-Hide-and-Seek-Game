@@ -302,20 +302,22 @@
     <ClCompile Include="physics\bullet\LinearMath\TaskScheduler\btTaskScheduler.cpp" />
     <ClCompile Include="physics\bullet\LinearMath\TaskScheduler\btThreadSupportPosix.cpp" />
     <ClCompile Include="physics\bullet\LinearMath\TaskScheduler\btThreadSupportWin32.cpp" />
-    <ClCompile Include="physics\cBox.cpp" />
-    <ClCompile Include="physics\cLauncher.cpp" />
-    <ClCompile Include="physics\cLauncher.h" />
-    <ClCompile Include="physics\cPaddle.cpp" />
-    <ClCompile Include="physics\cCone.cpp" />
-    <ClCompile Include="physics\cCylinder.cpp" />
+    <ClCompile Include="physics\Components\cBox.cpp" />
+    <ClCompile Include="physics\Components\cLauncher.cpp" />
+    <ClCompile Include="physics\Components\cLauncher.h" />
+    <ClCompile Include="physics\Components\cPaddle.cpp" />
+    <ClCompile Include="physics\Components\cCone.cpp" />
+    <ClCompile Include="physics\Components\cCylinder.cpp" />
     <ClCompile Include="physics\cPhysicsFactory.cpp" />
     <ClCompile Include="physics\cPhysicsWorld.cpp" />
-    <ClCompile Include="physics\cPlane.cpp" />
+    <ClCompile Include="physics\Components\cPlane.cpp" />
     <ClCompile Include="physics\CreatePhysicsFactory.cpp" />
-    <ClCompile Include="physics\cBall.cpp" />
+    <ClCompile Include="physics\Components\cBall.cpp" />
+    <ClCompile Include="physics\Components\cTriggerRegion.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="physics\cPaddle.h" />
+    <ClInclude Include="physics\components.h" />
+    <ClInclude Include="physics\Components\cPaddle.h" />
     <ClInclude Include="physics\bullet\btBulletCollisionCommon.h" />
     <ClInclude Include="physics\bullet\btBulletDynamicsCommon.h" />
     <ClInclude Include="physics\bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
@@ -547,15 +549,16 @@
     <ClInclude Include="physics\bullet\LinearMath\btTransformUtil.h" />
     <ClInclude Include="physics\bullet\LinearMath\btVector3.h" />
     <ClInclude Include="physics\bullet\LinearMath\TaskScheduler\btThreadSupportInterface.h" />
-    <ClInclude Include="physics\cCollisionListener.h" />
-    <ClInclude Include="physics\cBox.h" />
-    <ClInclude Include="physics\cCone.h" />
-    <ClInclude Include="physics\cCylinder.h" />
+    <ClInclude Include="physics\Components\cBox.h" />
+    <ClInclude Include="physics\Components\cCone.h" />
+    <ClInclude Include="physics\Components\cCylinder.h" />
     <ClInclude Include="physics\cPhysicsFactory.h" />
     <ClInclude Include="physics\cPhysicsWorld.h" />
-    <ClInclude Include="physics\cPlane.h" />
+    <ClInclude Include="physics\Components\cPlane.h" />
     <ClInclude Include="physics\CreatePhysicsFactory.h" />
-    <ClInclude Include="physics\cBall.h" />
+    <ClInclude Include="physics\Components\cBall.h" />
+    <ClInclude Include="physics\Components\cTriggerRegion.h" />
+    <ClInclude Include="physics\iBulletComponent.h" />
     <ClInclude Include="physics\nConvert.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

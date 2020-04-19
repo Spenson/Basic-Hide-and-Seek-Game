@@ -107,7 +107,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)Dependencies\lib\$(PlatformShortName)\$(Configuration)\*.dll" "$(OutDir)"</Command>
@@ -123,7 +123,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)Dependencies\lib\$(PlatformShortName)\$(Configuration)\*.dll" "$(OutDir)"</Command>
@@ -143,7 +143,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)Dependencies\lib\$(PlatformShortName)\$(Configuration)\*.dll" "$(OutDir)"</Command>
@@ -163,7 +163,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)Dependencies\lib\$(PlatformShortName)\$(Configuration)\*.dll" "$(OutDir)"</Command>
@@ -197,6 +197,7 @@
     <ClCompile Include="Engine\FBO\cSharedDepthFBO.cpp" />
     <ClCompile Include="Engine\FileReading\cModelLoader.cpp" />
     <ClCompile Include="Engine\FileReading\JsonHelpers.cpp" />
+    <ClCompile Include="Engine\Game\PinBall.cpp" />
     <ClCompile Include="Engine\Inputs\cInput.cpp" />
     <ClCompile Include="Engine\LightHelper\cLightHelper.cpp" />
     <ClCompile Include="Engine\Load.cpp" />
@@ -204,6 +205,7 @@
     <ClCompile Include="Engine\Physics\cPhysics.cpp" />
     <ClCompile Include="Engine\Physics\CreatePhysics.cpp" />
     <ClCompile Include="Engine\Render\cRenderer.cpp" />
+    <ClCompile Include="Engine\Render\cTextRenderer.cpp" />
     <ClCompile Include="Engine\Shaders\cShader.cpp" />
     <ClCompile Include="Engine\Shaders\cShaderManager.cpp" />
     <ClCompile Include="Engine\Shaders\cShaderProgram.cpp" />
@@ -246,6 +248,7 @@
     <ClInclude Include="Engine\FileReading\cModelLoader.h" />
     <ClInclude Include="Engine\FileReading\JsonHelpers.h" />
     <ClInclude Include="Engine\Animation\sModelBoneInfo.h" />
+    <ClInclude Include="Engine\Game\PinBall.h" />
     <ClInclude Include="Engine\GL.h" />
     <ClInclude Include="Engine\Globals.h" />
     <ClInclude Include="Engine\Inputs\cInput.h" />
@@ -258,6 +261,7 @@
     <ClInclude Include="Engine\Physics\cPhysics.h" />
     <ClInclude Include="Engine\Physics\CreatePhysics.h" />
     <ClInclude Include="Engine\Render\cRenderer.h" />
+    <ClInclude Include="Engine\Render\cTextRenderer.h" />
     <ClInclude Include="Engine\Shaders\cShaderManager.h" />
     <ClInclude Include="Engine\sView.h" />
     <ClInclude Include="Engine\Texture\C24BitBMPpixel.h" />
@@ -279,9 +283,13 @@
     <None Include="assets\shaders\2tesselation_evaluation.glsl" />
     <None Include="assets\shaders\3geometry.glsl" />
     <None Include="assets\shaders\4fragment.glsl" />
+    <None Include="assets\shaders\debug_1vertex.glsl" />
+    <None Include="assets\shaders\debug_4fragment.glsl" />
+    <None Include="assets\shaders\text_1vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\shaders\2tesselation_control.glsl" />
+    <Text Include="assets\shaders\text_4fragment.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

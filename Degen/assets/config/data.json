@@ -474,7 +474,7 @@
         {
           "component": "physics",
           "type": "box",
-          "position": [ 14.5, -2.5, -34 ],
+          "position": [ 14.5, -3, -33 ],
           "mass": 0.0,
           "size": [ 0.5, 2.0, 0.5 ],
           "rotation": [ 0, 0, 0 ]
@@ -504,7 +504,7 @@
         {
           "component": "physics",
           "type": "box",
-          "position": [ 11.5, -2.5, -34 ],
+          "position": [ 11.5, -3, -33 ],
           "mass": 0.0,
           "size": [ 0.5, 2.0, 0.5 ],
           "rotation": [ 0, 0, 0 ]
@@ -558,16 +558,16 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1, 2, 1.5 ],
+          "scale": [ 1, 2, 1 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "launcher",
-          "position": [ 13, -4, -33 ],
-          "mass": 5.0,
-          "size": [ 1, 2, 1.5 ],
+          "position": [ 13, -3.75, -33.5 ],
+          "mass": 20.0,
+          "size": [ 0.95, 2, 1 ],
           "rotation": [ 90, 0, 0 ]
         }
       ]

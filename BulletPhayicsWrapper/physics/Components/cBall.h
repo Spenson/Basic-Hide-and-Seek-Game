@@ -7,7 +7,7 @@
  */
 #include <glm.hpp>
 #include <physics/interfaces/iBallComponent.h>
-#include "bullet/btBulletDynamicsCommon.h"
+#include "../iBulletComponent.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -18,7 +18,9 @@ namespace DegenBulletPhysicsWrapper
 	 * \desc	A wrapper for a cRigidBody object containing a cBall: iShape. Maintaining a pointer to the body to access and the shape for cleanup.
 	 */
 	
-	class cBall: public Degen::Physics::iBallComponent
+	class cBall:
+	public Degen::Physics::iBallComponent,
+	public iBulletComponent
 	{
 	public:
 		btRigidBody* mBody;	// \desc	pointer to wrapped object to allow access
@@ -71,5 +73,12 @@ namespace DegenBulletPhysicsWrapper
 		 */
 		virtual void ApplyForce(const glm::vec3& force) override;
 		void ApplyImpulse(const glm::vec3& impulse) override;
+		
+		void SetEntityId(int id) override;
+		int GetEntityId() override;
+		void SetSecondaryId(int id) override;
+		int GetSecondaryId() override;
+		void AddToWorld(btDynamicsWorld* world) override;
+		void RemoveFromWorld(btDynamicsWorld* world) override;
 	};
 }

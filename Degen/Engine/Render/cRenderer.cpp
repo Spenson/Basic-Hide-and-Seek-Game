@@ -40,12 +40,12 @@ namespace Degen
 		cRenderer::cRenderer(Shaders::cShaderManager::cShaderProgram* shader) : mOpaquFBO(), mTransparentFBO(), mShaderProgram(shader)
 		{
 			std::string error;
-			if (!mOpaquFBO.init(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+			if (!mOpaquFBO.init(WINDOW_WIDTH, WINDOW_HEIGHT, error, true))
 			{
 				printf("FBO init failed:\n\t%s\n", error.c_str());
 				return;
 			}
-			if (!mTransparentFBO.init(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+			if (!mTransparentFBO.init(WINDOW_WIDTH, WINDOW_HEIGHT, error, false))
 			{
 				printf("FBO init failed:\n\t%s\n", error.c_str());
 				return;
@@ -81,39 +81,8 @@ namespace Degen
 			glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 			glUniform1i(mShaderProgram->GetUniformLocationID("skybox01"), 0);
 
+			BindOutPutTextures();
 
-
-
-
-			glActiveTexture(GL_TEXTURE20);
-			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_colour_ID);
-			glActiveTexture(GL_TEXTURE21);
-			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_normal_ID);
-			glActiveTexture(GL_TEXTURE22);
-			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_position_ID);
-			glActiveTexture(GL_TEXTURE23);
-			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_specular_ID);
-
-			glActiveTexture(GL_TEXTURE24);
-			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_colour_ID);
-			glActiveTexture(GL_TEXTURE25);
-			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_normal_ID);
-			glActiveTexture(GL_TEXTURE26);
-			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_position_ID);
-			glActiveTexture(GL_TEXTURE27);
-			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_specular_ID);
-
-			// Tie the texture1 units to the samplers in the shader
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureColour"), 20);	// Texture unit 0
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureNormal"), 21);	// Texture unit 1
-			glUniform1i(mShaderProgram->GetUniformLocationID("texturePosition"), 22);	// Texture unit 2
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureSpecular"), 23);	// Texture unit 3
-
-			// Tie the texture1 units to the samplers in the shader
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaColour"), 24);	// Texture unit 0
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaNormal"), 25);	// Texture unit 1
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaPosition"), 26);	// Texture unit 2
-			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaSpecular"), 27);	// Texture unit 3
 		}
 
 		void cRenderer::Update(double dt)
@@ -121,33 +90,33 @@ namespace Degen
 			if (WINDOW_WIDTH != mOpaquFBO.width || WINDOW_HEIGHT != mOpaquFBO.height)
 			{
 				std::string error;
-				if (!mOpaquFBO.reset(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+				if (!mOpaquFBO.reset(WINDOW_WIDTH, WINDOW_HEIGHT, error, true))
 				{
 					printf("FBO reset failed:\n\t%s\n", error.c_str());
 					return;
 				}
-			}
-			if (WINDOW_WIDTH != mTransparentFBO.width || WINDOW_HEIGHT != mTransparentFBO.height)
-			{
-				std::string error;
-				if (!mTransparentFBO.reset(WINDOW_WIDTH, WINDOW_HEIGHT, error))
+
+				if (!mTransparentFBO.reset(WINDOW_WIDTH, WINDOW_HEIGHT, error, false))
 				{
 					printf("FBO reset failed:\n\t%s\n", error.c_str());
 					return;
 				}
+
+				// REBIND TO NEW FBOs!
+				BindOutPutTextures();
 			}
 
 			EntitySinglePassSort();
 
-			glUniform1f(mShaderProgram->GetUniformLocationID("Width"), (float)WINDOW_WIDTH);
-			glUniform1f(mShaderProgram->GetUniformLocationID("Height"), (float)WINDOW_HEIGHT);
+			glUseProgram(mShaderProgram->ID);
+			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 0);
 
 			glBindFramebuffer(GL_FRAMEBUFFER, mOpaquFBO.ID);
 			mOpaquFBO.clearBuffers(true, true);
 
-			glUseProgram(mShaderProgram->ID);
-			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 0);
-			
+			glUniform1f(mShaderProgram->GetUniformLocationID("Width"), (float)WINDOW_WIDTH);
+			glUniform1f(mShaderProgram->GetUniformLocationID("Height"), (float)WINDOW_HEIGHT);
+
 			PassLights();
 
 			glEnable(GL_DEPTH);
@@ -162,7 +131,6 @@ namespace Degen
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
 			glm::mat4 perspective = glm::perspective(View->fovy, ratio, View->near_plane, View->far_plane);
 			glm::mat4 view = glm::lookAt(View->position, View->target, View->up);
 
@@ -170,42 +138,16 @@ namespace Degen
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matProj"), 1, GL_FALSE, glm::value_ptr(perspective));
 
 			std::vector<Entity::cEntity*> alpha_objects;
-			
+
 			for (auto* entity : mRenderEntities)
 			{
 				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
-				if(dynamic_cast<Component::Render*>(rends[0])->diffuse_colour.a < 1.f)
+				if (dynamic_cast<Component::Render*>(rends[0])->diffuse_colour.a < 1.f)
 				{
 					alpha_objects.push_back(entity);
 					continue;
 				}
-				
-				glm::mat4 tranform = GetTransform(entity);
-				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 
-				for(unsigned i = 0; i < rends.size(); i++)
-				{
-					Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
-					
-					if (!animation)
-					{
-						RenderObject(mShaderProgram, rend, tranform);
-					}
-					else
-					{
-						RenderObject(mShaderProgram, rend, animation, tranform);
-					}
-				}
-			}
-			
-
-			glBindFramebuffer(GL_FRAMEBUFFER, mTransparentFBO.ID);
-			mTransparentFBO.clearBuffers(true, true);
-			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 1);
-
-			for (auto* entity : alpha_objects)
-			{
-				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
 				glm::mat4 tranform = GetTransform(entity);
 				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 
@@ -223,6 +165,32 @@ namespace Degen
 					}
 				}
 			}
+
+
+			//glBindFramebuffer(GL_FRAMEBUFFER, mTransparentFBO.ID);
+			//mTransparentFBO.clearBuffers(true, false);
+			//glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 1);
+			//glClear(GL_COLOR_BUFFER_BIT);
+			//for (auto* entity : alpha_objects)
+			//{
+			//	std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
+			//	glm::mat4 tranform = GetTransform(entity);
+			//	Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
+
+			//	for (unsigned i = 0; i < rends.size(); i++)
+			//	{
+			//		Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
+
+			//		if (!animation)
+			//		{
+			//			RenderObject(mShaderProgram, rend, tranform);
+			//		}
+			//		else
+			//		{
+			//			RenderObject(mShaderProgram, rend, animation, tranform);
+			//		}
+			//	}
+			//}
 
 			if (!LastDrawPass())
 			{
@@ -444,6 +412,40 @@ namespace Degen
 					mLightEntities.push_back(entity);
 				}
 			}
+		}
+
+		void cRenderer::BindOutPutTextures()
+		{
+			glActiveTexture(GL_TEXTURE20);
+			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_colour_ID);
+			glActiveTexture(GL_TEXTURE21);
+			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_normal_ID);
+			glActiveTexture(GL_TEXTURE22);
+			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_position_ID);
+			glActiveTexture(GL_TEXTURE23);
+			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_specular_ID);
+
+			glActiveTexture(GL_TEXTURE24);
+			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_colour_ID);
+			glActiveTexture(GL_TEXTURE25);
+			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_normal_ID);
+			glActiveTexture(GL_TEXTURE26);
+			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_position_ID);
+			glActiveTexture(GL_TEXTURE27);
+			glBindTexture(GL_TEXTURE_2D, mTransparentFBO.texture_specular_ID);
+
+			// Tie the texture1 units to the samplers in the shader
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureColour"), 20);	// Texture unit 0
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureNormal"), 21);	// Texture unit 1
+			glUniform1i(mShaderProgram->GetUniformLocationID("texturePosition"), 22);	// Texture unit 2
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureSpecular"), 23);	// Texture unit 3
+
+			// Tie the texture1 units to the samplers in the shader
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaColour"), 24);	// Texture unit 0
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaNormal"), 25);	// Texture unit 1
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaPosition"), 26);	// Texture unit 2
+			glUniform1i(mShaderProgram->GetUniformLocationID("textureAlphaSpecular"), 27);	// Texture unit 3
+
 		}
 
 		bool cRenderer::LastDrawPass()

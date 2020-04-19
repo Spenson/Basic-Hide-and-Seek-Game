@@ -8,13 +8,7 @@
 
 #include "cPhysicsFactory.h"
 #include "cPhysicsWorld.h"
-#include "cBall.h"
-#include "cPlane.h"
-#include "cBox.h"
-#include "cCone.h"
-#include "cCylinder.h"
-#include "cPaddle.h"
-#include "cLauncher.h"
+#include "components.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -89,6 +83,11 @@ namespace DegenBulletPhysicsWrapper
 	Degen::Physics::iLauncherComponent* cPhysicsFactory::CreateLauncher(const Degen::Physics::sLauncherDef& def)
 	{
 		return new cLauncher(def);
+	}
+
+	Degen::Physics::iTriggerRegionComponent* cPhysicsFactory::CreateTriggerRegion(const Degen::Physics::sTriggerRegionDef& def)
+	{
+		return new cTriggerRegion(def);
 	}
 
 }

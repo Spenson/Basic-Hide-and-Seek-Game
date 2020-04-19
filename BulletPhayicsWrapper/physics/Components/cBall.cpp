@@ -7,7 +7,7 @@
  */
 
 #include "cBall.h"
-#include "nConvert.h"
+#include "../nConvert.h"
 
 
 namespace DegenBulletPhysicsWrapper
@@ -71,7 +71,7 @@ namespace DegenBulletPhysicsWrapper
 		// impulse effected by mass velocity is dirrectly set
 		//mBody->applyCentralImpulse(nConvert::ToBullet(def.Velocity));
 		//mBody->setLinearVelocity(nConvert::ToBullet(def.Velocity));
-
+		
 	}
 
 	/**
@@ -112,6 +112,36 @@ namespace DegenBulletPhysicsWrapper
 	{
 		mBody->activate(true);
 		mBody->applyCentralImpulse(nConvert::ToBullet(impulse));
+	}
+
+	void cBall::SetEntityId(int id)
+	{
+		mBody->setUserIndex(id);
+	}
+
+	int cBall::GetEntityId()
+	{
+		return mBody->getUserIndex();
+	}
+
+	void cBall::SetSecondaryId(int id)
+	{
+		mBody->setUserIndex2(id);
+	}
+
+	int cBall::GetSecondaryId()
+	{
+		return mBody->getUserIndex2();
+	}
+
+	void cBall::AddToWorld(btDynamicsWorld* world)
+	{
+		world->addRigidBody(mBody);
+	}
+
+	void cBall::RemoveFromWorld(btDynamicsWorld* world)
+	{
+		world->removeRigidBody(mBody);
 	}
 
 

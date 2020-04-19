@@ -1,5 +1,5 @@
 #include "cPaddle.h"
-#include "nConvert.h"
+#include "../nConvert.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -73,5 +73,31 @@ namespace DegenBulletPhysicsWrapper
 	{
 		mBody->activate(true);
 		mBody->applyForce(nConvert::ToBullet(force), -mConstraint->getAFrame().getOrigin());
+	}
+	void cPaddle::SetEntityId(int id)
+	{
+		mBody->setUserIndex(id);
+	}
+	int cPaddle::GetEntityId()
+	{
+		return mBody->getUserIndex();
+	}
+	void cPaddle::SetSecondaryId(int id)
+	{
+		mBody->setUserIndex2(id);
+	}
+	int cPaddle::GetSecondaryId()
+	{
+		return mBody->getUserIndex2();
+	}
+	void cPaddle::AddToWorld(btDynamicsWorld* world)
+	{
+		world->addRigidBody(mBody);
+		world->addConstraint(mConstraint);
+	}
+	void cPaddle::RemoveFromWorld(btDynamicsWorld* world)
+	{
+		world->removeRigidBody(mBody);
+		world->removeConstraint(mConstraint);
 	}
 }

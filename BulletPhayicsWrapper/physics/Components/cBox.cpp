@@ -1,5 +1,5 @@
 #include "cBox.h"
-#include "nConvert.h"
+#include "../nConvert.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -55,5 +55,29 @@ namespace DegenBulletPhysicsWrapper
 	{
 		mBody->activate(true);
 		mBody->applyCentralImpulse(nConvert::ToBullet(impulse));
+	}
+	void cBox::SetEntityId(int id)
+	{
+		mBody->setUserIndex(id);
+	}
+	int cBox::GetEntityId()
+	{
+		return mBody->getUserIndex();
+	}
+	void cBox::SetSecondaryId(int id)
+	{
+		mBody->setUserIndex2(id);
+	}
+	int cBox::GetSecondaryId()
+	{
+		return mBody->getUserIndex2();
+	}
+	void cBox::AddToWorld(btDynamicsWorld* world)
+	{
+		world->addRigidBody(mBody);
+	}
+	void cBox::RemoveFromWorld(btDynamicsWorld* world)
+	{
+		world->removeRigidBody(mBody);
 	}
 }

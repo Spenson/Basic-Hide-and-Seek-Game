@@ -10,6 +10,7 @@
 
 #include <physics/interfaces/iPhysicsWorld.h>
 #include "bullet/btBulletDynamicsCommon.h"
+#include "BulletCollision/CollisionDispatch/btGhostObject.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -21,11 +22,14 @@ namespace DegenBulletPhysicsWrapper
 	 */
 	class cPhysicsWorld : public Degen::Physics::iPhysicsWorld
 	{
+		Degen::Physics::iCollisionListener* mCollisionListener;
+		
 		btDynamicsWorld* mWorld;
 
 		btDefaultCollisionConfiguration* mCollisionConfiguration;
 		btCollisionDispatcher* mDispatcher;
 		btBroadphaseInterface* mOverlappingPairCache;
+		btGhostPairCallback* mGhostPairCallback;
 		btSequentialImpulseConstraintSolver* mSolver;
 	public:
 		/**
@@ -88,6 +92,7 @@ namespace DegenBulletPhysicsWrapper
 		 * \desc		removes object from the physics world
 		 */
 		bool RemoveComponent(Degen::Physics::iPhysicsComponent* component) override;
+		
 		void SetCollisionListener(Degen::Physics::iCollisionListener* listener) override;
 
 		void SetGravity(glm::vec3 gravity) override;

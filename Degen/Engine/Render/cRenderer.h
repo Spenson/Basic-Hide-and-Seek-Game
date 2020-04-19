@@ -24,6 +24,7 @@ namespace Degen
 			void AddEntity(Entity::cEntity* entity);
 
 		private:
+			void BindOutPutTextures();
 			bool LastDrawPass();
 			bool PassLights();
 			void EntitySinglePassSort();

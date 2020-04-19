@@ -7,17 +7,16 @@
  */
 
 #include "cPhysicsWorld.h"
-#include "cPlane.h"
-#include "cBall.h"
 #include "nConvert.h"
-#include "cBox.h"
-#include "cCylinder.h"
-#include "cCone.h"
-#include "cPaddle.h"
-#include "cLauncher.h"
+#include "iBulletComponent.h"
+
+#include "components.h"
 
 namespace DegenBulletPhysicsWrapper
 {
+
+
+	
 	/**
 	 * \method		~cPhysicsWorld
 	 * \fullname	DegenMyPhysicsWrapper::cPhysicsWorld::~cPhysicsWorld
@@ -39,6 +38,8 @@ namespace DegenBulletPhysicsWrapper
 
 		//delete broadphase
 		delete mOverlappingPairCache;
+
+		delete mGhostPairCallback;
 
 		//delete dispatcher
 		delete mDispatcher;
@@ -65,6 +66,8 @@ namespace DegenBulletPhysicsWrapper
 
 		///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
 		mOverlappingPairCache = new btDbvtBroadphase();
+		mGhostPairCallback = new btGhostPairCallback();
+		mOverlappingPairCache->getOverlappingPairCache()->setInternalGhostPairCallback(mGhostPairCallback);
 
 		///the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
 		mSolver = new btSequentialImpulseConstraintSolver;
@@ -88,10 +91,19 @@ namespace DegenBulletPhysicsWrapper
 	void cPhysicsWorld::Update(float dt)
 	{
 		mWorld->stepSimulation(dt, 10);
-		/*// todo collision stuff
+		//* todo collision stuff
 		if (mCollisionListener)
 		{
+			int numManifolds = mWorld->getDispatcher()->getNumManifolds();
+			for (int i = 0; i < numManifolds; i++)
+			{
+				btPersistentManifold* contactManifold = mDispatcher->getManifoldByIndexInternal(i);
+				const btCollisionObject* obA = contactManifold->getBody0();
+				const btCollisionObject* obB = contactManifold->getBody1();
+				
 
+				mCollisionListener->Collide(static_cast<Degen::Physics::iPhysicsComponent*>(obA->getUserPointer()), static_cast<Degen::Physics::iPhysicsComponent*>(obB->getUserPointer()));
+			}
 		}
 		//*/
 	}
@@ -114,34 +126,15 @@ namespace DegenBulletPhysicsWrapper
 			return false;
 		}
 
-
-		switch (component->GetComponentType())
+		iBulletComponent* comp = dynamic_cast<iBulletComponent*>(component);
+		if (!comp)
 		{
-			case Degen::Physics::eComponentType::plane:
-				mWorld->addRigidBody(dynamic_cast<cPlane*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::ball:
-				mWorld->addRigidBody(dynamic_cast<cBall*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::box:
-				mWorld->addRigidBody(dynamic_cast<cBox*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::cylinder:
-				mWorld->addRigidBody(dynamic_cast<cCylinder*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::cone:
-				mWorld->addRigidBody(dynamic_cast<cCone*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::paddle:
-				mWorld->addRigidBody(dynamic_cast<cPaddle*>(component)->mBody);
-				mWorld->addConstraint(dynamic_cast<cPaddle*>(component)->mConstraint);
-				break;
-			case Degen::Physics::eComponentType::launcher:
-				mWorld->addRigidBody(dynamic_cast<cLauncher*>(component)->mBody);
-				mWorld->addConstraint(dynamic_cast<cLauncher*>(component)->mSpring);
-				break;
+			return false;
 		}
+
+		comp->AddToWorld(mWorld);
 		return true;
+	
 	}
 
 	/**
@@ -162,39 +155,20 @@ namespace DegenBulletPhysicsWrapper
 			return false;
 		}
 
-
-		switch (component->GetComponentType())
+		iBulletComponent* comp = dynamic_cast<iBulletComponent*>(component);
+		if (!comp)
 		{
-			case Degen::Physics::eComponentType::plane:
-				mWorld->removeRigidBody(dynamic_cast<cPlane*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::ball:
-				mWorld->removeRigidBody(dynamic_cast<cBall*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::box:
-				mWorld->removeRigidBody(dynamic_cast<cBox*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::cylinder:
-				mWorld->removeRigidBody(dynamic_cast<cCylinder*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::cone:
-				mWorld->removeRigidBody(dynamic_cast<cCone*>(component)->mBody);
-				break;
-			case Degen::Physics::eComponentType::paddle:
-				mWorld->removeRigidBody(dynamic_cast<cPaddle*>(component)->mBody);
-				mWorld->removeConstraint(dynamic_cast<cPaddle*>(component)->mConstraint);
-				break;
-			case Degen::Physics::eComponentType::launcher:
-				mWorld->removeRigidBody(dynamic_cast<cLauncher*>(component)->mBody);
-				mWorld->removeConstraint(dynamic_cast<cLauncher*>(component)->mSpring);
-				mWorld->removeConstraint(dynamic_cast<cLauncher*>(component)->mSlider);
-				break;
+			return false;
 		}
+
+		comp->RemoveFromWorld(mWorld);
 		return true;
+
 	}
 
 	void cPhysicsWorld::SetCollisionListener(Degen::Physics::iCollisionListener* listener)
 	{
+		mCollisionListener = listener;
 	}
 
 	void cPhysicsWorld::SetGravity(glm::vec3 gravity)

@@ -16,7 +16,6 @@ namespace Degen
 				texture_normal_ID(0),
 				texture_position_ID(0),
 				texture_specular_ID(0),
-				//depthTexture_ID(0),
 				width(-1), height(-1)
 			{
 			};
@@ -34,10 +33,10 @@ namespace Degen
 			GLint height;
 
 			// Inits the FBP
-			bool init(int width, int height, std::string& error);
-			bool shutdown(void);
+			bool init(int width, int height, std::string& error, bool init_depth = true);
+			bool shutdown(bool shutdown_depth = true);
 			// Calls shutdown(), then init()
-			bool reset(int width, int height, std::string& error);
+			bool reset(int width, int height, std::string& error, bool reset_depth = true);
 
 			void clearBuffers(bool bClearColour = true, bool bClearDepth = true);
 

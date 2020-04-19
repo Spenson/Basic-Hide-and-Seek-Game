@@ -1,5 +1,5 @@
 #include "cLauncher.h"
-#include "nConvert.h"
+#include "../nConvert.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -20,7 +20,8 @@ namespace DegenBulletPhysicsWrapper
 		
 		btTransform transform;
 		transform.setIdentity();
-		transform.setOrigin(nConvert::ToBullet(def.Position));
+		mStartPosition = nConvert::ToBullet(def.Position);
+		transform.setOrigin(mStartPosition);
 		transform.setRotation(nConvert::ToBullet(def.Rotation));
 
 		btScalar mass(def.Mass);
@@ -41,26 +42,28 @@ namespace DegenBulletPhysicsWrapper
 
 		mBody = new btRigidBody(rbInfo);
 
-		mBody->setAngularFactor(0.f);
-		btVector3 factor = mBody->getLinearFactor();
-		factor[1] = 0;
-		factor[0] = 0;
-		mBody->setLinearFactor(factor);
+		//mBody->setAngularFactor(0.f);
+		//btVector3 factor = mBody->getLinearFactor();
+		//factor[1] = 0;
+		//factor[0] = 0;
+	//	mBody->setLinearFactor(factor);
 		
 		mBody->setUserPointer(this);
 
 		btTransform frameInB = btTransform::getIdentity();
-		frameInB.setRotation(nConvert::ToBullet(def.Rotation));
+		frameInB.setRotation(nConvert::ToBullet(glm::quat(glm::radians(glm::vec3(0,0,90)))));
 
-		mSlider = new btSliderConstraint(*mBody, frameInB, true);
-		mSlider->setLowerLinLimit(1);
-		mSlider->setUpperLinLimit(-10);
+		mSlider = new btSliderConstraint(*mBody, frameInB, false);
+		mSlider->setLowerLinLimit(0);
+		mSlider->setUpperLinLimit(5);
+		
 		
 		mSpring = new btGeneric6DofSpringConstraint(*mBody, frameInB,true);
-		mSpring->enableSpring(1,true);
-		mSpring->setStiffness(1,50.f * def.Mass);
-		mSpring->setLinearLowerLimit(btVector3(0,1,0));
-		mSpring->setLinearUpperLimit(btVector3(0, -10, 0));
+		mSpring->enableSpring(0,true);
+		mSpring->setStiffness(0,100.f * def.Mass);
+		mSpring->setLinearLowerLimit(btVector3(-6,0,0));
+		mSpring->setLinearUpperLimit(btVector3(20, 0, 0));
+		
 		
 	}
 	void cLauncher::GetTransform(glm::mat4& transformOut)
@@ -84,14 +87,41 @@ namespace DegenBulletPhysicsWrapper
 		mBody->activate(true);
 		mSpring->enableSpring(0, false);
 		btTransform transform = mBody->getWorldTransform();
-		btVector3 vec = transform.getOrigin();
-		transform.setOrigin(vec + nConvert::ToBullet(glm::normalize(direction)*4.f));
+		transform.setOrigin(mStartPosition + nConvert::ToBullet(glm::normalize(direction)*4.5f));
 		
 		mBody->setWorldTransform(transform);
 	}
 	void cLauncher::Release()
 	{
 		mBody->activate(true);
-		mSpring->enableSpring(1, true);
+		mSpring->enableSpring(0, true);
+	}
+	void cLauncher::SetEntityId(int id)
+	{
+		mBody->setUserIndex(id);
+	}
+	int cLauncher::GetEntityId()
+	{
+		return mBody->getUserIndex();
+	}
+	void cLauncher::SetSecondaryId(int id)
+	{
+		mBody->setUserIndex2(id);
+	}
+	int cLauncher::GetSecondaryId()
+	{
+		return mBody->getUserIndex2();
+	}
+	void cLauncher::AddToWorld(btDynamicsWorld* world)
+	{
+		world->addRigidBody(mBody);
+		world->addConstraint(mSlider);
+		world->addConstraint(mSpring);
+	}
+	void cLauncher::RemoveFromWorld(btDynamicsWorld* world)
+	{
+		world->removeRigidBody(mBody);
+		world->removeConstraint(mSlider);
+		world->removeConstraint(mSpring);
 	}
 }

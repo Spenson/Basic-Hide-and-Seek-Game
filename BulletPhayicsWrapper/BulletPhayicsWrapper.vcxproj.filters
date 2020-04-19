@@ -474,31 +474,34 @@
     <ClCompile Include="physics\cPhysicsWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cPlane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="physics\CreatePhysicsFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cBox.cpp">
+    <ClCompile Include="physics\Components\cBall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cCone.cpp">
+    <ClCompile Include="physics\Components\cBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cCylinder.cpp">
+    <ClCompile Include="physics\Components\cCone.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cPaddle.cpp">
+    <ClCompile Include="physics\Components\cCylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cBall.cpp">
+    <ClCompile Include="physics\Components\cLauncher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cLauncher.h">
+    <ClCompile Include="physics\Components\cLauncher.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics\cLauncher.cpp">
+    <ClCompile Include="physics\Components\cPaddle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\Components\cPlane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="physics\Components\cTriggerRegion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1196,16 +1199,10 @@
     <ClInclude Include="physics\bullet\btBulletDynamicsCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\cCollisionListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="physics\cPhysicsFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="physics\cPhysicsWorld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="physics\cPlane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="physics\CreatePhysicsFactory.h">
@@ -1214,19 +1211,31 @@
     <ClInclude Include="physics\nConvert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\cBox.h">
+    <ClInclude Include="physics\iBulletComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\cCone.h">
+    <ClInclude Include="physics\components.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\cCylinder.h">
+    <ClInclude Include="physics\Components\cBall.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\cPaddle.h">
+    <ClInclude Include="physics\Components\cBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="physics\cBall.h">
+    <ClInclude Include="physics\Components\cCone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\Components\cCylinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\Components\cPaddle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\Components\cPlane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="physics\Components\cTriggerRegion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

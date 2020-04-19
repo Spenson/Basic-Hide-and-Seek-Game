@@ -14,7 +14,8 @@ namespace Physics
 		cylinder,
 		cone,
 		paddle,
-		launcher
+		launcher,
+		triggerRegion
 	};
 }
 }

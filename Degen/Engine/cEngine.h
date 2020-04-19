@@ -33,8 +33,10 @@ namespace Degen
 		class cPhysics;
 	}
 
-
-
+	namespace Game
+	{
+		class Pinball;
+	}
 
 	
 	class cEngine
@@ -57,6 +59,7 @@ namespace Degen
 		BasicMotion::cBasicMotion* mBasicMotion;
 		Animation::cAnimator* mAnimator;
 		Physics::cPhysics* mPhysics;
+		Game::Pinball* mPinball;
 
 		// Needed for loading
 		std::string mShaderName;

@@ -7,8 +7,8 @@
  * \desc	contains the cPlane wrapper class definition
  */
 #include <physics/interfaces/iPlaneComponent.h>
-#include "bullet/btBulletDynamicsCommon.h"
 #include "glm.hpp"
+#include "../iBulletComponent.h"
 
 namespace DegenBulletPhysicsWrapper
 {
@@ -20,7 +20,8 @@ namespace DegenBulletPhysicsWrapper
 	 *
 	 * \desc	A wrapper for a cRigidBody object containing a cPlane: iShape. Maintaining a pointer to the body to access and the shape for cleanup.
 	 */
-	class cPlane : public Degen::Physics::iPlaneComponent
+	class cPlane : public Degen::Physics::iPlaneComponent,
+		public iBulletComponent
 	{
 	public:
 		btRigidBody* mBody;	// \desc	pointer to wrapped object to allow access
@@ -72,5 +73,12 @@ namespace DegenBulletPhysicsWrapper
 		 * \desc		add force to the acceleration of the object
 		 */
 		//virtual void ApplyForce(const glm::vec3& force) override;
+
+		void SetEntityId(int id) override;
+		int GetEntityId() override;
+		void SetSecondaryId(int id) override;
+		int GetSecondaryId() override;
+		void AddToWorld(btDynamicsWorld* world) override;
+		void RemoveFromWorld(btDynamicsWorld* world) override;
 	};
 }

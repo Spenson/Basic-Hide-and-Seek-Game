@@ -7,6 +7,7 @@
 #include "Texture/cTextureManager.h"
 #include "Animation/cAnimationManager.h"
 #include "physics/interfaces/iPhysicsFactory.h"
+#include "Render/cTextRenderer.h"
 
 
 namespace Degen
@@ -22,5 +23,6 @@ namespace Degen
 	extern Texture::cTextureManager* TextureManager;
 	extern Animation::cAnimationManager* AnimationManager;
 	extern Physics::iPhysicsFactory* PhysicsFactory;
+	extern Render::cTextRenderer* TextRenderer;
 	
 }

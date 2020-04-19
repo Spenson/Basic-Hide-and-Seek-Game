@@ -54,6 +54,9 @@
     <ClInclude Include="physics\interfaces\iPaddleComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="physics\interfaces\iTriggerRegionComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="physics\interfaces\iLauncherComponent.h">
