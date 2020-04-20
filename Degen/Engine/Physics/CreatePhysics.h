@@ -18,6 +18,7 @@ namespace Degen
 		iCylinderComponent* CreateCylinderPhysicsComponent(const Json::Value& jsonCylinder);
 		iConeComponent* CreateConePhysicsComponent(const Json::Value& jsonCone);
 		iPaddleComponent* CreatePaddlePhysicsComponent(const Json::Value& jsonPaddle);
-		iLauncherComponent* CreateLauncherComponent(const Json::Value& jsonLauncher);
+		iLauncherComponent* CreateLauncherPhysicsComponent(const Json::Value& jsonLauncher);
+		iTriggerRegionComponent* CreateTriggerRegionPhysicsComponent(const Json::Value& jsonTriggerRegion);
 	}
 }

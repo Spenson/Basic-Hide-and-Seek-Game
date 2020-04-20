@@ -95,7 +95,7 @@
       "components": [
         {
           "component": "position",
-          "position": [ 0.0, 30.0, -30.0 ]
+          "position": [ 0.0, 30.0, -25.0 ]
         },
         {
           "component": "render",
@@ -122,51 +122,78 @@
         }
       ]
     },
-    //{
-    //  "name": "forest guard",
-    //  "components": [
-    //    {
-    //      "component": "transform",
-    //      "pos": [ 0.0, 0.0, 0.0 ],
-    //      "rot": [ 0.0, 0.0, 0.0 ]
-    //    },
-    //    {
-    //      "component": "render",
-    //      "mesh": "forest_guard",
-    //      "texture1": "forest guard diffuse",
-    //      "texture1_amount": 1.0,
-    //      "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-    //      "diffuse_amount": 0.0,
-    //      "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-    //      "scale": [ 0.1, 0.1, 0.1 ],
-    //      "ignore_lighting": false,
-    //      "is_wireframe": false
-    //    },
-    //    {
-    //      "component": "render",
-    //      "mesh": "forest_guard_eyes",
-    //      "texture1": "forest guard diffuse",
-    //      "texture1_amount": 1.0,
-    //      "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-    //      "diffuse_amount": 0.0,
-    //      "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-    //      "scale": [ 0.1, 0.1, 0.1 ],
-    //      "ignore_lighting": false,
-    //      "is_wireframe": false
-    //    },
-    //    {
-    //      "component": "animation",
-    //      "default_animation": "forest_guard@idle",
-    //      "default_blend_time": 0.3
-    //    }
-    //  ]
-    //},
+    {
+      "name": "Pinball",
+      "id": 6,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "sphere",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 0.76, 0.75, 0.76 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "ball",
+          "position": [ 16, -2.0, -10.0 ],
+          "mass": 5.0,
+          "radius": 0.76,
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+
+
+
+
+    {
+      "name": "Glass",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 1.45, -0.99, -5.0 ],
+          "rot": [ 90.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "quad",
+          "texture1": "grid",
+          "texture1_amount": 0.0,
+          "diffuse": [ 0.1, 0.1, 0.2, 0.2 ],
+          "diffuse_amount": 1,
+          "specular": [ 0.8, 0.8, 1, 300.0 ],
+          "scale": [ 16.5, 35, 1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "plane",
+          "normal": [ 0.0, -1.0, 0.0 ],
+          "constant": 1.0
+        }
+      ]
+    },
+
+
+
+
+
     {
       "name": "Bottom",
       "components": [
         {
           "component": "transform",
-          "pos": [ 0.0, -5.0, -5.0 ],
+          "pos": [ 1.45, -5.0, -5.0 ],
           "rot": [ 90.0, 0.0, 0.0 ]
         },
         {
@@ -177,7 +204,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 15, 35, 1 ],
+          "scale": [ 16.5, 35, 1 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -195,7 +222,7 @@
       "components": [
         {
           "component": "transform",
-          "pos": [ 0.0, -3.0, 30.2 ],
+          "pos": [ 1.45, -3.0, 30.2 ],
           "rot": [ 0.0, 0.0, 0.0 ]
         },
         {
@@ -206,7 +233,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 15.4, 2, 0.2 ],
+          "scale": [ 16.8, 2, 0.2 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
@@ -215,35 +242,6 @@
           "type": "plane",
           "normal": [ 0.0, 0.0, -1.0 ],
           "constant": -30.0
-        }
-      ]
-    },
-
-    {
-      "name": "Close Wall",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "grid",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.5,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 13, 2, 4.75 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          "position": [ -2, -3.0, -35.25 ],
-          "mass": 0.0,
-          "size": [ 13, 2, 4.75 ],
-          "rotation": [ 0, 0, 0 ]
         }
       ]
     },
@@ -282,7 +280,7 @@
       "components": [
         {
           "component": "transform",
-          "pos": [ 15.2, -3.0, -5.0 ],
+          "pos": [ 18.1, -3.0, -5.0 ],
           "rot": [ 0.0, 90.0, 0.0 ]
         },
         {
@@ -301,39 +299,18 @@
           "component": "physics",
           "type": "plane",
           "normal": [ -1.0, 0.0, 0.0 ],
-          "constant": -15.0
+          "constant": -17.9
         }
       ]
     },
 
-    {
-      "name": "PinBall",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "sphere",
-          "texture1": "grid",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.5,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.1, 1.1, 1.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "ball",
-          "position": [ 0.0, 0.0, 0.0 ],
-          "mass": 10.0,
-          "radius": 1.1,
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
+
+
+
+
+
+
+
 
 
     {
@@ -350,16 +327,16 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 5, 1.5, 0.2 ],
+          "scale": [ 4, 1.5, 0.3 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "paddle",
-          "position": [ 5.25, -3.5, -20.0 ],
+          "position": [ 6, -3.5, -20.0 ],
           "mass": 10.0,
-          "size": [ 5, 1.5, 0.2 ],
+          "size": [ 4, 1.5, 0.3 ],
           "hinge_pos_x": true,
           "rotation": [ 0, 0, 0 ]
         }
@@ -379,23 +356,102 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 5, 1.5, 0.2 ],
+          "scale": [ 4, 1.5, 0.3 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "paddle",
-          "position": [ -9.9, -3.5, -20.0 ],
+          "position": [ -6, -3.5, -20.0 ],
           "mass": 10.0,
-          "size": [ 5, 1.5, 0.2 ],
+          "size": [ 4, 1.5, 0.3 ],
           "hinge_pos_x": false,
           "rotation": [ 0, 0, 0 ]
         }
       ]
     },
+
+
+
+
+
+
+
+
     {
-      "name": "Bottom Board",
+      "name": "Left Panel",
+      "id": 2,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "box",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 5, 1.5, 0.2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "box",
+          "position": [ 11.2, -3.5, -14.7 ],
+          "mass": 0.0,
+          "size": [ 5, 1.5, 0.2 ],
+          "hinge_pos_x": true,
+          "rotation": [ 0, -75, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "Right Panel",
+      "id": 2,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "box",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 5, 1.5, 0.2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "box",
+          "position": [ -11.2, -3.5, -14.7 ],
+          "mass": 0.0,
+          "size": [ 5, 1.5, 0.2 ],
+          "hinge_pos_x": true,
+          "rotation": [ 0, 75, 0 ]
+        }
+      ]
+    },
+
+
+
+
+
+
+
+
+
+
+
+    {
+      "name": "Left Bottom Board",
       "components": [
         {
           "component": "transform",
@@ -410,20 +466,62 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 13.75, 2.0, 0.2 ],
+          "scale": [ 7, 2.0, 0.2 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "box",
-          "position": [ -1.7, -3, -27 ],
+          "position": [ 8.8, -3, -27 ],
           "mass": 0.0,
-          "size": [ 13.75, 2.0, 0.2 ],
-          "rotation": [ 0, 15, 0 ]
+          "size": [ 7, 2.0, 0.2 ],
+          "rotation": [ 0, -30, 0 ]
         }
       ]
     },
+    {
+      "name": "Right Bottom Board",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, -2.5, 0 ],
+          "rot": [ 0, 0, 0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "box",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 7, 2.0, 0.2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "box",
+          "position": [ -8.9, -3, -27 ],
+          "mass": 0.0,
+          "size": [ 7, 2.0, 0.2 ],
+          "rotation": [ 0, 30, 0 ]
+        }
+      ]
+    },
+
+
+
+
+
+
+
+
+
+
+
+
     {
       "name": "Launch redirect",
       "components": [
@@ -438,16 +536,16 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 4, 2.0, 0.2 ],
+          "scale": [ 2.15, 2.0, 0.2 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "box",
-          "position": [ 12.5, -3, 27.5 ],
+          "position": [ 16.4, -3, 28.5 ],
           "mass": 0.0,
-          "size": [ 4, 2.0, 0.2 ],
+          "size": [ 2.8, 2.0, 0.2 ],
           "rotation": [ 0, 45, 0 ]
         }
       ]
@@ -467,16 +565,16 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 0.5, 2.0, 0.5 ],
+          "scale": [ 0.3, 2.0, 0.5 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "box",
-          "position": [ 14.5, -3, -33 ],
+          "position": [ 17.6, -3, -27 ],
           "mass": 0.0,
-          "size": [ 0.5, 2.0, 0.5 ],
+          "size": [ 0.3, 2.0, 0.5 ],
           "rotation": [ 0, 0, 0 ]
         }
       ]
@@ -497,27 +595,26 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 0.5, 2.0, 0.5 ],
+          "scale": [ 0.3, 2.0, 0.5 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "box",
-          "position": [ 11.5, -3, -33 ],
+          "position": [ 15.5, -3, -27 ],
           "mass": 0.0,
-          "size": [ 0.5, 2.0, 0.5 ],
+          "size": [ 0.3, 2.0, 0.5 ],
           "rotation": [ 0, 0, 0 ]
         }
       ]
     },
     {
-      "name": "launch tunnel",
+      "name": "Launch Tunnel",
+      "id": 3,
       "components": [
         {
-          "component": "transform",
-          "pos": [ 0.0, -2.5, 0 ],
-          "rot": [ 0, 0, 0 ]
+          "component": "transform"
         },
         {
           "component": "render",
@@ -527,22 +624,21 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 0.2, 2.0, 20 ],
+          "scale": [ 0.2, 2.0, 35 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "box",
-          "position": [ 11, -2.5, -5 ],
+          //"position": [ 15, -3, -5 ],
+          "position": [ 15, -3, -9 ],
           "mass": 0.0,
-          "size": [ 0.2, 2.0, 20 ],
+          "size": [ 0.2, 2.0, 35 ],
           "rotation": [ 0, 0, 0 ]
         }
       ]
     },
-
-
 
     {
       "name": "Launcher",
@@ -558,28 +654,31 @@
           "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1, 2, 1 ],
+          "scale": [ 0.75, 2, 0.75 ],
           "ignore_lighting": false,
           "is_wireframe": false
         },
         {
           "component": "physics",
           "type": "launcher",
-          "position": [ 13, -3.75, -33.5 ],
+          "position": [ 16.55, -3.75, -27.5 ],
           "mass": 20.0,
-          "size": [ 0.95, 2, 1 ],
+          "size": [ 0.74, 2, 0.75 ],
           "rotation": [ 90, 0, 0 ]
         }
       ]
     },
 
+
+
+
+
     {
       "name": "Reset Zone",
+      "id": 4,
       "components": [
         {
-          "component": "transform",
-          "pos": [ 0, 0, 0 ],
-          "rot": [ 0, 0, 0 ]
+          "component": "transform"
         },
         {
           "component": "render",
@@ -589,47 +688,472 @@
           "diffuse": [ 0.0, 0.0, 1.0, 0.5 ],
           "diffuse_amount": 0.5,
           "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1, 1, 1 ],
+          "scale": [ 10, 1.5, 4 ],
           "ignore_lighting": false,
           "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "trigger_region",
+          "position": [ 0, -3, -38 ],
+          "mass": 0.0,
+          "size": [ 10, 1.5, 4 ],
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "Inplay Zone",
+      "id": 5,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "box",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.0, 1.0, 0.5 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 2, 1.5, 4 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "trigger_region",
+          "position": [ 11.5, -3, 26 ],
+          "mass": 0.0,
+          "size": [ 2, 1.5, 4 ],
+          "rotation": [ 0, 0, 0 ]
         }
       ]
     },
 
-    //{
-    //  "name": "Cone",
-    //  "components": [
-    //    {
-    //      "component": "transform"
-    //    },
-    //    {
-    //      "component": "render",
-    //      "mesh": "cone",
-    //      "texture1": "grid",
-    //      "texture1_amount": 1.0,
-    //      "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-    //      "diffuse_amount": 0.5,
-    //      "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-    //      "scale": [ 1.5, 4.5, 1.5 ],
-    //      "ignore_lighting": false,
-    //      "is_wireframe": false
-    //    },
-    //    {
-    //      "component": "physics",
-    //      "type": "cone",
-    //      "position": [ 0.0, 5.0, 0.0 ],
-    //      "mass": 0.0,
-    //      "height": 0.5,
-    //      "radius": 1.0,
-    //      "rotation": [ 0, 0, 0 ]
-    //    }
-    //  ]
-    //},
 
 
 
 
 
+
+
+    {
+      "name": "Bumper center",
+      "id": 1,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cylinder",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 2, 2, 2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cylinder",
+          "position": [ 0, -3, 6 ],
+          "mass": 0.0,
+          "size": [ 2, 2, 2 ],
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "Bumper right",
+      "id": 1,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cylinder",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 2, 2, 2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cylinder",
+          "position": [ -10, -3, 6 ],
+          "mass": 0.0,
+          "size": [ 2, 2, 2 ],
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "Bumper left",
+      "id": 1,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cylinder",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 2, 2, 2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cylinder",
+          "position": [ 10, -3, 6 ],
+          "mass": 0.0,
+          "size": [ 2, 2, 2 ],
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "Bumper top left",
+      "id": 1,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cylinder",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 2, 2, 2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cylinder",
+          "position": [ 5, -3, 16 ],
+          "mass": 0.0,
+          "size": [ 2, 2, 2 ],
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "Bumper top right",
+      "id": 1,
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cylinder",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 2, 2, 2 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cylinder",
+          "position": [ -5, -3, 16 ],
+          "mass": 0.0,
+          "size": [ 2, 2, 2 ],
+          "rotation": [ 0, 0, 0 ]
+        }
+      ]
+    },
+
+
+
+
+
+
+
+
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ 0.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 3.0,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ 3.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 3.0,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ -3.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 1.5,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ -6.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 1.5,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ 6.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 1.5,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ -9.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 1.5,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ 9.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 1.5,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ 12.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 1.5,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
+
+    {
+      "name": "spike",
+      "components": [
+        {
+          "component": "transform"
+        },
+        {
+          "component": "render",
+          "mesh": "cone",
+          "texture1": "grid",
+          "texture1_amount": 1.0,
+          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
+          "diffuse_amount": 0.5,
+          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
+          "scale": [ 1.5, 1, 1.5 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "physics",
+          "type": "cone",
+          "position": [ -12.0, -5.0, 28.8 ],
+          "mass": 0.0,
+          "height": 1,
+          "radius": 1.5,
+          "rotation": [ -90, 0, 0 ]
+        }
+      ]
+    },
 
 
 

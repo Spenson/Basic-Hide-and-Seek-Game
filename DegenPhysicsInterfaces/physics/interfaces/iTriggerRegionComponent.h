@@ -17,7 +17,8 @@ namespace Degen
 		public:
 			virtual ~iTriggerRegionComponent() {}
 
-			virtual bool IsTriggeredBy(int entityId) = 0;
+			virtual bool EntityIdIsTriggeredBy(int entityId) = 0;
+			virtual bool SecondaryIdIsTriggeredBy(int entityId) = 0;
 
 		protected:
 			iTriggerRegionComponent(): iPhysicsComponent(eComponentType::triggerRegion) {}

@@ -167,30 +167,30 @@ namespace Degen
 			}
 
 
-			//glBindFramebuffer(GL_FRAMEBUFFER, mTransparentFBO.ID);
-			//mTransparentFBO.clearBuffers(true, false);
-			//glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 1);
-			//glClear(GL_COLOR_BUFFER_BIT);
-			//for (auto* entity : alpha_objects)
-			//{
-			//	std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
-			//	glm::mat4 tranform = GetTransform(entity);
-			//	Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
+			glBindFramebuffer(GL_FRAMEBUFFER, mTransparentFBO.ID);
+			mTransparentFBO.clearBuffers(true, false);
+			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			for (auto* entity : alpha_objects)
+			{
+				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
+				glm::mat4 tranform = GetTransform(entity);
+				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 
-			//	for (unsigned i = 0; i < rends.size(); i++)
-			//	{
-			//		Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
+				for (unsigned i = 0; i < rends.size(); i++)
+				{
+					Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
 
-			//		if (!animation)
-			//		{
-			//			RenderObject(mShaderProgram, rend, tranform);
-			//		}
-			//		else
-			//		{
-			//			RenderObject(mShaderProgram, rend, animation, tranform);
-			//		}
-			//	}
-			//}
+					if (!animation)
+					{
+						RenderObject(mShaderProgram, rend, tranform);
+					}
+					else
+					{
+						RenderObject(mShaderProgram, rend, animation, tranform);
+					}
+				}
+			}
 
 			if (!LastDrawPass())
 			{

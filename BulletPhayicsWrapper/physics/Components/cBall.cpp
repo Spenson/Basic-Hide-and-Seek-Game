@@ -70,7 +70,7 @@ namespace DegenBulletPhysicsWrapper
 		mBody->setSleepingThresholds(0,0);
 		// impulse effected by mass velocity is dirrectly set
 		//mBody->applyCentralImpulse(nConvert::ToBullet(def.Velocity));
-		//mBody->setLinearVelocity(nConvert::ToBullet(def.Velocity));
+		//
 		
 	}
 
@@ -142,6 +142,18 @@ namespace DegenBulletPhysicsWrapper
 	void cBall::RemoveFromWorld(btDynamicsWorld* world)
 	{
 		world->removeRigidBody(mBody);
+	}
+
+	void cBall::SetPosition(const glm::vec3& position)
+	{
+		btTransform transform;
+		transform.setIdentity();
+		//mBody->getMotionState()->getWorldTransform(transform);
+		transform.setOrigin(nConvert::ToBullet(position));
+		mBody->setWorldTransform(transform);
+		mBody->setLinearVelocity(btVector3(0,0,0));
+		mBody->getMotionState()->setWorldTransform(transform);
+
 	}
 
 

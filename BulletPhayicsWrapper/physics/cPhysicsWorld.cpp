@@ -100,9 +100,28 @@ namespace DegenBulletPhysicsWrapper
 				btPersistentManifold* contactManifold = mDispatcher->getManifoldByIndexInternal(i);
 				const btCollisionObject* obA = contactManifold->getBody0();
 				const btCollisionObject* obB = contactManifold->getBody1();
-				
 
-				mCollisionListener->Collide(static_cast<Degen::Physics::iPhysicsComponent*>(obA->getUserPointer()), static_cast<Degen::Physics::iPhysicsComponent*>(obB->getUserPointer()));
+				int numContacts = contactManifold->getNumContacts();
+
+				btVector3 cP(0, 0, 0);
+
+				int tempA = obA->getUserIndex2(), tempB = obB->getUserIndex2();
+				
+				for (int j = 0; j < numContacts; j++)
+				{
+					btManifoldPoint& pt = contactManifold->getContactPoint(j);
+
+					btVector3 ptA = pt.getPositionWorldOnA();
+					btVector3 ptB = pt.getPositionWorldOnB();
+
+					btVector3 median = (ptA + ptB) / 2;
+
+					cP += median;
+				}
+				cP /= (float)numContacts;
+
+				if(numContacts > 0)
+					mCollisionListener->Collide(static_cast<Degen::Physics::iPhysicsComponent*>(obA->getUserPointer()), static_cast<Degen::Physics::iPhysicsComponent*>(obB->getUserPointer()), nConvert::ToGLM(cP));
 			}
 		}
 		//*/

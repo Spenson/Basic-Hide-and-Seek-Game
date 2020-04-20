@@ -123,7 +123,7 @@ namespace Degen
 
 				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
 
-				paddle->Hit(glm::vec3(0, 0, 2000));
+				paddle->Hit(glm::vec3(0, 200, 0));
 			}
 			else
 			{
@@ -131,7 +131,7 @@ namespace Degen
 
 				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
 
-				paddle->Hit(glm::vec3(0, 0, -200));
+				paddle->Hit(glm::vec3(0, -20, 0));
 				
 			}
 			
@@ -141,7 +141,7 @@ namespace Degen
 
 				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
 
-				paddle->Hit(glm::vec3(0, 0, 2000));
+				paddle->Hit(glm::vec3(0, -200, 0));
 			}
 			else
 			{
@@ -149,7 +149,7 @@ namespace Degen
 
 				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
 
-				paddle->Hit(glm::vec3(0, 0, -200));
+				paddle->Hit(glm::vec3(0, 20, 0));
 
 			}
 

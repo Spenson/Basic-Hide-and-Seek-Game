@@ -10,7 +10,6 @@ namespace Degen
 	{
 		class cPhysics
 		{
-			iPhysicsWorld* mWorld;
 		public:
 			cPhysics(glm::vec3 gravity);
 			~cPhysics();
@@ -18,6 +17,7 @@ namespace Degen
 			void Update(double dt);
 
 			std::vector<Entity::cEntity*> entities;
+			iPhysicsWorld* mWorld;
 		};
 	}
 }

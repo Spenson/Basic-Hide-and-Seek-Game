@@ -34,12 +34,25 @@ namespace DegenBulletPhysicsWrapper
 		nConvert::ToGLM(transform, transformOut);
 	}
 
-	bool cTriggerRegion::IsTriggeredBy(int entityId)
+	bool cTriggerRegion::EntityIdIsTriggeredBy(int entityId)
 	{
 		int triggered_count = mGhostObject->getNumOverlappingObjects();
 		for(int idx = 0; idx < triggered_count; idx++)
 		{
 			if(mGhostObject->getOverlappingObject(idx)->getUserIndex() == entityId)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool cTriggerRegion::SecondaryIdIsTriggeredBy(int entityId)
+	{
+		int triggered_count = mGhostObject->getNumOverlappingObjects();
+		for (int idx = 0; idx < triggered_count; idx++)
+		{
+			if (mGhostObject->getOverlappingObject(idx)->getUserIndex2() == entityId)
 			{
 				return true;
 			}

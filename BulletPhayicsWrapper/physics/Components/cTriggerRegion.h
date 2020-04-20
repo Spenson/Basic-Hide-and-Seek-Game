@@ -18,7 +18,8 @@ namespace DegenBulletPhysicsWrapper
 		
 		void GetTransform(glm::mat4& transformOut) override;
 
-		bool IsTriggeredBy(int entityId) override;
+		bool EntityIdIsTriggeredBy(int entityId) override;
+		bool SecondaryIdIsTriggeredBy(int entityId) override;
 
 		void SetEntityId(int id) override;
 		int GetEntityId() override;

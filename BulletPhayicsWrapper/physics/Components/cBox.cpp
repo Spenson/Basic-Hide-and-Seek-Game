@@ -80,4 +80,15 @@ namespace DegenBulletPhysicsWrapper
 	{
 		world->removeRigidBody(mBody);
 	}
+
+
+	void cBox::SetPosition(const glm::vec3& position)
+	{
+		btTransform transform;
+		transform.setIdentity();
+		transform.setOrigin(nConvert::ToBullet(position));
+		mBody->setWorldTransform(transform);
+		mBody->getMotionState()->setWorldTransform(transform);
+
+	}
 }

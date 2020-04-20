@@ -72,7 +72,8 @@ namespace DegenBulletPhysicsWrapper
 	void cPaddle::Hit(const glm::vec3& force)
 	{
 		mBody->activate(true);
-		mBody->applyForce(nConvert::ToBullet(force), -mConstraint->getAFrame().getOrigin());
+		mBody->applyTorqueImpulse(nConvert::ToBullet(force));
+		
 	}
 	void cPaddle::SetEntityId(int id)
 	{

@@ -38,6 +38,8 @@ namespace Degen
 
 	Render::cTextRenderer* TextRenderer;
 
+	cEngine* Engine;
+
 	sView* View;
 
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -58,6 +60,8 @@ namespace Degen
 	{
 		WINDOW_WIDTH = 800;
 		WINDOW_HEIGHT = 600;
+
+		Engine = this;
 	}
 
 	cEngine::~cEngine()
@@ -247,6 +251,8 @@ namespace Degen
 		mAnimator = new Animation::cAnimator();
 		mPinball = new Game::Pinball();
 
+		mPhysics->mWorld->SetCollisionListener(mPinball);
+		
 		return true;
 	}
 
@@ -299,15 +305,7 @@ namespace Degen
 			return false;
 		}
 
-		for (auto* entity : Entity::cEntityManager::entities)
-		{
-			mRenderer->AddEntity(entity);
-			mCamera->AddEntity(entity);
-			//mIntelligence->AddEntity(entity);
-			mBasicMotion->AddEntity(entity);
-			mAnimator->AddEntity(entity);
-			mPhysics->AddEntity(entity);
-		}
+		UpdateEntityLists();
 
 		return true;
 	}
@@ -349,6 +347,19 @@ namespace Degen
 			//Swap buffers
 			glfwSwapBuffers(mWindow);
 			glfwPollEvents();
+		}
+	}
+	void cEngine::UpdateEntityLists()
+	{
+		for (auto* entity : Entity::cEntityManager::entities)
+		{
+			mRenderer->AddEntity(entity);
+			mCamera->AddEntity(entity);
+			//mIntelligence->AddEntity(entity);
+			mBasicMotion->AddEntity(entity);
+			mAnimator->AddEntity(entity);
+			mPhysics->AddEntity(entity);
+			mPinball->AddEntity(entity);
 		}
 	}
 }

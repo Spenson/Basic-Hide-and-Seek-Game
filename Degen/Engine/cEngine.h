@@ -50,6 +50,7 @@ namespace Degen
 		bool CleanUp();
 		void Go();
 
+		void UpdateEntityLists();
 	private:
 		GLFWwindow* mWindow;
 		Render::cRenderer* mRenderer;

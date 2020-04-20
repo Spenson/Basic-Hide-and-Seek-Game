@@ -18,6 +18,7 @@ namespace DegenBulletPhysicsWrapper
 		btTransform transform;
 		transform.setIdentity();
 		transform.setOrigin(nConvert::ToBullet(def.Position));
+		transform.setRotation(nConvert::ToBullet(def.Rotation));
 
 		btScalar mass(def.Mass);
 

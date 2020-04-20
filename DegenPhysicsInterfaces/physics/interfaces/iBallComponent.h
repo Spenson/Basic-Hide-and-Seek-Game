@@ -22,6 +22,7 @@ namespace Degen
 
 			virtual void ApplyForce(const glm::vec3& force) = 0;
 			virtual void ApplyImpulse(const glm::vec3& impulse) = 0;
+			virtual void SetPosition(const glm::vec3& position) = 0;
 
 		protected:
 			iBallComponent() : iPhysicsComponent(eComponentType::ball) {}

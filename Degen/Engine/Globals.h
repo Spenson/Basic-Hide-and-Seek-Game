@@ -8,6 +8,7 @@
 #include "Animation/cAnimationManager.h"
 #include "physics/interfaces/iPhysicsFactory.h"
 #include "Render/cTextRenderer.h"
+#include "cEngine.h"
 
 
 namespace Degen
@@ -24,5 +25,7 @@ namespace Degen
 	extern Animation::cAnimationManager* AnimationManager;
 	extern Physics::iPhysicsFactory* PhysicsFactory;
 	extern Render::cTextRenderer* TextRenderer;
+
+	extern cEngine* Engine;
 	
 }

@@ -87,7 +87,11 @@ namespace Degen
 			}
 			else if (type == "launcher")
 			{
-				return CreateLauncherComponent(json);
+				return CreateLauncherPhysicsComponent(json);
+			}
+			else if (type == "trigger_region")
+			{
+				return CreateTriggerRegionPhysicsComponent(json);
 			}
 		}
 		
@@ -184,7 +188,7 @@ namespace Degen
 			}
 			return 0;
 		}
-		iLauncherComponent* CreateLauncherComponent(const Json::Value& jsonLauncher)
+		iLauncherComponent* CreateLauncherPhysicsComponent(const Json::Value& jsonLauncher)
 		{
 			if (!jsonLauncher.isObject()) return 0;
 
@@ -195,6 +199,19 @@ namespace Degen
 				&& JsonHelp::Set(jsonLauncher["rotation"], def.Rotation))
 			{
 				return PhysicsFactory->CreateLauncher(def);
+			}
+			return 0;
+		}
+		iTriggerRegionComponent* CreateTriggerRegionPhysicsComponent(const Json::Value& jsonTriggerRegion)
+		{
+			if (!jsonTriggerRegion.isObject()) return 0;
+
+			sTriggerRegionDef def;
+			if (JsonHelp::Set(jsonTriggerRegion["position"], def.Position)
+				&& JsonHelp::Set(jsonTriggerRegion["size"], def.Size)
+				&& JsonHelp::Set(jsonTriggerRegion["rotation"], def.Rotation))
+			{
+				return PhysicsFactory->CreateTriggerRegion(def);
 			}
 			return 0;
 		}
