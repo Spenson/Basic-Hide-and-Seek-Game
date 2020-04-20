@@ -16,7 +16,7 @@ namespace DegenBulletPhysicsWrapper
 {
 
 
-	
+
 	/**
 	 * \method		~cPhysicsWorld
 	 * \fullname	DegenMyPhysicsWrapper::cPhysicsWorld::~cPhysicsWorld
@@ -91,37 +91,39 @@ namespace DegenBulletPhysicsWrapper
 	void cPhysicsWorld::Update(float dt)
 	{
 		mWorld->stepSimulation(dt, 10);
-		//* todo collision stuff
+		//* collision stuff
 		if (mCollisionListener)
 		{
 			int numManifolds = mWorld->getDispatcher()->getNumManifolds();
 			for (int i = 0; i < numManifolds; i++)
 			{
-				btPersistentManifold* contactManifold = mDispatcher->getManifoldByIndexInternal(i);
-				const btCollisionObject* obA = contactManifold->getBody0();
-				const btCollisionObject* obB = contactManifold->getBody1();
-
+				btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
 				int numContacts = contactManifold->getNumContacts();
 
-				btVector3 cP(0, 0, 0);
-
-				int tempA = obA->getUserIndex2(), tempB = obB->getUserIndex2();
-				
-				for (int j = 0; j < numContacts; j++)
+				if (numContacts > 0)
 				{
-					btManifoldPoint& pt = contactManifold->getContactPoint(j);
+					const btCollisionObject* obA = contactManifold->getBody0();
+					const btCollisionObject* obB = contactManifold->getBody1();
 
-					btVector3 ptA = pt.getPositionWorldOnA();
-					btVector3 ptB = pt.getPositionWorldOnB();
+					btVector3 cP(0, 0, 0);
 
-					btVector3 median = (ptA + ptB) / 2;
+					int tempA = obA->getUserIndex2(), tempB = obB->getUserIndex2();
 
-					cP += median;
-				}
-				cP /= (float)numContacts;
+					for (int j = 0; j < numContacts; j++)
+					{
+						btManifoldPoint& pt = contactManifold->getContactPoint(j);
 
-				if(numContacts > 0)
+						btVector3 ptA = pt.getPositionWorldOnA();
+						btVector3 ptB = pt.getPositionWorldOnB();
+
+						btVector3 median = (ptA + ptB) / 2;
+
+						cP += median;
+					}
+					cP /= (float)numContacts;
+
 					mCollisionListener->Collide(static_cast<Degen::Physics::iPhysicsComponent*>(obA->getUserPointer()), static_cast<Degen::Physics::iPhysicsComponent*>(obB->getUserPointer()), nConvert::ToGLM(cP));
+				}
 			}
 		}
 		//*/
@@ -153,7 +155,7 @@ namespace DegenBulletPhysicsWrapper
 
 		comp->AddToWorld(mWorld);
 		return true;
-	
+
 	}
 
 	/**

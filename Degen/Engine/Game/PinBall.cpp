@@ -56,6 +56,19 @@ namespace Degen
 
 			TextRenderer->AddText("Score: " + std::to_string(mScore), 25.0f, WINDOW_HEIGHT * 1.7, 1.1f, glm::vec3(.9f, .9f, .9f));
 			TextRenderer->AddText("Lives: " + std::to_string(mLives), 25.0f, WINDOW_HEIGHT * 1.6, 1.0f, glm::vec3(.8f, .8f, .8f));
+
+			for (auto ent : mBumpers_Panels)
+			{
+				Component::Render* rend = dynamic_cast<Component::Render*>(ent->GetComponent(Component::RENDER_COMPONENT));
+				if (rend->diffuse_amount > 0.f)
+				{
+					rend->diffuse_amount -= dt;
+
+					if (rend->diffuse_amount < 0.f) 
+
+						rend->diffuse_amount = 0.f;
+				}
+			}
 		}
 		void Pinball::AddEntity(Entity::cEntity* entity)
 		{
@@ -103,6 +116,16 @@ namespace Degen
 					glm::vec3 ball_pos(temp[3].x, temp[3].y, temp[3].z);
 					glm::vec3 forceDir = glm::normalize(ball_pos - collision_point);
 					dynamic_cast<Physics::iBallComponent*>(compA)->ApplyImpulse(forceDir * 30.f);
+
+					for (auto ent : mBumpers_Panels)
+					{
+						if (ent->unique_id == compB->GetEntityId())
+						{
+							Component::Render* rend = dynamic_cast<Component::Render*>(ent->GetComponent(Component::RENDER_COMPONENT));
+							rend->diffuse_colour = glm::vec4((float)(rand() % 100) / 100.f, (float)(rand() % 100) / 100.f, (float)(rand() % 100) / 100.f, 1.f);
+							rend->diffuse_amount = 1.f;
+						}
+					}
 				}
 				else if (compB->GetSecondaryId() == 2)
 				{
@@ -112,18 +135,58 @@ namespace Degen
 					glm::vec3 ball_pos(temp[3].x, temp[3].y, temp[3].z);
 					glm::vec3 forceDir = glm::normalize(ball_pos - collision_point);
 					dynamic_cast<Physics::iBallComponent*>(compA)->ApplyImpulse(forceDir * 35.f);
+
+					for (auto ent : mBumpers_Panels)
+					{
+						if (ent->unique_id == compB->GetEntityId())
+						{
+							Component::Render* rend = dynamic_cast<Component::Render*>(ent->GetComponent(Component::RENDER_COMPONENT));
+							rend->diffuse_colour = glm::vec4((float)(rand() % 100) / 100.f, (float)(rand() % 100) / 100.f, (float)(rand() % 100) / 100.f, 1.f);
+							rend->diffuse_amount = 1.f;
+						}
+					}
 				}
 
 			}
 			else if (compB->GetSecondaryId() == 6)
 			{
-				if (compB->GetSecondaryId() == 1)
+				if (compA->GetSecondaryId() == 1)
 				{
 					mScore += 10;
+					glm::mat4 temp;
+					compB->GetTransform(temp);
+					glm::vec3 ball_pos(temp[3].x, temp[3].y, temp[3].z);
+					glm::vec3 forceDir = glm::normalize(ball_pos - collision_point);
+					dynamic_cast<Physics::iBallComponent*>(compB)->ApplyImpulse(forceDir * 30.f);
+
+					for (auto ent : mBumpers_Panels)
+					{
+						if (ent->unique_id == compA->GetEntityId())
+						{
+							Component::Render* rend = dynamic_cast<Component::Render*>(ent->GetComponent(Component::RENDER_COMPONENT));
+							rend->diffuse_colour = glm::vec4((float)(rand() % 100) / 100.f, (float)(rand() % 100) / 100.f, (float)(rand() % 100) / 100.f, 1.f);
+							rend->diffuse_amount = 1.f;
+						}
+					}
 				}
-				else if (compB->GetSecondaryId() == 2)
+				else if (compA->GetSecondaryId() == 2)
 				{
 					mScore += 15;
+					glm::mat4 temp;
+					compB->GetTransform(temp);
+					glm::vec3 ball_pos(temp[3].x, temp[3].y, temp[3].z);
+					glm::vec3 forceDir = glm::normalize(ball_pos - collision_point);
+					dynamic_cast<Physics::iBallComponent*>(compB)->ApplyImpulse(forceDir * 35.f);
+
+					for (auto ent : mBumpers_Panels)
+					{
+						if (ent->unique_id == compA->GetEntityId())
+						{
+							Component::Render* rend = dynamic_cast<Component::Render*>(ent->GetComponent(Component::RENDER_COMPONENT));
+							rend->diffuse_colour = glm::vec4((float)(rand() % 100) / 100.f, (float)(rand() % 100) / 100.f, (float)(rand() % 100) / 100.f, 1.f);
+							rend->diffuse_amount = 1.f;
+						}
+					}
 				}
 
 			}
@@ -131,7 +194,7 @@ namespace Degen
 
 		void Pinball::Collide(Physics::iPhysicsComponent* compA, Physics::iPhysicsComponent* compB)
 		{
-			
+
 		}
 	}
 }
