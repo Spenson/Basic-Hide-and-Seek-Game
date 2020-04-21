@@ -70,6 +70,74 @@ namespace Degen
 		glfwTerminate();
 	}
 
+	bool cEngine::MakeUberShader(Json::Value& jsonRoot)
+	{
+		Json::Value jsonShader;
+		if (jsonRoot["shader"].isObject())jsonShader = jsonRoot["shader"];
+
+		std::string name;
+
+		JsonHelp::Set(jsonShader["name"], name);
+
+		Shaders::cShaderManager::cShader vertexShad;
+		if (jsonShader["vert"].isString()) vertexShad.fileName = "assets/shaders/" + jsonShader["vert"].asString();
+
+
+		Shaders::cShaderManager::cShader tessCShader;
+		if (jsonShader["tess_cont"].isString()) tessCShader.fileName = "assets/shaders/" + jsonShader["tess_cont"].asString();
+		Shaders::cShaderManager::cShader tessEShader;
+		if (jsonShader["tess_eval"].isString()) tessEShader.fileName = "assets/shaders/" + jsonShader["tess_eval"].asString();
+
+
+		
+		Shaders::cShaderManager::cShader geoShader;
+		if (jsonShader["geo"].isString()) geoShader.fileName = "assets/shaders/" + jsonShader["geo"].asString();
+
+		Shaders::cShaderManager::cShader fragShader;
+		if (jsonShader["frag"].isString()) fragShader.fileName = "assets/shaders/" + jsonShader["frag"].asString();
+
+
+		if (vertexShad.fileName.empty() || fragShader.fileName.empty())
+		{
+			printf("vertex and fragment shaders required.\n");
+			return false;
+		}
+
+
+		if(!geoShader.fileName.empty() && !tessCShader.fileName.empty() && !tessEShader.fileName.empty())
+		{
+			if (!ShaderManager->createProgramFromFile(name, vertexShad, tessCShader, tessEShader, geoShader, fragShader))
+			{
+				printf("Could not create shader\n");
+				printf("%s\n", ShaderManager->getLastError().c_str());
+				return false;
+			}
+			
+		}
+		else if (!geoShader.fileName.empty())
+		{
+			if (!ShaderManager->createProgramFromFile(name, vertexShad, geoShader, fragShader))
+			{
+				printf("Could not create shader\n");
+				printf("%s\n", ShaderManager->getLastError().c_str());
+				return false;
+			}
+		}
+		else
+		{
+			if (!ShaderManager->createProgramFromFile(name, vertexShad, fragShader))
+			{
+				printf("Could not create shader\n");
+				printf("%s\n", ShaderManager->getLastError().c_str());
+				return false;
+			}
+		}
+
+		ShaderManager->pGetShaderProgramFromFriendlyName(name)->LoadActiveUniforms();
+		mRenderer = new Render::cRenderer(ShaderManager->pGetShaderProgramFromFriendlyName(name));
+		mShaderName = name;
+	}
+
 	bool cEngine::InitGL()
 	{
 		// NOTE: assert not built into release
@@ -161,55 +229,8 @@ namespace Degen
 		AnimationManager = new Animation::cAnimationManager();
 		View = new sView();
 
-		{
-			Json::Value jsonShader;
-			if (jsonRoot["shader"].isObject())jsonShader = jsonRoot["shader"];
-
-			std::string name;
-
-			JsonHelp::Set(jsonShader["name"], name);
-
-			Shaders::cShaderManager::cShader vertexShad;
-			if (jsonShader["vert"].isString()) vertexShad.fileName = "assets/shaders/" + jsonShader["vert"].asString();
-
-			Shaders::cShaderManager::cShader geoShader;
-			if (jsonShader["geo"].isString()) geoShader.fileName = "assets/shaders/" + jsonShader["geo"].asString();
-
-			Shaders::cShaderManager::cShader fragShader;
-			if (jsonShader["frag"].isString()) fragShader.fileName = "assets/shaders/" + jsonShader["frag"].asString();
-
-
-			if (vertexShad.fileName.empty() || fragShader.fileName.empty())
-			{
-				printf("vertex and fragment shaders required.\n");
-				return false;
-			}
-
-
-			if (geoShader.fileName.empty())
-			{
-				if (!ShaderManager->createProgramFromFile(name, vertexShad, fragShader))
-				{
-					printf("Could not create shader\n");
-					printf("%s\n", ShaderManager->getLastError().c_str());
-					return false;
-				}
-			}
-			else
-			{
-				if (!ShaderManager->createProgramFromFile(name, vertexShad, geoShader, fragShader))
-				{
-					printf("Could not create shader\n");
-					printf("%s\n", ShaderManager->getLastError().c_str());
-					return false;
-				}
-			}
-
-			ShaderManager->pGetShaderProgramFromFriendlyName(name)->LoadActiveUniforms();
-			mRenderer = new Render::cRenderer(ShaderManager->pGetShaderProgramFromFriendlyName(name));
-			mShaderName = name;
-		}
-
+		MakeUberShader(jsonRoot);
+		
 		{
 			Json::Value jsonShader;
 			if (jsonRoot["text_shader"].isObject())jsonShader = jsonRoot["text_shader"];

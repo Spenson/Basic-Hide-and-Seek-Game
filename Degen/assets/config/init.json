@@ -2,6 +2,8 @@
 	"shader": {
 		"name": "Uber",
 		"vert": "1vertex.glsl",
+		"tess_cont": "2tesselation_control.glsl",
+		"tess_eval": "2tesselation_evaluation.glsl",
 		"geo": "3geometry.glsl",
 		"frag": "4fragment.glsl"
 	},

@@ -21,11 +21,17 @@ namespace Degen
 				case cShader::VERTEX_SHADER:
 					return "VERTEX_SHADER";
 					break;
-				case cShader::FRAGMENT_SHADER:
-					return "FRAGMENT_SHADER";
+				case cShader::TESSELATION_CONTROL_SHADER:
+					return "TESSELATION_CONTROL_SHADER";
+					break;
+				case cShader::TESSELATION_EVALUATION_SHADER:
+					return "TESSELATION_EVALUATION_SHADER";
 					break;
 				case cShader::GEOMETRY_SHADER:
 					return "GEOMETRY_SHADER";
+					break;
+				case cShader::FRAGMENT_SHADER:
+					return "FRAGMENT_SHADER";
 					break;
 				case cShader::UNKNOWN:
 				default:

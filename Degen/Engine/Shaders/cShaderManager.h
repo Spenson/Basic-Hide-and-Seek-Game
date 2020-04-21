@@ -18,6 +18,8 @@ namespace Degen
 				enum eShaderType
 				{
 					VERTEX_SHADER,
+					TESSELATION_CONTROL_SHADER,
+					TESSELATION_EVALUATION_SHADER,
 					GEOMETRY_SHADER,
 					FRAGMENT_SHADER,
 					UNKNOWN
@@ -72,6 +74,15 @@ namespace Degen
 			// This will recreate the shader by default...
 			bool createProgramFromFile(std::string friendlyName,
 									   cShader& vertexShad,
+									   cShader& geomShad,
+									   cShader& fragShader,
+									   bool replaceExisting = true);
+
+			// This will recreate the shader by default...
+			bool createProgramFromFile(std::string friendlyName,
+									   cShader& vertexShad,
+									   cShader& tessCont,
+									   cShader& tessEval,
 									   cShader& geomShad,
 									   cShader& fragShader,
 									   bool replaceExisting = true);

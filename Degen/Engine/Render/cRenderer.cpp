@@ -283,10 +283,17 @@ namespace Degen
 			if (VAOManager->FindDrawInfoByModelName(rend_comp->mesh, drawInfo))
 			{
 				glBindVertexArray(drawInfo.vao_id);
+				glPatchParameteri(GL_PATCH_VERTICES, 3);
+				glDrawElements(GL_PATCHES,
+							   drawInfo.number_of_indices,
+							   GL_UNSIGNED_INT,
+							   0);
+				/*
 				glDrawElements(GL_TRIANGLES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
+				*/
 				glBindVertexArray(0);
 			}
 		}
@@ -385,10 +392,17 @@ namespace Degen
 			if (VAOManager->FindDrawInfoByModelName(rend_comp->mesh, drawInfo))
 			{
 				glBindVertexArray(drawInfo.vao_id);
+				glPatchParameteri(GL_PATCH_VERTICES, 3);
+				glDrawElements(GL_PATCHES,
+							   drawInfo.number_of_indices,
+							   GL_UNSIGNED_INT,
+							   0);
+				/*
 				glDrawElements(GL_TRIANGLES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
+				*/
 				glBindVertexArray(0);
 			}
 		}
@@ -496,10 +510,17 @@ namespace Degen
 			if (VAOManager->FindDrawInfoByModelName("quad", drawInfo))
 			{
 				glBindVertexArray(drawInfo.vao_id);
-				glDrawElements(GL_TRIANGLES,
+				glPatchParameteri(GL_PATCH_VERTICES, 3);
+				glDrawElements(GL_PATCHES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
+				/*
+				 glDrawElements(GL_TRIANGLES,
+							   drawInfo.number_of_indices,
+							   GL_UNSIGNED_INT,
+							   0);
+				*/
 				glBindVertexArray(0);
 				rendered = true;
 			}

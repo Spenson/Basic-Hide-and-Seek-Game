@@ -267,6 +267,193 @@ namespace Degen
 
 			return true;
 		}
+
+
+
+
+
+		
+		bool cShaderManager::createProgramFromFile(std::string friendlyName, cShader& vertexShad, cShader& tessCont, cShader& tessEval, cShader& geomShad, cShader& fragShader, bool replaceExisting)
+		{
+			std::string errorText = "";
+
+			// See if the shader is already there (the name)
+			cShaderManager::cShaderProgram* pShaderProgram = this->pGetShaderProgramFromFriendlyName(friendlyName);
+
+			if (pShaderProgram != NULL)
+			{
+				// There is an existing shader, already
+
+				if (replaceExisting)
+				{
+					// TODO: Find the shader in the two maps and delete them from the map
+					// (If it's single threaded, do I ever need to do this???)
+
+					// Call glDeleteShader() with the ID, to delete from the GPU
+					glDeleteShader(pShaderProgram->ID);
+
+					// TODO: Delete the shader pointer
+					delete pShaderProgram;
+
+					pShaderProgram = NULL;
+				}
+				else
+				{
+					return false;
+				}
+
+			}//if (pShaderProgram != NULL)
+
+
+			// At this point, there ISN'T a shader (never was or was deleted)
+
+			// Shader loading happening before vertex buffer array
+			vertexShad.ID = glCreateShader(GL_VERTEX_SHADER);
+			vertexShad.shaderType = cShader::VERTEX_SHADER;
+			//  char* vertex_shader_text = "wewherlkherlkh";
+			// Load some text from a file...
+			if (!this->m_loadSourceFromFile(vertexShad))
+			{
+				return false;
+			}//if ( ! this->m_loadSourceFromFile(...
+
+			//errorText = "";
+			if (!this->m_compileShaderFromSource(vertexShad, errorText))
+			{
+				this->m_lastError = errorText;
+				return false;
+			}//if ( this->m_compileShaderFromSource(...
+
+
+
+
+
+			
+			// ******
+
+
+			
+			// Shader loading happening before vertex buffer array
+			tessCont.ID = glCreateShader(GL_TESS_CONTROL_SHADER);
+			tessCont.shaderType = cShader::TESSELATION_CONTROL_SHADER;
+			//  char* vertex_shader_text = "wewherlkherlkh";
+			// Load some text from a file...
+			if (!this->m_loadSourceFromFile(tessCont))
+			{
+				return false;
+			}//if ( ! this->m_loadSourceFromFile(...
+
+			//errorText = "";
+			if (!this->m_compileShaderFromSource(tessCont, errorText))
+			{
+				this->m_lastError = errorText;
+				return false;
+			}//if ( this->m_compileShaderFromSource(...
+
+			
+			// Shader loading happening before vertex buffer array
+			tessEval.ID = glCreateShader(GL_TESS_EVALUATION_SHADER);
+			tessEval.shaderType = cShader::TESSELATION_EVALUATION_SHADER;
+			//  char* vertex_shader_text = "wewherlkherlkh";
+			// Load some text from a file...
+			if (!this->m_loadSourceFromFile(tessEval))
+			{
+				return false;
+			}//if ( ! this->m_loadSourceFromFile(...
+
+			//errorText = "";
+			if (!this->m_compileShaderFromSource(tessEval, errorText))
+			{
+				this->m_lastError = errorText;
+				return false;
+			}//if ( this->m_compileShaderFromSource(...
+
+
+
+
+
+
+
+
+			
+
+
+
+
+			// ******
+			// Shader loading happening before vertex buffer array
+			geomShad.ID = glCreateShader(GL_GEOMETRY_SHADER);
+			geomShad.shaderType = cShader::GEOMETRY_SHADER;
+			//  char* vertex_shader_text = "wewherlkherlkh";
+			// Load some text from a file...
+			if (!this->m_loadSourceFromFile(geomShad))
+			{
+				return false;
+			}//if ( ! this->m_loadSourceFromFile(...
+
+			//errorText = "";
+			if (!this->m_compileShaderFromSource(geomShad, errorText))
+			{
+				this->m_lastError = errorText;
+				return false;
+			}//if ( this->m_compileShaderFromSource(...
+
+			// ******
+			fragShader.ID = glCreateShader(GL_FRAGMENT_SHADER);
+			fragShader.shaderType = cShader::FRAGMENT_SHADER;
+			if (!this->m_loadSourceFromFile(fragShader))
+			{
+				return false;
+			}//if ( ! this->m_loadSourceFromFile(...
+
+			if (!this->m_compileShaderFromSource(fragShader, errorText))
+			{
+				this->m_lastError = errorText;
+				return false;
+			}//if ( this->m_compileShaderFromSource(...
+
+
+			cShaderProgram curProgram;
+			curProgram.ID = glCreateProgram();
+
+			glAttachShader(curProgram.ID, vertexShad.ID);
+			//**********************
+			glAttachShader(curProgram.ID, tessCont.ID);
+			glAttachShader(curProgram.ID, tessEval.ID);
+			//**********************
+			glAttachShader(curProgram.ID, geomShad.ID);
+			glAttachShader(curProgram.ID, fragShader.ID);
+			glLinkProgram(curProgram.ID);
+
+			// Was there a link error? 
+			//errorText = "";
+			if (this->m_wasThereALinkError(curProgram.ID, errorText))
+			{
+				std::stringstream ssError;
+				ssError << "Shader program link error: ";
+				ssError << errorText;
+				this->m_lastError = ssError.str();
+				return false;
+			}
+
+			// At this point, shaders are compiled and linked into a program
+
+			curProgram.friendlyName = friendlyName;
+
+			// Add the shader to the map
+			this->m_ID_to_Shader[curProgram.ID] = curProgram;
+			// Save to other map, too
+			this->m_name_to_ID[curProgram.friendlyName] = curProgram.ID;
+
+			return true;
+		}
+
+
+
+
+
+
+		
 		void cShaderManager::setBasePath(std::string basepath)
 		{
 			this->m_basepath = basepath;

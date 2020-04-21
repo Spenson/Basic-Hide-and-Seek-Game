@@ -2,6 +2,7 @@
 
 #include "GL.h"
 #include <string>
+#include <json/json.h>
 
 
 namespace Degen
@@ -65,6 +66,8 @@ namespace Degen
 		// Needed for loading
 		std::string mShaderName;
 
+		bool MakeUberShader(Json::Value& jsonRoot);
+		
 		bool InitGL();
 
 	};
