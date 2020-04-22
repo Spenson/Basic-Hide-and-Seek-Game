@@ -4,18 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Degen", "Degen\Degen.vcxproj", "{0789AC88-87A5-4429-BFCC-C3946DFCBB6C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9C01ABB7-91D2-4668-B586-81916D46198E} = {9C01ABB7-91D2-4668-B586-81916D46198E}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0FA87E2F-FC70-4686-958D-4A157C03C861}"
 	ProjectSection(SolutionItems) = preProject
 		dependencies\include\glm.hpp = dependencies\include\glm.hpp
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DegenPhysicsInterfaces", "DegenPhysicsInterfaces\DegenPhysicsInterfaces.vcxproj", "{881E4B5B-7EFC-4539-82D9-822D91E16F85}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletPhayicsWrapper", "BulletPhayicsWrapper\BulletPhayicsWrapper.vcxproj", "{9C01ABB7-91D2-4668-B586-81916D46198E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,22 +26,6 @@ Global
 		{0789AC88-87A5-4429-BFCC-C3946DFCBB6C}.Release|x64.Build.0 = Release|x64
 		{0789AC88-87A5-4429-BFCC-C3946DFCBB6C}.Release|x86.ActiveCfg = Release|Win32
 		{0789AC88-87A5-4429-BFCC-C3946DFCBB6C}.Release|x86.Build.0 = Release|Win32
-		{881E4B5B-7EFC-4539-82D9-822D91E16F85}.Debug|x64.ActiveCfg = Debug|x64
-		{881E4B5B-7EFC-4539-82D9-822D91E16F85}.Debug|x64.Build.0 = Debug|x64
-		{881E4B5B-7EFC-4539-82D9-822D91E16F85}.Debug|x86.ActiveCfg = Debug|Win32
-		{881E4B5B-7EFC-4539-82D9-822D91E16F85}.Debug|x86.Build.0 = Debug|Win32
-		{881E4B5B-7EFC-4539-82D9-822D91E16F85}.Release|x64.ActiveCfg = Release|x64
-		{881E4B5B-7EFC-4539-82D9-822D91E16F85}.Release|x64.Build.0 = Release|x64
-		{881E4B5B-7EFC-4539-82D9-822D91E16F85}.Release|x86.ActiveCfg = Release|Win32
-		{881E4B5B-7EFC-4539-82D9-822D91E16F85}.Release|x86.Build.0 = Release|Win32
-		{9C01ABB7-91D2-4668-B586-81916D46198E}.Debug|x64.ActiveCfg = Debug|x64
-		{9C01ABB7-91D2-4668-B586-81916D46198E}.Debug|x64.Build.0 = Debug|x64
-		{9C01ABB7-91D2-4668-B586-81916D46198E}.Debug|x86.ActiveCfg = Debug|Win32
-		{9C01ABB7-91D2-4668-B586-81916D46198E}.Debug|x86.Build.0 = Debug|Win32
-		{9C01ABB7-91D2-4668-B586-81916D46198E}.Release|x64.ActiveCfg = Release|x64
-		{9C01ABB7-91D2-4668-B586-81916D46198E}.Release|x64.Build.0 = Release|x64
-		{9C01ABB7-91D2-4668-B586-81916D46198E}.Release|x86.ActiveCfg = Release|Win32
-		{9C01ABB7-91D2-4668-B586-81916D46198E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

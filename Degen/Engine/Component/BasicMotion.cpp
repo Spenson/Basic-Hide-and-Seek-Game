@@ -1,4 +1,4 @@
-#include "Velocity.h"
+#include "BasicMotion.h"
 #include "../FileReading/JsonHelpers.h"
 
 
@@ -6,11 +6,11 @@ namespace Degen
 {
 	namespace Component
 	{
-		Velocity::Velocity() :iComponent(VELOCITY_COMPONENT),
+		BasicMotion::BasicMotion() :iComponent(BASIC_MOTION_COMPONENT),
 			velocity(0.f)
 		{
 		}
-		bool Velocity::Deserialize(Json::Value& json)
+		bool BasicMotion::Deserialize(Json::Value& json)
 		{
 			JsonHelp::Set(json["position"], velocity);
 

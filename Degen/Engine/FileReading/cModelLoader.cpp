@@ -314,6 +314,17 @@ namespace Degen
 					pCurVert->bx = mesh->mBitangents[vertIndex].x;
 					pCurVert->by = mesh->mBitangents[vertIndex].y;
 					pCurVert->bz = mesh->mBitangents[vertIndex].z;
+
+
+					if (pCurVert->tx == 0.f &&
+						pCurVert->ty == 0.f &&
+						pCurVert->tz == 0.f &&
+						pCurVert->bx == 0.f &&
+						pCurVert->by == 0.f &&
+						pCurVert->bz == 0.f )
+					{
+						printf("");
+					}
 				}
 
 

@@ -32,6 +32,7 @@ struct VertOut
 	vec4 uv_x2;
 	vec4 tangent;
 	vec4 bi_normal;
+	mat3 tbn;
 };
 out VertOut vOut;
 
@@ -99,6 +100,7 @@ void main()
 		vOut.bi_normal = normalize(matInvTrans * binorm_bonetrans);
 		vOut.bi_normal.w = 1.f;
 
+		vOut.tbn = mat3(normalize(vOut.bi_normal.xyz), normalize(vOut.tangent.xyz), normalize(vOut.normal.xyz));
 
 		// *************************************************
 	}
@@ -125,6 +127,8 @@ void main()
 
 		vOut.bi_normal.xyz = (normalize(matInvTrans * vec4(vBiNormal.xyz, 0.f)).xyz);
 		vOut.bi_normal.w = 0.f;
+
+		vOut.tbn = mat3(normalize(vOut.bi_normal), normalize(vOut.tangent), normalize(vOut.normal));
 	}
 
 	return;

@@ -18,7 +18,11 @@ namespace Degen
 			scale(1.f),
 			ignore_lighting(true),
 			is_wireframe(false),
-			cull_face_back(true)
+			cull_face_back(true),
+			bump_map(),
+			use_bump_map(false),
+			specular_map(),
+			use_specular_map(false)
 		{
 		}
 
@@ -37,6 +41,13 @@ namespace Degen
 			JsonHelp::Set(json["ignore_lighting"], ignore_lighting);
 			JsonHelp::Set(json["is_wireframe"], is_wireframe);
 			JsonHelp::Set(json["cull_face_back"], cull_face_back);
+
+
+			JsonHelp::Set(json["bump_map"], bump_map);
+			JsonHelp::Set(json["use_bump_map"], use_bump_map);
+			
+			JsonHelp::Set(json["specular_map"], specular_map);
+			JsonHelp::Set(json["use_specular_map"], use_specular_map);
 
 
 

@@ -6,7 +6,6 @@
 #include "sView.h"
 #include "Texture/cTextureManager.h"
 #include "Animation/cAnimationManager.h"
-#include "physics/interfaces/iPhysicsFactory.h"
 #include "Render/cTextRenderer.h"
 #include "cEngine.h"
 
@@ -20,12 +19,11 @@ namespace Degen
 	extern Shaders::cShaderManager* ShaderManager; // managers all shaders created
 	extern FileReading::cModelLoader* ModelLoader; // manages files loded with assimp
 	extern Entity::cEntityManager* EntityManager; // creats and cleans up entities
-	extern sView* View; // view for rendering updated by camera
 	extern Texture::cTextureManager* TextureManager;
 	extern Animation::cAnimationManager* AnimationManager;
-	extern Physics::iPhysicsFactory* PhysicsFactory;
-	extern Render::cTextRenderer* TextRenderer;
 
+	extern Render::cTextRenderer* TextRenderer;
 	extern cEngine* Engine;
+	extern sView* View; // view for rendering updated by camera
 	
 }

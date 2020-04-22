@@ -7,10 +7,9 @@
 #include "Component/Rotation.h"
 #include "Component/Camera.h"
 #include "Component/Light.h"
-#include "Component/Velocity.h"
+#include "Component/BasicMotion.h"
 #include "Component/Gatherer.h"
 #include "Component/Animation.h"
-#include "Component/Physics.h"
 
 namespace Degen
 {
@@ -170,9 +169,9 @@ namespace Degen
 							Component::iComponent* comp = ent->AddComponent<Component::Light>();
 							comp->Deserialize(components[i]);
 						}
-						else if (components[i]["component"] == "velocity")
+						else if (components[i]["component"] == "basic_motion")
 						{
-							Component::iComponent* comp = ent->AddComponent<Component::Velocity>();
+							Component::iComponent* comp = ent->AddComponent<Component::BasicMotion>();
 							comp->Deserialize(components[i]);
 						}
 						else if (components[i]["component"] == "gatherer")
@@ -184,13 +183,6 @@ namespace Degen
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Animation>();
 							comp->Deserialize(components[i]);
-						}
-						else if (components[i]["component"] == "physics")
-						{
-							Component::Physics* comp = ent->AddComponent<Component::Physics>();
-							comp->Deserialize(components[i]);
-							comp->comp->SetEntityId(ent->unique_id);
-							comp->comp->SetSecondaryId(ent->user_id);
 						}
 					}
 				}

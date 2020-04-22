@@ -3,7 +3,6 @@
 #include "../Component/Position.h"
 #include "../Component/Camera.h"
 #include "../Component/Animation.h"
-#include "../Component/Physics.h"
 #include <physics/interfaces/iLauncherComponent.h>
 
 namespace Degen
@@ -117,59 +116,59 @@ namespace Degen
 
 			}
 
-			if (glfwGetKey(window, GLFW_KEY_LEFT))
-			{
-				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Left Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+			//if (glfwGetKey(window, GLFW_KEY_LEFT))
+			//{
+			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Left Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
 
-				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+			//	Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
 
-				paddle->Hit(glm::vec3(0, 200, 0));
-			}
-			else
-			{
-				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Left Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+			//	paddle->Hit(glm::vec3(0, 200, 0));
+			//}
+			//else
+			//{
+			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Left Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
 
-				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+			//	Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
 
-				paddle->Hit(glm::vec3(0, -20, 0));
-				
-			}
-			
-			if (glfwGetKey(window, GLFW_KEY_RIGHT))
-			{
-				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Right Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+			//	paddle->Hit(glm::vec3(0, -20, 0));
+			//	
+			//}
+			//
+			//if (glfwGetKey(window, GLFW_KEY_RIGHT))
+			//{
+			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Right Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
 
-				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+			//	Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
 
-				paddle->Hit(glm::vec3(0, -200, 0));
-			}
-			else
-			{
-				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Right Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+			//	paddle->Hit(glm::vec3(0, -200, 0));
+			//}
+			//else
+			//{
+			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Right Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
 
-				Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+			//	Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
 
-				paddle->Hit(glm::vec3(0, 20, 0));
+			//	paddle->Hit(glm::vec3(0, 20, 0));
 
-			}
+			//}
 
-			if (glfwGetKey(window, GLFW_KEY_SPACE))
-			{
-				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Launcher")->GetComponent(Component::PHYSICS_COMPONENT));
+			//if (glfwGetKey(window, GLFW_KEY_SPACE))
+			//{
+			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Launcher")->GetComponent(Component::PHYSICS_COMPONENT));
 
-				Physics::iLauncherComponent* launcher = dynamic_cast<Physics::iLauncherComponent*>(phys->comp);
+			//	Physics::iLauncherComponent* launcher = dynamic_cast<Physics::iLauncherComponent*>(phys->comp);
 
-				launcher->Pull(glm::vec3(0,0,-1));
-				
-			}
-			else
-			{
-				Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Launcher")->GetComponent(Component::PHYSICS_COMPONENT));
+			//	launcher->Pull(glm::vec3(0,0,-1));
+			//	
+			//}
+			//else
+			//{
+			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Launcher")->GetComponent(Component::PHYSICS_COMPONENT));
 
-				Physics::iLauncherComponent* launcher = dynamic_cast<Physics::iLauncherComponent*>(phys->comp);
+			//	Physics::iLauncherComponent* launcher = dynamic_cast<Physics::iLauncherComponent*>(phys->comp);
 
-				launcher->Release();
-			}
+			//	launcher->Release();
+			//}
 		}
 	}
 }

@@ -28,33 +28,18 @@
       "format": "png"
     },
     {
+      "name": "forest guard bump",
+      "file": "forest guard normals.png",
+      "format": "png"
+    },
+    {
+      "name": "forest guard specular",
+      "file": "forest guard specular.png",
+      "format": "png"
+    },
+    {
       "name": "wood",
       "file": "wood.png",
-      "format": "png"
-    },
-    {
-      "name": "metal",
-      "file": "metal.png",
-      "format": "png"
-    },
-    {
-      "name": "stone",
-      "file": "stone.png",
-      "format": "png"
-    },
-    {
-      "name": "shiney_metal",
-      "file": "shiney metal.png",
-      "format": "png"
-    },
-    {
-      "name": "cone_metal",
-      "file": "ConeMetal.png",
-      "format": "png"
-    },
-    {
-      "name": "ball_metal",
-      "file": "BallMetal.png",
       "format": "png"
     }
   ],
@@ -125,7 +110,7 @@
       "components": [
         {
           "component": "position",
-          "position": [ 0.0, 30.0, -25.0 ]
+          "position": [ 0.0, 5.0, 0.0 ]
         },
         {
           "component": "render",
@@ -144,76 +129,538 @@
         {
           "component": "camera",
           "active": true,
-          "pitch": -60.0,
-          "yaw": 180.0,
-          "distance": 40.0,
-          "max_distance": 80.0,
-          "min_distance": 20.0
-        }
-      ]
-    },
-    {
-      "name": "Pinball",
-      "id": 6,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "sphere",
-          "texture1": "ball_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 0.76, 0.75, 0.76 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "ball",
-          "position": [ 16, -2.0, -10.0 ],
-          "mass": 5.0,
-          "radius": 0.76,
-          "rotation": [ 0, 0, 0 ]
+          "pitch": 0.0,
+          "yaw": 0.0,
+          "distance": 20.0,
+          "max_distance": 40.0,
+          "min_distance": 1.0
         }
       ]
     },
 
-
-
-
     {
-      "name": "Glass",
       "components": [
         {
           "component": "transform",
-          "pos": [ 1.45, -0.99, -5.0 ],
-          "rot": [ 90.0, 0.0, 0.0 ]
+          "pos": [ 0.0, 10.0, 0.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
-          "mesh": "quad",
-          "texture1": "grid",
+          "mesh": "box",
+          "texture1": "wood",
           "texture1_amount": 0.0,
-          "diffuse": [ 0.1, 0.1, 0.2, 0.2 ],
-          "diffuse_amount": 1,
-          "specular": [ 0.8, 0.8, 1, 300.0 ],
-          "scale": [ 16.5, 35, 1 ],
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 1.0,
+          "specular": [ 0.5, 0.5, 0.5, 200.0 ],
+          "scale": [ 1, 1, 1 ],
           "ignore_lighting": false,
           "is_wireframe": false
+
+        }
+      ]
+    }
+    ,
+    {
+      "name": "forest guard 1",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, 0.0, 10.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
         },
         {
-          "component": "physics",
-          "type": "plane",
-          "normal": [ 0.0, -1.0, 0.0 ],
-          "constant": 1.0
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 0.1, 0.1, 1000.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
         }
       ]
     },
 
+
+    {
+      "name": "forest guard 2",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 10.0, 7.0, 0.0 ],
+          "rot": [ 0.0, 0.0, 180.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
+
+    {
+      "name": "forest guard 3",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, 0.0, 0.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
+
+    {
+      "name": "forest guard 4",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ -10.0, 0.0, 0.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
+
+    {
+      "name": "forest guard 5",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 10.0, 0.0, -10.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
+
+    {
+      "name": "forest guard 6",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, 0.0, -10.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
+
+    {
+      "name": "forest guard 7",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ -10.0, 0.0, -10.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
+
+    {
+      "name": "forest guard 8",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 10.0, 0.0, -20.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
+
+    {
+      "name": "forest guard 9",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, 0.0, -20.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
+
+    {
+      "name": "forest guard 10",
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ -10.0, 0.0, -20.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "render",
+          "mesh": "forest_guard_eyes",
+          "texture1": "forest guard diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
+          "scale": [ 0.1, 0.1, 0.1 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "forest guard bump",
+          "use_specular_map": true,
+          "specular_map": "forest guard specular"
+        },
+        {
+          "component": "animation",
+          "default_animation": "forest_guard@idle",
+          "default_blend_time": 0.3
+        }
+      ]
+    },
 
 
 
@@ -223,7 +670,7 @@
       "components": [
         {
           "component": "transform",
-          "pos": [ 1.45, -5.0, -5.0 ],
+          "pos": [ 0.0, 0.0, 0.0 ],
           "rot": [ 90.0, 0.0, 0.0 ]
         },
         {
@@ -237,953 +684,11 @@
           "scale": [ 16.5, 35, 1 ],
           "ignore_lighting": false,
           "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "plane",
-          "normal": [ 0.0, 1.0, 0.0 ],
-          "constant": -5.0
         }
+
       ]
-    },
-
-    {
-      "name": "Far Wall",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 1.45, -3.0, 30.2 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 16.8, 2, 0.2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "plane",
-          "normal": [ 0.0, 0.0, -1.0 ],
-          "constant": -30.0
-        }
-      ]
-    },
-
-
-    {
-      "name": "Right Wall",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ -15.2, -3.0, -5.0 ],
-          "rot": [ 0.0, 90.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 35, 2, 0.2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "plane",
-          "normal": [ 1.0, 0.0, 0.0 ],
-          "constant": -15.0
-        }
-      ]
-    },
-    {
-      "name": "Left Wall",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 18.1, -3.0, -5.0 ],
-          "rot": [ 0.0, 90.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 35, 2, 0.2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "plane",
-          "normal": [ -1.0, 0.0, 0.0 ],
-          "constant": -17.9
-        }
-      ]
-    },
-
-
-
-
-
-
-
-
-
-
-    {
-      "name": "Left Paddle",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "shiney_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 4, 1.5, 0.3 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "paddle",
-          "position": [ 6, -3.5, -20.0 ],
-          "mass": 10.0,
-          "size": [ 4, 1.5, 0.3 ],
-          "hinge_pos_x": true,
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Right Paddle",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "shiney_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 4, 1.5, 0.3 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "paddle",
-          "position": [ -6, -3.5, -20.0 ],
-          "mass": 10.0,
-          "size": [ 4, 1.5, 0.3 ],
-          "hinge_pos_x": false,
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-
-
-
-
-
-
-
-
-    {
-      "name": "Left Panel",
-      "id": 2,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 5, 1.5, 0.2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          "position": [ 11.2, -3.5, -14.7 ],
-          "mass": 0.0,
-          "size": [ 5, 1.5, 0.2 ],
-          "hinge_pos_x": true,
-          "rotation": [ 0, -75, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Right Panel",
-      "id": 2,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 5, 1.5, 0.2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          "position": [ -11.2, -3.5, -14.7 ],
-          "mass": 0.0,
-          "size": [ 5, 1.5, 0.2 ],
-          "hinge_pos_x": true,
-          "rotation": [ 0, 75, 0 ]
-        }
-      ]
-    },
-
-
-
-
-
-
-
-
-
-
-
-    {
-      "name": "Left Bottom Board",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 0.0, -2.5, 0 ],
-          "rot": [ 0, 0, 0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 7, 2.0, 0.2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          "position": [ 8.8, -3, -27 ],
-          "mass": 0.0,
-          "size": [ 7, 2.0, 0.2 ],
-          "rotation": [ 0, -30, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Right Bottom Board",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 0.0, -2.5, 0 ],
-          "rot": [ 0, 0, 0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 7, 2.0, 0.2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          "position": [ -8.9, -3, -27 ],
-          "mass": 0.0,
-          "size": [ 7, 2.0, 0.2 ],
-          "rotation": [ 0, 30, 0 ]
-        }
-      ]
-    },
-
-
-
-
-
-
-
-
-
-
-
-
-    {
-      "name": "Launch redirect",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 2.15, 2.0, 0.2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          "position": [ 16.4, -3, 28.5 ],
-          "mass": 0.0,
-          "size": [ 2.8, 2.0, 0.2 ],
-          "rotation": [ 0, 45, 0 ]
-        }
-      ]
-    },
-
-    {
-      "name": "launch ball stop left",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 0.3, 2.0, 0.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          "position": [ 17.6, -3, -27 ],
-          "mass": 0.0,
-          "size": [ 0.3, 2.0, 0.5 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "launch ball stop right",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 0.0, -2.5, 0 ],
-          "rot": [ 0, 0, 0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 0.3, 2.0, 0.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          "position": [ 15.5, -3, -27 ],
-          "mass": 0.0,
-          "size": [ 0.3, 2.0, 0.5 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Launch Tunnel",
-      "id": 3,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "box",
-          "texture1": "stone",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 0.2, 2.0, 35 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "box",
-          //"position": [ 15, -3, -5 ],
-          "position": [ 15, -3, -9 ],
-          "mass": 0.0,
-          "size": [ 0.2, 2.0, 35 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-
-    {
-      "name": "Launcher",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cylinder",
-          "texture1": "shiney_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 0.75, 2, 0.75 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "launcher",
-          "position": [ 16.55, -3.75, -27.5 ],
-          "mass": 20.0,
-          "size": [ 0.74, 2, 0.75 ],
-          "rotation": [ 90, 0, 0 ]
-        }
-      ]
-    },
-
-
-
-
-
-    {
-      "name": "Reset Zone",
-      "id": 4,
-      "components": [
-        {
-          "component": "transform"
-        },
-        //{
-        //  "component": "render",
-        //  "mesh": "box",
-        //  "texture1": "grid",
-        //  "texture1_amount": 1.0,
-        //  "diffuse": [ 0.0, 0.0, 1.0, 0.5 ],
-        //  "diffuse_amount": 0.0,
-        //  "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-        //  "scale": [ 10, 1.5, 4 ],
-        //  "ignore_lighting": false,
-        //  "is_wireframe": false
-        //},
-        {
-          "component": "physics",
-          "type": "trigger_region",
-          "position": [ 0, -3, -38 ],
-          "mass": 0.0,
-          "size": [ 10, 1.5, 4 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Inplay Zone",
-      "id": 5,
-      "components": [
-        {
-          "component": "transform"
-        },
-        //{
-        //  "component": "render",
-        //  "mesh": "box",
-        //  "texture1": "grid",
-        //  "texture1_amount": 1.0,
-        //  "diffuse": [ 0.0, 0.0, 1.0, 0.5 ],
-        //  "diffuse_amount": 0.0,
-        //  "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-        //  "scale": [ 2, 1.5, 4 ],
-        //  "ignore_lighting": false,
-        //  "is_wireframe": false
-        //},
-        {
-          "component": "physics",
-          "type": "trigger_region",
-          "position": [ 11.5, -3, 26 ],
-          "mass": 0.0,
-          "size": [ 2, 1.5, 4 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-
-
-
-
-
-
-
-
-    {
-      "name": "Bumper center",
-      "id": 1,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cylinder",
-          "texture1": "metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 2, 2, 2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cylinder",
-          "position": [ 0, -3, 6 ],
-          "mass": 0.0,
-          "size": [ 2, 2, 2 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Bumper right",
-      "id": 1,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cylinder",
-          "texture1": "metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 2, 2, 2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cylinder",
-          "position": [ -10, -3, 6 ],
-          "mass": 0.0,
-          "size": [ 2, 2, 2 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Bumper left",
-      "id": 1,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cylinder",
-          "texture1": "metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 2, 2, 2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cylinder",
-          "position": [ 10, -3, 6 ],
-          "mass": 0.0,
-          "size": [ 2, 2, 2 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Bumper top left",
-      "id": 1,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cylinder",
-          "texture1": "metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 2, 2, 2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cylinder",
-          "position": [ 5, -3, 16 ],
-          "mass": 0.0,
-          "size": [ 2, 2, 2 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "Bumper top right",
-      "id": 1,
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cylinder",
-          "texture1": "metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.0, 1.0, 1 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 2, 2, 2 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cylinder",
-          "position": [ -5, -3, 16 ],
-          "mass": 0.0,
-          "size": [ 2, 2, 2 ],
-          "rotation": [ 0, 0, 0 ]
-        }
-      ]
-    },
-
-
-
-
-
-
-
-
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ 0.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 3.0,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ 3.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 3.0,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ -3.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 1.5,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ -6.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 1.5,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ 6.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 1.5,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ -9.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 1.5,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ 9.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 1.5,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ 12.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 1.5,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
-
-    {
-      "name": "spike",
-      "components": [
-        {
-          "component": "transform"
-        },
-        {
-          "component": "render",
-          "mesh": "cone",
-          "texture1": "cone_metal",
-          "texture1_amount": 1.0,
-          "diffuse": [ 0.0, 0.8, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 1.5, 1, 1.5 ],
-          "ignore_lighting": false,
-          "is_wireframe": false
-        },
-        {
-          "component": "physics",
-          "type": "cone",
-          "position": [ -12.0, -5.0, 28.8 ],
-          "mass": 0.0,
-          "height": 1,
-          "radius": 1.5,
-          "rotation": [ -90, 0, 0 ]
-        }
-      ]
-    },
+    }
+    ,
 
 
 
@@ -1194,7 +699,7 @@
       "components": [
         {
           "component": "transform",
-          "pos": [ -30.0, 100.0, 0.0 ],
+          "pos": [ -100.0, 100.0, 300.0 ],
           "rot": [ 0.0, 0.0, 0.0 ]
         },
         {
@@ -1203,7 +708,7 @@
           "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
           "specular": [ 1.0, 1.0, 1.0, 1.0 ],
           "const_atten": 0.0000001,
-          "linear_atten": 0.012,
+          "linear_atten": 0.0018,
           "quad_atten": 0.000001,
           "direction": [ 0.0, -1.0, 0.0 ],
           "position": [ 0.0, 50.0, 0.0 ],
@@ -1212,31 +717,32 @@
           "outer_angle": 10.0
         }
       ]
-    },
-    {
-      "name": "light 2",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 30.0, -100.0, 0.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "light",
-          "on": true,
-          "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
-          "specular": [ 1.0, 1.0, 1.0, 1.0 ],
-          "const_atten": 0.0000001,
-          "linear_atten": 0.012,
-          "quad_atten": 0.000001,
-          "direction": [ 0.0, -1.0, 0.0 ],
-          "position": [ 0.0, -50.0, 0.0 ],
-          "type": 0,
-          "inner_angle": 5.0,
-          "outer_angle": 10.0
-        }
-      ]
     }
+    //,
+    //{
+    //  "name": "light 2",
+    //  "components": [
+    //    {
+    //      "component": "transform",
+    //      "pos": [ 30.0, -100.0, 0.0 ],
+    //      "rot": [ 0.0, 0.0, 0.0 ]
+    //    },
+    //    {
+    //      "component": "light",
+    //      "on": true,
+    //      "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
+    //      "specular": [ 1.0, 1.0, 1.0, 1.0 ],
+    //      "const_atten": 0.0000001,
+    //      "linear_atten": 0.012,
+    //      "quad_atten": 0.000001,
+    //      "direction": [ 0.0, -1.0, 0.0 ],
+    //      "position": [ 0.0, -50.0, 0.0 ],
+    //      "type": 0,
+    //      "inner_angle": 5.0,
+    //      "outer_angle": 10.0
+    //    }
+    //  ]
+    //}
 
 
 

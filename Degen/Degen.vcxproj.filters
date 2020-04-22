@@ -117,9 +117,6 @@
     <ClCompile Include="Engine\Load.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component\Velocity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component\Gatherer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -141,22 +138,13 @@
     <ClCompile Include="Engine\Animation\cAnimationManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component\Physics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Physics\CreatePhysics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Physics\cPhysics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\FBO\cSharedDepthFBO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Render\cTextRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game\PinBall.cpp">
+    <ClCompile Include="Engine\Component\BasicMotion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -278,9 +266,6 @@
     <ClInclude Include="Engine\Component\Gatherer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component\Velocity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\BasicMotion\cBasicMotion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -308,22 +293,13 @@
     <ClInclude Include="Engine\Animation\sModelBoneInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Physics\cPhysics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Component\Physics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Physics\CreatePhysics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\FBO\cSharedDepthFBO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Render\cTextRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\PinBall.h">
+    <ClInclude Include="Engine\Component\BasicMotion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -335,8 +311,6 @@
     <None Include="assets\shaders\3geometry.glsl" />
     <None Include="assets\shaders\4fragment.glsl" />
     <None Include="assets\shaders\text_1vertex.glsl" />
-    <None Include="assets\shaders\debug_1vertex.glsl" />
-    <None Include="assets\shaders\debug_4fragment.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\shaders\2tesselation_control.glsl" />

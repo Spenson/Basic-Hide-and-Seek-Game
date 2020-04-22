@@ -28,15 +28,9 @@ namespace Degen
 	{
 		class cAnimator;
 	}
-
-	namespace Physics
-	{
-		class cPhysics;
-	}
-
 	namespace Game
 	{
-		class Pinball;
+		
 	}
 
 	
@@ -60,8 +54,7 @@ namespace Degen
 		//AI::cIntelligence* mIntelligence;
 		BasicMotion::cBasicMotion* mBasicMotion;
 		Animation::cAnimator* mAnimator;
-		Physics::cPhysics* mPhysics;
-		Game::Pinball* mPinball;
+		
 
 		// Needed for loading
 		std::string mShaderName;

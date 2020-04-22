@@ -5,7 +5,6 @@
 #include "Render/cRenderer.h"
 #include "Inputs/cInput.h"
 #include "Camera/cCamera.h"
-#include "AI/cIntelligence.h"
 
 #include "FileReading/JsonHelpers.h"
 #include "Load.h"
@@ -18,10 +17,7 @@
 #include "BasicMotion/cBasicMotion.h"
 #include "Texture/cTextureManager.h"
 #include "Animation/cAnimator.h"
-#include "Physics/CreatePhysics.h"
-#include "Physics/cPhysics.h"
 #include "Render/cTextRenderer.h"
-#include "Game/PinBall.h"
 
 
 namespace Degen
@@ -34,12 +30,9 @@ namespace Degen
 	Entity::cEntityManager* EntityManager; // creats and cleans up entities
 	Texture::cTextureManager* TextureManager;
 	Animation::cAnimationManager* AnimationManager;
-	Physics::iPhysicsFactory* PhysicsFactory;
 
 	Render::cTextRenderer* TextRenderer;
-
 	cEngine* Engine;
-
 	sView* View;
 
 	static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -179,7 +172,7 @@ namespace Degen
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//Clear to grey
-		glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+		glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
 
 		glLineWidth(3);
 
@@ -212,12 +205,6 @@ namespace Degen
 		{
 			printf("InitGL failed\n");
 			return false;
-		}
-
-		PhysicsFactory = Physics::CreatePhysicsFactory();
-		if (!PhysicsFactory)
-		{
-			printf("Unable to create Physics Factory.\n");
 		}
 
 
@@ -261,18 +248,11 @@ namespace Degen
 			TextRenderer = new Render::cTextRenderer(ShaderManager->pGetShaderProgramFromFriendlyName(name));
 		}
 
-		
-		glm::vec3 gravity(0.f, 5.f, 0.f);
-		JsonHelp::Set(jsonRoot["gravity"], gravity);
-		mPhysics = new Physics::cPhysics(gravity);
 
 		mCamera = new Camera::cCamera();
 		mInput = new Input::cInput(mWindow);
 		mBasicMotion = new BasicMotion::cBasicMotion();
 		mAnimator = new Animation::cAnimator();
-		mPinball = new Game::Pinball();
-
-		mPhysics->mWorld->SetCollisionListener(mPinball);
 		
 		return true;
 	}
@@ -342,25 +322,17 @@ namespace Degen
 		double previous_time = glfwGetTime();
 		while (!glfwWindowShouldClose(mWindow))
 		{
-			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 			//get window size
 			glfwGetWindowSize(mWindow, &WINDOW_WIDTH, &WINDOW_HEIGHT);
-
-			//set the view port
-			//glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 			double time = glfwGetTime();
 			delta_time = glm::max(glm::min(time - previous_time, 0.05), 0.001); // min "simulate" 20fps, even if <20fps, max fps1000 (crazy but for error stuff)
 			previous_time = time;
 
 			mInput->Update(delta_time);
-			//mIntelligence->Update(delta_time);
 			mBasicMotion->Update(delta_time);
 			mCamera->Update(delta_time);
 			mAnimator->Update(delta_time);
-			mPhysics->Update(delta_time);
-			mPinball->Update(delta_time);
 			mRenderer->Update(delta_time);
 
 			TextRenderer->Update(delta_time);
@@ -376,11 +348,8 @@ namespace Degen
 		{
 			mRenderer->AddEntity(entity);
 			mCamera->AddEntity(entity);
-			//mIntelligence->AddEntity(entity);
 			mBasicMotion->AddEntity(entity);
 			mAnimator->AddEntity(entity);
-			mPhysics->AddEntity(entity);
-			mPinball->AddEntity(entity);
 		}
 	}
 }

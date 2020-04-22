@@ -1,4 +1,4 @@
-#version 400 core
+#version 420
 
 
 layout(vertices = 3) out;
@@ -54,42 +54,57 @@ float GetTessLevel(float Distance0, float Distance1)
 void main(void)
 {
 
-	tcOut[gl_InvocationID].colour = vOut[gl_InvocationID].colour;
-	tcOut[gl_InvocationID].position = vOut[gl_InvocationID].position;
-	tcOut[gl_InvocationID].normal = vOut[gl_InvocationID].normal;
-	tcOut[gl_InvocationID].uv_x2 = vOut[gl_InvocationID].uv_x2;
-	tcOut[gl_InvocationID].tangent = vOut[gl_InvocationID].tangent;
-	tcOut[gl_InvocationID].bi_normal = vOut[gl_InvocationID].bi_normal;
+	tcOut[gl_InvocationID].colour =		vOut[gl_InvocationID].colour;
+	tcOut[gl_InvocationID].position =	vOut[gl_InvocationID].position;
+	tcOut[gl_InvocationID].normal =		vOut[gl_InvocationID].normal;
+	tcOut[gl_InvocationID].uv_x2 =		vOut[gl_InvocationID].uv_x2;
+	tcOut[gl_InvocationID].tangent =	vOut[gl_InvocationID].tangent;
+	tcOut[gl_InvocationID].bi_normal =	vOut[gl_InvocationID].bi_normal;
 
 
-	vec3 face_norm = (vOut[0].normal.xyz + 
-					  vOut[1].normal.xyz + 
+	vec3 face_norm = (vOut[0].normal.xyz +
+					  vOut[1].normal.xyz +
 					  vOut[2].normal.xyz) / 3.0f;
 
 	vec3 tri_center = (vOut[0].position.xyz +
-							vOut[1].position.xyz +
-							vOut[2].position.xyz) / 3.0f;
+					   vOut[1].position.xyz +
+					   vOut[2].position.xyz) / 3.0f;
+
+
+
+
+	float tess_level = (1.f - smoothstep(distance(tri_center, eyeLocation.xyz), 0, 10)) * 5.f;
+	tess_level = ceil(tess_level);
+	tess_level = clamp(tess_level, 1.f, 5.f);
+
 
 	vec3 vert_eye_vec = eyeLocation.xyz - tri_center;
 	vert_eye_vec = normalize(vert_eye_vec);
 	float eye_normal_dot = dot(vert_eye_vec, face_norm);
 
-	if (abs(eye_normal_dot) < 0.4)
+	if (eye_normal_dot < -0.3)
 	{
-		// The triangle is "on an edge", so tesselate
-		gl_TessLevelOuter[0] = 10.f;
-		gl_TessLevelOuter[1] = 10.f;
-		gl_TessLevelOuter[2] = 10.f;
-
-		gl_TessLevelInner[0] = 30.f;		// 3.0;
+		// don't tessellate triangles facing away
+		gl_TessLevelOuter[0] = 1;
+		gl_TessLevelOuter[1] = 1;
+		gl_TessLevelOuter[2] = 1;
+		gl_TessLevelInner[0] = 1;
+	}
+	else if (eye_normal_dot < 0.4)
+	{
+		float mod = (1.f - eye_normal_dot) * 6.f;
+		// The triangle is "on an edge", so tesselate extra
+		gl_TessLevelOuter[0] = tess_level * mod;
+		gl_TessLevelOuter[1] = tess_level * mod;
+		gl_TessLevelOuter[2] = tess_level * mod;
+		gl_TessLevelInner[0] = tess_level * mod;		// 3.0;
 	}
 	else
 	{
-		// for bump mapping little tesselation
-		gl_TessLevelOuter[0] = 3.0;
-		gl_TessLevelOuter[1] = 3.0;
-		gl_TessLevelOuter[2] = 3.0;
-		gl_TessLevelInner[0] = 9.0;
+		gl_TessLevelOuter[0] = tess_level * 3.f;
+		gl_TessLevelOuter[1] = tess_level * 3.f;
+		gl_TessLevelOuter[2] = tess_level * 3.f;
+		gl_TessLevelInner[0] = tess_level * 3.f;
 	}
 
 

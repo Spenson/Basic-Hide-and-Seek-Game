@@ -30,6 +30,12 @@ namespace Degen
 			bool ignore_lighting;
 			bool is_wireframe;
 			bool cull_face_back;
+
+
+			std::string bump_map;
+			bool use_bump_map;
+			std::string specular_map;
+			bool use_specular_map;
 		};
 	}
 }

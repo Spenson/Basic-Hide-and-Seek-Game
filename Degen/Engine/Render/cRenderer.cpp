@@ -81,6 +81,13 @@ namespace Degen
 			glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 			glUniform1i(mShaderProgram->GetUniformLocationID("skybox01"), 0);
 
+			glActiveTexture(GL_TEXTURE4);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glUniform1i(mShaderProgram->GetUniformLocationID("bump_map"), 0);
+			glActiveTexture(GL_TEXTURE5);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glUniform1i(mShaderProgram->GetUniformLocationID("specular_map"), 0);
+
 			BindOutPutTextures();
 
 		}
@@ -225,12 +232,13 @@ namespace Degen
 					glBindTexture(GL_TEXTURE_CUBE_MAP, TextureManager->getTextureIDFromName(rend_comp->texture2));
 					glUniform1i(shader_program->GetUniformLocationID("skybox01"), 3);
 				}
+				glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_FALSE);
+				glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_FALSE);
 			}
 			else
 			{
-				GLuint texSamp0_UL = TextureManager->getTextureIDFromName(rend_comp->texture1);
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, texSamp0_UL);
+				glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->texture1));
 				glUniform1i(shader_program->GetUniformLocationID("texture00"), 0);
 
 				if (!rend_comp->texture2.empty())
@@ -239,7 +247,37 @@ namespace Degen
 					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->texture2));
 					glUniform1i(shader_program->GetUniformLocationID("texture01"), 1);
 				}
+
+				if(rend_comp->use_bump_map)
+				{
+					glActiveTexture(GL_TEXTURE4);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->bump_map));
+					glUniform1i(shader_program->GetUniformLocationID("bump_map"), 4);
+					
+					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_TRUE);
+				}
+				else
+				{
+					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_FALSE);
+				}
+
+				if (rend_comp->use_specular_map)
+				{
+					glActiveTexture(GL_TEXTURE5);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->specular_map));
+					glUniform1i(shader_program->GetUniformLocationID("specular_map"), 5);
+					
+					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_TRUE);
+				}
+				else
+				{
+					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_FALSE);
+				}
+				
 			}
+
+
+			
 			glUniform4f(shader_program->GetUniformLocationID("colour_ratios"),
 						rend_comp->diffuse_amount,
 						rend_comp->texture1_amount,
@@ -283,17 +321,19 @@ namespace Degen
 			if (VAOManager->FindDrawInfoByModelName(rend_comp->mesh, drawInfo))
 			{
 				glBindVertexArray(drawInfo.vao_id);
+				//*
 				glPatchParameteri(GL_PATCH_VERTICES, 3);
 				glDrawElements(GL_PATCHES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
+				//*/
 				/*
 				glDrawElements(GL_TRIANGLES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
-				*/
+				//*/
 				glBindVertexArray(0);
 			}
 		}
@@ -338,6 +378,32 @@ namespace Degen
 					glActiveTexture(GL_TEXTURE1);
 					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->texture2));
 					glUniform1i(shader_program->GetUniformLocationID("texture01"), 1);
+				}
+
+				if (rend_comp->use_bump_map)
+				{
+					glActiveTexture(GL_TEXTURE4);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->bump_map));
+					glUniform1i(shader_program->GetUniformLocationID("bump_map"), 4);
+
+					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_TRUE);
+				}
+				else
+				{
+					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_FALSE);
+				}
+
+				if (rend_comp->use_specular_map)
+				{
+					glActiveTexture(GL_TEXTURE5);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->specular_map));
+					glUniform1i(shader_program->GetUniformLocationID("specular_map"), 5);
+
+					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_TRUE);
+				}
+				else
+				{
+					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_FALSE);
 				}
 			}
 			glUniform4f(shader_program->GetUniformLocationID("colour_ratios"),
@@ -392,17 +458,19 @@ namespace Degen
 			if (VAOManager->FindDrawInfoByModelName(rend_comp->mesh, drawInfo))
 			{
 				glBindVertexArray(drawInfo.vao_id);
+				//*
 				glPatchParameteri(GL_PATCH_VERTICES, 3);
 				glDrawElements(GL_PATCHES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
+				//*/
 				/*
 				glDrawElements(GL_TRIANGLES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
-				*/
+				//*/
 				glBindVertexArray(0);
 			}
 		}
@@ -430,6 +498,7 @@ namespace Degen
 
 		void cRenderer::BindOutPutTextures()
 		{
+			//Start at 20 because spacing
 			glActiveTexture(GL_TEXTURE20);
 			glBindTexture(GL_TEXTURE_2D, mOpaquFBO.texture_colour_ID);
 			glActiveTexture(GL_TEXTURE21);
@@ -510,17 +579,19 @@ namespace Degen
 			if (VAOManager->FindDrawInfoByModelName("quad", drawInfo))
 			{
 				glBindVertexArray(drawInfo.vao_id);
+				//*
 				glPatchParameteri(GL_PATCH_VERTICES, 3);
 				glDrawElements(GL_PATCHES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
+				//*/
 				/*
-				 glDrawElements(GL_TRIANGLES,
+				glDrawElements(GL_TRIANGLES,
 							   drawInfo.number_of_indices,
 							   GL_UNSIGNED_INT,
 							   0);
-				*/
+				//*/
 				glBindVertexArray(0);
 				rendered = true;
 			}

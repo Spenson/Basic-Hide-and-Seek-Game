@@ -6,15 +6,16 @@ namespace Degen
 {
 	namespace Component
 	{
-		constexpr unsigned int VELOCITY_COMPONENT = 8;
+		constexpr unsigned int BASIC_MOTION_COMPONENT = 8;
 
-		class Velocity : public iComponent
+		class BasicMotion : public iComponent
 		{
 		public:
-			Velocity();
+			BasicMotion();
 			bool Deserialize(Json::Value& json) override;
 
 			glm::vec3 velocity;
+			float radius;
 		};
 
 	}

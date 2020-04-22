@@ -1,5 +1,5 @@
 #include "cBasicMotion.h"
-#include "../Component/Velocity.h"
+#include "../Component/BasicMotion.h"
 #include "../Component/Position.h"
 #include "../Component/Rotation.h"
 
@@ -11,7 +11,7 @@ namespace Degen
 		{
 			for(auto* ent: entities)
 			{
-				Component::Velocity* vel = dynamic_cast<Component::Velocity*>(ent->GetComponent(Component::VELOCITY_COMPONENT));
+				Component::BasicMotion* vel = dynamic_cast<Component::BasicMotion*>(ent->GetComponent(Component::BASIC_MOTION_COMPONENT));
 				if(glm::length(vel->velocity) < 0.01f)
 				{
 					continue;
@@ -29,7 +29,7 @@ namespace Degen
 		}
 		void cBasicMotion::AddEntity(Entity::cEntity* entity)
 		{
-			if (entity->HasComponent(Component::VELOCITY_COMPONENT) && entity->HasComponent(Component::POSITION_COMPONENT))
+			if (entity->HasComponent(Component::BASIC_MOTION_COMPONENT) && entity->HasComponent(Component::POSITION_COMPONENT))
 			{
 				if (std::find(entities.begin(), entities.end(), entity) == entities.end())
 				{

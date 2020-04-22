@@ -4,7 +4,7 @@
 #include "../Entity/cEntityManager.h"
 #include "../Component/Position.h"
 #include "../Component/Render.h"
-#include "../Component/Velocity.h"
+#include "../Component/BasicMotion.h"
 #include "../Component/Gatherer.h"
 #include "Graph.h"
 
@@ -299,7 +299,7 @@ namespace Degen
 			}
 
 			Component::Position* pos = dynamic_cast<Component::Position*>(entity->GetComponent(Component::POSITION_COMPONENT));
-			Component::Velocity* vel = dynamic_cast<Component::Velocity*>(entity->GetComponent(Component::VELOCITY_COMPONENT));
+			Component::BasicMotion* vel = dynamic_cast<Component::BasicMotion*>(entity->GetComponent(Component::BASIC_MOTION_COMPONENT));
 
 			if(glm::length(vel->velocity) <= 0.1f)
 			{
@@ -363,7 +363,7 @@ namespace Degen
 			}
 
 			Component::Position* pos = dynamic_cast<Component::Position*>(entity->GetComponent(Component::POSITION_COMPONENT));
-			Component::Velocity* vel = dynamic_cast<Component::Velocity*>(entity->GetComponent(Component::VELOCITY_COMPONENT));
+			Component::BasicMotion* vel = dynamic_cast<Component::BasicMotion*>(entity->GetComponent(Component::BASIC_MOTION_COMPONENT));
 
 			if (glm::length(vel->velocity) <= 0.1f)
 			{
@@ -390,7 +390,7 @@ namespace Degen
 		void cIntelligence::AddEntity(Entity::cEntity* entity)
 		{
 			if (entity->HasComponent(Component::GATHERER_COMPONENT) &&
-				entity->HasComponent(Component::VELOCITY_COMPONENT) &&
+				entity->HasComponent(Component::BASIC_MOTION_COMPONENT) &&
 				entity->HasComponent(Component::POSITION_COMPONENT))
 			{
 				if (std::find(entities.begin(), entities.end(), entity) == entities.end())

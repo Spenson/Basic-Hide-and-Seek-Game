@@ -1,21 +1,22 @@
 #version 420
 
 //in vec4 fColour;
-//in vec4 gOut.position;
+//in vec4 vOut.position;
 //in vec4 fNormal;
 //in vec4 fUVx2;
 
-struct GeoOut
+struct VertOut
 {
 	vec4 colour;
-	vec4 position;	// "World space"
-	vec4 normal;	// "Model space"
-	vec4 uv_x2;		// To the next shader stage
-	//vec4 tangent;	// Tangent to the surface
-	//vec4 bi_normal;	// bi-normal (or bi-tangent) to the surface
+	vec4 position;
+	vec4 normal;
+	vec4 uv_x2;
+	vec4 tangent;
+	vec4 bi_normal;
 	mat3 tbn;
 };
-in GeoOut gOut;
+in VertOut vOut;
+
 
 
 
@@ -110,9 +111,9 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal, vec3 ve
 void main()
 {
 	// init so something happens even if render doesn't work
-	colourOut = gOut.colour;
-	normalOut = gOut.normal;
-	worldPosOut = gOut.position;
+	colourOut = vOut.colour;
+	normalOut = vOut.normal;
+	worldPosOut = vOut.position;
 	worldPosOut.w = 1;
 	specularOut = specularColour;
 
@@ -357,7 +358,7 @@ void SolidObjectsPass(void)
 	//	normalOut = fNormal;
 	//	normalOut.a = 0.f;
 
-	//	worldPosOut = gOut.position;
+	//	worldPosOut = vOut.position;
 	//	worldPosOut.a = 1.f;
 
 	//	specularOut = specularColour;
@@ -374,14 +375,14 @@ void SolidObjectsPass(void)
 	// cube map textures
 	if (is_cube_texture)
 	{
-		tex1 = texture(skybox00, gOut.normal.xyz);
-		tex2 = texture(skybox01, gOut.normal.xyz);
+		tex1 = texture(skybox00, vOut.normal.xyz);
+		tex2 = texture(skybox01, vOut.normal.xyz);
 	}
 	// 2d textures
 	else
 	{
-		tex1 = texture(texture00, gOut.uv_x2.st);
-		tex2 = texture(texture01, gOut.uv_x2.st);
+		tex1 = texture(texture00, vOut.uv_x2.st);
+		tex2 = texture(texture01, vOut.uv_x2.st);
 	}
 
 	vec4 materialColour = diffuseColour;
@@ -405,28 +406,29 @@ void SolidObjectsPass(void)
 	{
 		if (use_bump_map)
 		{
-			vec3 sample_normal = texture(bump_map, gOut.uv_x2.xy).rgb;
+			vec3 sample_normal = texture(bump_map, vOut.uv_x2.xy).rgb;
 			sample_normal = normalize(sample_normal - 0.5);
-			sample_normal = normalize(gOut.tbn * sample_normal);
+			sample_normal = normalize(vOut.tbn * sample_normal);
 
 			normalOut.xyz = (sample_normal + 1.f) * 0.5;
 
+			//normalOut.xyz = vOut.tbn[1].xyz;
 		}
 		else
 		{
-			normalOut.xyz = (gOut.normal.xyz + 1.f) * 0.5;
+			normalOut.xyz = (vOut.normal.xyz + 1.f) * 0.5;
 		}
 
 
 
 		normalOut.w = 1.f;
 
-		worldPosOut.xyz = gOut.position.xyz;
+		worldPosOut.xyz = vOut.position.xyz;
 		worldPosOut.w = 1.f;
 
 		if (use_specular_map)
 		{
-			specularOut.rgb = texture(specular_map, gOut.uv_x2.xy).rgb;
+			specularOut.rgb = texture(specular_map, vOut.uv_x2.xy).rgb;
 			specularOut.rgb *= specularColour.rgb; //scale it so people aren't shiney like glass
 		}
 		else
@@ -458,14 +460,14 @@ void AlphaObjectsPass(void)
 	// cube map textures
 	if (is_cube_texture)
 	{
-		tex1 = texture(skybox00, gOut.normal.xyz);
-		tex2 = texture(skybox01, gOut.normal.xyz);
+		tex1 = texture(skybox00, vOut.normal.xyz);
+		tex2 = texture(skybox01, vOut.normal.xyz);
 	}
 	// 2d textures
 	else
 	{
-		tex1 = texture(texture00, gOut.uv_x2.st);
-		tex2 = texture(texture01, gOut.uv_x2.st);
+		tex1 = texture(texture00, vOut.uv_x2.st);
+		tex2 = texture(texture01, vOut.uv_x2.st);
 	}
 
 	vec4 materialColour = diffuseColour;
@@ -487,7 +489,7 @@ void AlphaObjectsPass(void)
 	colourOut.a = diffuseColour.a;// * materialColour.a;
 
 
-	//normalOut.xyz = gOut.normal.xyz;
+	//normalOut.xyz = vOut.normal.xyz;
 	if (ignore_lighting)
 	{
 		normalOut.w = 0.f;
@@ -496,25 +498,25 @@ void AlphaObjectsPass(void)
 	{
 		if (use_bump_map)
 		{
-			vec3 sample_normal = texture(bump_map, gOut.uv_x2.xy).rgb;
+			vec3 sample_normal = texture(bump_map, vOut.uv_x2.xy).rgb;
 			sample_normal = normalize(sample_normal * 2.0 - 1.0);
-			sample_normal = normalize(gOut.tbn * sample_normal);
+			sample_normal = normalize(vOut.tbn * sample_normal);
 
 			normalOut.xyz = (sample_normal + 1.f) * 0.5;
 		}
 		else
 		{
-			normalOut.xyz = (gOut.normal.xyz + 1.f) * 0.5;
+			normalOut.xyz = (vOut.normal.xyz + 1.f) * 0.5;
 		}
 
 		normalOut.w = 1.f;
-		worldPosOut.xyz = gOut.position.xyz;
+		worldPosOut.xyz = vOut.position.xyz;
 		worldPosOut.w = 1.f;
 
 
 		if (use_specular_map)
 		{
-			specularOut.rgb = texture(specular_map, gOut.uv_x2.xy).rgb;
+			specularOut.rgb = texture(specular_map, vOut.uv_x2.xy).rgb;
 			specularOut.rgb *= specularColour.rgb; //scale it so people aren't shiney like glass
 		}
 		else
@@ -535,7 +537,7 @@ void AlphaObjectsPass(void)
 
 void CombinePass(void)
 {
-	vec2 uvs = gOut.uv_x2.st;
+	vec2 uvs = vOut.uv_x2.st;
 
 	uvs.s = gl_FragCoord.x / float(Width);		// "u" or "x"
 	uvs.t = gl_FragCoord.y / float(Height);		// "v" or "y"
@@ -586,6 +588,9 @@ void CombinePass(void)
 		colourOut = colour;
 		colourOut.a = 1.0f;
 	}
+		//colourOut *= 0.00001;
+		//colourOut += normal;
+		//colourOut.a = 1.0f;
 
 
 	return;

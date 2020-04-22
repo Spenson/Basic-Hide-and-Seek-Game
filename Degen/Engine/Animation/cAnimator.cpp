@@ -17,14 +17,42 @@ namespace Degen
 
 
 
+		cAnimator::cAnimator()
+		{
+			for (size_t i = 0; i < 5; ++i)
+				workers.emplace_back(std::thread(Worker(*this)));
+
+		}
+
+		cAnimator::~cAnimator()
+		{
+			// stop all threads
+			stop = true;
+			worker_condition.notify_all();
+
+			// join them
+			for (size_t i = 0; i < workers.size(); ++i)
+				workers[i].join();
+		}
+
 		void cAnimator::Update(double dt)
 		{
-			// MultiThread queuing here
+			//only set here before threads start so do not need to lock
+			this->dt = dt;
+
+
 			for (auto* entity : entities)
 			{
-				CalculateTransforms(entity, dt);
+				enqueue(entity);
+			}
+			
+			while (!empty_queue())
+			{
+				std::unique_lock<std::mutex> lock(loop_done_mutex);
+				loop_done_condition.wait(lock);
 			}
 
+			
 		}
 
 		void cAnimator::AddEntity(Entity::cEntity* entity)
@@ -40,11 +68,11 @@ namespace Degen
 		}
 
 
-		void cAnimator::CalculateTransforms(Entity::cEntity* entity, double dt)
+		void cAnimator::CalculateTransforms(Entity::cEntity* entity)
 		{
 			Component::Animation* animation_comp = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 
-			animation_comp->playing_time += dt;
+			animation_comp->playing_time += this->dt;
 
 			// TODO: validate default on start
 			//if (animation_comp->default_animation.empty())
@@ -124,7 +152,7 @@ namespace Degen
 				}
 				else
 				{
-					blending_time += dt;
+					blending_time += this->dt;
 				}
 
 				if (next_animation_name.empty())
@@ -135,7 +163,7 @@ namespace Degen
 			}
 			else
 			{
-				blending_time += dt;
+				blending_time += this->dt;
 			}
 
 			if (blending_time > animation_blend_time)
@@ -177,7 +205,7 @@ namespace Degen
 				for (unsigned int BoneIndex = 0; BoneIndex < animation_comp->bone_transforms.size(); BoneIndex++)
 				{
 					//animation_comp->bone_transforms[BoneIndex] = glm::mix(animation_comp->bone_transforms[BoneIndex],bone_transforms[BoneIndex], blend_amount);
-					
+
 					animation_comp->bone_transforms[BoneIndex] = animation_comp->bone_transforms[BoneIndex] * (1.f - blend_amount)
 						+ bone_transforms[BoneIndex] * blend_amount;
 				}
@@ -410,9 +438,60 @@ namespace Degen
 			return 0;
 		}
 
+		void cAnimator::enqueue(Entity::cEntity* entity)
+		{
+			{ // acquire lock
+				std::unique_lock<std::mutex> lock(queue_mutex);
+
+				// add the task
+				tasks.push_back(entity);
+			} // release lock
+
+			// wake up one thread
+			worker_condition.notify_one();
+		}
+
+		bool cAnimator::empty_queue()
+		{
+			std::unique_lock<std::mutex> lock(queue_mutex);
+			return tasks.empty();
+		}
+
+		void cAnimator::Worker::operator()()
+		{
+			//std::function<ThreadPool::FuncSig> task;
+			Entity::cEntity* entity;
+			while (true)
+			{
+				{   // acquire lock
+					std::unique_lock<std::mutex> lock(pool.queue_mutex);
+
+					// look for a work item
+					while (!pool.stop && pool.tasks.empty())
+					{ // No Work
+						pool.worker_condition.wait(lock);
+					}
+
+					if (pool.stop) return; //Done
+
+					entity = pool.tasks.front();
+
+					pool.tasks.pop_front();
+
+				}   // release lock
+
+				// execute the task
+				pool.CalculateTransforms(entity);
+
+				// so I don't have to do a is done loop can just wait to be notified
+				if (pool.empty_queue())
+				{
+					pool.loop_done_condition.notify_one();
+				}
+			}
+
+		}
 	}
 }
-
-
 
 
