@@ -186,6 +186,7 @@
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Gatherer.cpp" />
     <ClCompile Include="Engine\Component\Light.cpp" />
+    <ClCompile Include="Engine\Component\MultiTransform.cpp" />
     <ClCompile Include="Engine\Component\Position.cpp" />
     <ClCompile Include="Engine\Component\Render.cpp" />
     <ClCompile Include="Engine\Component\Rotation.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Engine\Component\Gatherer.h" />
     <ClInclude Include="Engine\Component\iComponent.h" />
     <ClInclude Include="Engine\Component\Light.h" />
+    <ClInclude Include="Engine\Component\MultiTransform.h" />
     <ClInclude Include="Engine\Component\Position.h" />
     <ClInclude Include="Engine\Component\Render.h" />
     <ClInclude Include="Engine\Component\Rotation.h" />

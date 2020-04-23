@@ -28,8 +28,13 @@
       "format": "png"
     },
     {
-      "name": "PolygonScifi_01_A",
-      "file": "PolygonScifi_01_A.png",
+      "name": "Wall",
+      "file": "Texture_01.png",
+      "format": "png"
+    },
+    {
+      "name": "Wall Dark",
+      "file": "Texture_01_Dark.png",
       "format": "png"
     },
     {
@@ -76,6 +81,27 @@
       "name": "grass normal",
       "file": "Grass N.png",
       "format": "png"
+    },
+
+    {
+      "name": "Lion Diffuse",
+      "file": "Lion_Statue_Albedo.png",
+      "format": "png"
+    },
+    {
+      "name": "Lion Normal",
+      "file": "Lion_Statue_Normal.png",
+      "format": "png"
+    },
+    {
+      "name": "Block Diffuse",
+      "file": "Stone_Block_Albedo.png",
+      "format": "png"
+    },
+    {
+      "name": "Block Normal",
+      "file": "Stone_Block_Normal.png",
+      "format": "png"
     }
   ],
   "Models": [
@@ -110,6 +136,36 @@
       "file": "forest_guard.fbx",
       "mesh_number": 1,
       "is_basic": false
+    },
+    {
+      "name": "Wall",
+      "file": "SM_Bld_Castle_Wall_01.fbx",
+      "mesh_number": 0,
+      "is_basic": true
+    },
+    {
+      "name": "Wall Gate",
+      "file": "SM_Bld_Castle_Wall_Gate_01.fbx",
+      "mesh_number": 0,
+      "is_basic": true
+    },
+    {
+      "name": "Gate",
+      "file": "SM_Bld_Castle_Iron_Gate_01.fbx",
+      "mesh_number": 0,
+      "is_basic": true
+    },
+    {
+      "name": "Lion Block",
+      "file": "Lion_statue.fbx",
+      "mesh_number": 0,
+      "is_basic": true
+    },
+    {
+      "name": "Lion",
+      "file": "Lion_statue.fbx",
+      "mesh_number": 1,
+      "is_basic": true
     }
   ],
   "Animations": [
@@ -205,25 +261,298 @@
       "components": [
         {
           "component": "transform",
-          "pos": [ 0.0, 0.0, 0.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
+          "pos": [ 0.0, 5.0, 0.0 ],
+          "rot": [ -90.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
-          "mesh": "box",
-          "texture1": "grass",
-          "texture1_amount": 0.0,
+          "mesh": "Lion",
+          "texture1": "Lion Diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 1.0, 1.0, 0.6 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 400.0 ],
+          "scale": [ 0.06, 0.06, 0.06 ],
+          "ignore_lighting": false,
+          "is_wireframe": false,
+          "use_bump_map": true,
+          "bump_map": "Lion Normal"
+
+        }
+        ,
+        {
+          "component": "render",
+          "mesh": "Lion Block",
+          "texture1": "Block Diffuse",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 300.0 ],
+          "scale": [ 0.06, 0.06, 0.06 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+            ,
+          "use_bump_map": true,
+          "bump_map": "Block Normal"
+
+        }
+
+      ]
+    },
+
+    {
+      "name": "Outer Walls",
+
+      "components": [
+        {
+          "component": "multi_transform",
+          "transforms": [
+            {
+              "pos": [ -190.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ -152.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ -114.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ -76.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ -38.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 190.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 152.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 114.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 76.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 38.0, 0.0, 201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+
+
+
+            {
+              "pos": [ 201.0, 0.0, -190 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, -152 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, -114 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, -76 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, -38 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, 0 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+
+            {
+              "pos": [ 201.0, 0.0, 190 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, 152 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, 114 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, 76 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ 201.0, 0.0, 38 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+
+
+
+            {
+              "pos": [ -190.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ -152.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ -114.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ -76.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ -38.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 0.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 190.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 152.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 114.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 76.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+            {
+              "pos": [ 38.0, 0.0, -201.0 ],
+              "rot": [ 0.0, 0.0, 0.0 ]
+            },
+
+
+
+            {
+              "pos": [ -201.0, 0.0, -190 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, -152 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, -114 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, -76 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, -38 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, 0 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+
+            {
+              "pos": [ -201.0, 0.0, 190 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, 152 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, 114 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, 76 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            },
+            {
+              "pos": [ -201.0, 0.0, 38 ],
+              "rot": [ 0.0, 90.0, 0.0 ]
+            }
+          ]
+
+        },
+        {
+          "component": "render",
+          "mesh": "Wall",
+          "texture1": "Wall Dark",
+          "texture1_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 1.0,
+          "diffuse_amount": 0.0,
           "specular": [ 0.5, 0.5, 0.5, 200.0 ],
-          "scale": [ 1, 1, 1 ],
+          // "scale": [ 0.00185, 0.05, 0.01 ],
+          "scale": [ 0.075, 0.05, 0.01 ],
           "ignore_lighting": false,
           "is_wireframe": false
 
         }
       ]
     },
-    
+
+
+
+
+    {
+      "components": [
+        {
+          "component": "transform",
+          "pos": [ 0.0, 0.0, 201.0 ],
+          "rot": [ 0.0, 0.0, 0.0 ]
+        },
+        {
+          "component": "render",
+          "mesh": "Wall Gate",
+          "texture1": "Wall",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+
+          "diffuse_amount": 0.0,
+          "specular": [ 0.5, 0.5, 0.5, 200.0 ],
+          "scale": [ 0.075, 0.05, 0.01 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+        },
+        {
+          "component": "render",
+          "mesh": "Gate",
+          "texture1": "Wall",
+          "texture1_amount": 1.0,
+          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 1.0, 1.0, 1.0, 300.0 ],
+          "scale": [ 0.075, 0.05, 0.05 ],
+          "ignore_lighting": false,
+          "is_wireframe": false
+
+        }
+      ]
+    },
+
+
+
+
+
     {
       "name": "forest guard 1",
       "components": [
@@ -367,14 +696,40 @@
           "const_atten": 0.0000001,
           "linear_atten": 0.0018,
           "quad_atten": 0.000001,
-          "direction": [ 0.0, -1.0, 0.0 ],
+          "direction": [ 1.0, -0.5, 0.5 ],
           "position": [ 0.0, 50.0, 0.0 ],
-          "type": 0,
+          "type": 2,
           "inner_angle": 5.0,
           "outer_angle": 10.0
         }
       ]
     }
+    //,
+
+    //{
+    //  "name": "light 1",
+    //  "components": [
+    //    {
+    //      "component": "transform",
+    //      "pos": [ -200.0, 100.0, 400.0 ],
+    //      "rot": [ 0.0, 0.0, 0.0 ]
+    //    },
+    //    {
+    //      "component": "light",
+    //      "on": true,
+    //      "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
+    //      "specular": [ 1.0, 1.0, 1.0, 1.0 ],
+    //      "const_atten": 0.0000001,
+    //      "linear_atten": 0.0018,
+    //      "quad_atten": 0.000001,
+    //      "direction": [ -1.0, -0.5, -0.5 ],
+    //      "position": [ 0.0, 50.0, 0.0 ],
+    //      "type": 2,
+    //      "inner_angle": 5.0,
+    //      "outer_angle": 10.0
+    //    }
+    //  ]
+    //}
 
   ]
 }

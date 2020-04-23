@@ -113,6 +113,9 @@ namespace Degen
 				BindOutPutTextures();
 			}
 
+			
+			glUniform1f(mShaderProgram->GetUniformLocationID("Ambient"), 0.05);
+
 			EntitySinglePassSort();
 
 			glUseProgram(mShaderProgram->ID);
@@ -149,20 +152,36 @@ namespace Degen
 			for (auto* entity : mRenderEntities)
 			{
 				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
-				if (dynamic_cast<Component::Render*>(rends[0])->diffuse_colour.a < 1.f)
-				{
-					alpha_objects.push_back(entity);
-					continue;
-				}
-
-				glm::mat4 tranform = GetTransform(entity);
+				
 				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 				Component::Animation_New* animation_new = dynamic_cast<Component::Animation_New*>(entity->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 
+				Component::MultiTransform* mt = dynamic_cast<Component::MultiTransform*>(entity->GetComponent(Component::MULTI_TRANSFORM_COMPONENT));
+				if (mt)
+				{
+					for (unsigned i = 0; i < rends.size(); i++)
+					{
+						Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
+						RenderObject(mShaderProgram, rend, mt);
+					}
+
+					continue;
+				}
+				
+				glm::mat4 tranform = GetTransform(entity);
+				bool in_alpha = false;
 				for (unsigned i = 0; i < rends.size(); i++)
 				{
 					Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
 
+					if (rend->diffuse_colour.a < 1.f && !in_alpha)
+					{
+						alpha_objects.push_back(entity);
+						in_alpha = true;
+						continue;
+					}
+
+					
 					if (animation)
 					{
 						RenderObject(mShaderProgram, rend, animation, tranform);
@@ -186,14 +205,30 @@ namespace Degen
 			for (auto* entity : alpha_objects)
 			{
 				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
-				glm::mat4 tranform = GetTransform(entity);
+
 				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 				Component::Animation_New* animation_new = dynamic_cast<Component::Animation_New*>(entity->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 
+				Component::MultiTransform* mt = dynamic_cast<Component::MultiTransform*>(entity->GetComponent(Component::MULTI_TRANSFORM_COMPONENT));
+				if (mt)
+				{
+					for (unsigned i = 0; i < rends.size(); i++)
+					{
+						Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
+						RenderObject(mShaderProgram, rend, mt);
+					}
+
+					continue;
+				}
+
+				glm::mat4 tranform = GetTransform(entity);
 				for (unsigned i = 0; i < rends.size(); i++)
 				{
 					Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
 
+					if (rend->diffuse_colour.a == 1.f) continue;
+
+					
 					if (animation)
 					{
 						RenderObject(mShaderProgram, rend, animation, tranform);
@@ -258,12 +293,12 @@ namespace Degen
 					glUniform1i(shader_program->GetUniformLocationID("texture01"), 1);
 				}
 
-				if(rend_comp->use_bump_map)
+				if (rend_comp->use_bump_map)
 				{
 					glActiveTexture(GL_TEXTURE4);
 					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->bump_map));
 					glUniform1i(shader_program->GetUniformLocationID("bump_map"), 4);
-					
+
 					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_TRUE);
 				}
 				else
@@ -276,18 +311,18 @@ namespace Degen
 					glActiveTexture(GL_TEXTURE5);
 					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->specular_map));
 					glUniform1i(shader_program->GetUniformLocationID("specular_map"), 5);
-					
+
 					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_TRUE);
 				}
 				else
 				{
 					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_FALSE);
 				}
-				
+
 			}
 
 
-			
+
 			glUniform4f(shader_program->GetUniformLocationID("colour_ratios"),
 						rend_comp->diffuse_amount,
 						rend_comp->texture1_amount,
@@ -346,6 +381,146 @@ namespace Degen
 				//*/
 				glBindVertexArray(0);
 			}
+		}
+
+		void cRenderer::RenderObject(Shaders::cShaderManager::cShaderProgram* shader_program, Component::Render* rend_comp, Component::MultiTransform* transforms, glm::mat4 parent_matrix)
+		{
+			if (rend_comp->cull_face_back) { glEnable(GL_CULL_FACE); }
+			else { glDisable(GL_CULL_FACE); }
+			glDisable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glCullFace(GL_BACK);
+
+
+			if (rend_comp->is_cubemap_textures)
+			{
+				glActiveTexture(GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_CUBE_MAP, TextureManager->getTextureIDFromName(rend_comp->texture1));
+				glUniform1i(shader_program->GetUniformLocationID("skybox00"), 2);
+				if (!rend_comp->texture2.empty())
+				{
+					glActiveTexture(GL_TEXTURE3);
+					glBindTexture(GL_TEXTURE_CUBE_MAP, TextureManager->getTextureIDFromName(rend_comp->texture2));
+					glUniform1i(shader_program->GetUniformLocationID("skybox01"), 3);
+				}
+				glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_FALSE);
+				glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_FALSE);
+			}
+			else
+			{
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->texture1));
+				glUniform1i(shader_program->GetUniformLocationID("texture00"), 0);
+
+				if (!rend_comp->texture2.empty())
+				{
+					glActiveTexture(GL_TEXTURE1);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->texture2));
+					glUniform1i(shader_program->GetUniformLocationID("texture01"), 1);
+				}
+
+				if (rend_comp->use_bump_map)
+				{
+					glActiveTexture(GL_TEXTURE4);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->bump_map));
+					glUniform1i(shader_program->GetUniformLocationID("bump_map"), 4);
+
+					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_TRUE);
+				}
+				else
+				{
+					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_FALSE);
+				}
+
+				if (rend_comp->use_specular_map)
+				{
+					glActiveTexture(GL_TEXTURE5);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->specular_map));
+					glUniform1i(shader_program->GetUniformLocationID("specular_map"), 5);
+
+					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_TRUE);
+				}
+				else
+				{
+					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_FALSE);
+				}
+
+			}
+
+
+			glUniform4f(shader_program->GetUniformLocationID("colour_ratios"),
+						rend_comp->diffuse_amount,
+						rend_comp->texture1_amount,
+						rend_comp->texture2_amount,
+						0.f);
+
+			glUniform4f(shader_program->GetUniformLocationID("diffuseColour"),
+						rend_comp->diffuse_colour.r,
+						rend_comp->diffuse_colour.g,
+						rend_comp->diffuse_colour.b,
+						rend_comp->diffuse_colour.a);
+
+			glUniform4f(shader_program->GetUniformLocationID("specularColour"),
+						rend_comp->specular_colour.r,
+						rend_comp->specular_colour.g,
+						rend_comp->specular_colour.b,
+						rend_comp->specular_colour.a);	// Power
+
+			float ignore_lighting = rend_comp->ignore_lighting;
+
+			if (rend_comp->is_wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		// LINES
+				ignore_lighting = GL_TRUE;
+			}
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
+			}
+			//float use_diffuse = true; //pCurrentObject->UseDiffuse();
+
+			glUniform4f(shader_program->GetUniformLocationID("modifiers"),
+						rend_comp->is_cubemap_textures ? (float)GL_TRUE : (float)GL_FALSE,
+						ignore_lighting,
+						0.f,
+						0.f);
+
+			glUniform1f(shader_program->GetUniformLocationID("isSkinnedMesh"), (float)GL_FALSE);
+
+
+			
+			for (auto transform : transforms->transforms)
+			{
+				glm::mat4 matWorldCurrentGO = (transform * glm::scale(glm::mat4(1.f), rend_comp->scale));
+				glUniformMatrix4fv(shader_program->GetUniformLocationID("matModel"), 1, GL_FALSE, glm::value_ptr(matWorldCurrentGO));
+
+				glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(matWorldCurrentGO));
+				glUniformMatrix4fv(shader_program->GetUniformLocationID("matInvTrans"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
+
+
+				VAOAndModel::sModelDrawInfo drawInfo;
+				if (VAOManager->FindDrawInfoByModelName(rend_comp->mesh, drawInfo))
+				{
+					glBindVertexArray(drawInfo.vao_id);
+					//*
+					glPatchParameteri(GL_PATCH_VERTICES, 3);
+					glDrawElements(GL_PATCHES,
+								   drawInfo.number_of_indices,
+								   GL_UNSIGNED_INT,
+								   0);
+					//*/
+					/*
+					glDrawElements(GL_TRIANGLES,
+								   drawInfo.number_of_indices,
+								   GL_UNSIGNED_INT,
+								   0);
+					//*/
+					glBindVertexArray(0);
+				}
+
+			}
+
+
 		}
 
 		void cRenderer::RenderObject(Shaders::cShaderManager::cShaderProgram* shader_program, Component::Render* rend_comp, Component::Animation* animation, glm::mat4 transform, glm::mat4 parent_matrix)
@@ -625,7 +800,7 @@ namespace Degen
 		void cRenderer::AddEntity(Entity::cEntity* entity)
 		{
 			if (entity->HasComponent(Component::RENDER_COMPONENT) &&
-				(entity->HasComponent(Component::TRANSFORM_COMPONENT) || entity->HasComponent(Component::POSITION_COMPONENT)))
+				(entity->HasComponent(Component::TRANSFORM_COMPONENT) || entity->HasComponent(Component::POSITION_COMPONENT) || entity->HasComponent(Component::MULTI_TRANSFORM_COMPONENT)))
 			{
 				if (std::find(mRenderEntities.begin(), mRenderEntities.end(), entity) == mRenderEntities.end())
 				{
@@ -810,7 +985,14 @@ namespace Degen
 		{
 			for (size_t idx = 0; idx < mRenderEntities.size() - 1; idx++)
 			{
-				if (glm::distance(View->position, GetPosition(mRenderEntities[idx])) > glm::distance(View->position, GetPosition(mRenderEntities[idx + 1])))
+				if (mRenderEntities[idx]->HasComponent(Component::MULTI_TRANSFORM_COMPONENT))
+				{
+					std::swap(mRenderEntities[idx], mRenderEntities[idx + 1]);
+				}
+				else if (mRenderEntities[idx+1]->HasComponent(Component::MULTI_TRANSFORM_COMPONENT))
+				{
+				}
+				else if (glm::distance(View->position, GetPosition(mRenderEntities[idx])) > glm::distance(View->position, GetPosition(mRenderEntities[idx + 1])))
 				{
 					std::swap(mRenderEntities[idx], mRenderEntities[idx + 1]);
 				}
@@ -856,102 +1038,6 @@ namespace Degen
 			}
 		}
 
-
-		//bool cRenderer::SingleRender(Object::iGameObject* object)
-		//{
-		//	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-		//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//
-		//	//glUniform1i(shaderProgram->getUniformLocID("passNumber"), 1);
-		//
-		//	glEnable(GL_BLEND);
-		//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//
-		//	glDisable(GL_STENCIL_TEST);
-		//	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-		//
-		//	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -50.0f),
-		//								 glm::vec3(0.0f, 0.0f, 0.0f),
-		//								 glm::vec3(0.0f, 1.0f, 0.0f));
-		//	glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matView"), 1, GL_FALSE, glm::value_ptr(view));
-		//
-		//
-		//	glUniform1f(mShaderProgram->GetUniformLocationID("Width"), WINDOW_WIDTH);
-		//	glUniform1f(mShaderProgram->GetUniformLocationID("Height"), WINDOW_HEIGHT);
-		//
-		//
-		//
-		//	if (object->GetType() == Object::RENDER_ONLY_TYPE)
-		//	{
-		//		RenderObject(dynamic_cast<Object::cRenderOnlyObject*>(object), mShaderProgram);
-		//		return true;
-		//	}
-		//	return false;
-		//}
-
-		//void cRenderer::RenderObject(Object::cRenderOnlyObject* object, Shaders::cShaderManager::cShaderProgram* shader_program, glm::mat4 parent_matrix)
-		//{
-		//	glEnable(GL_BLEND);
-		//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//	glCullFace(GL_BACK);
-		//
-		//	glEnable(GL_DEPTH_TEST);		// Turn ON depth sModelBoneInfo
-		//	glDepthMask(GL_TRUE);			// Write to depth buffer
-		//
-		//	glm::mat4 matWorldCurrentGO = parent_matrix * (object->Transform() * glm::scale(glm::mat4(1.f), object->scale));
-		//	glUniformMatrix4fv(shader_program->GetUniformLocationID("matModel"), 1, GL_FALSE, glm::value_ptr(matWorldCurrentGO));
-		//
-		//	glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(matWorldCurrentGO));
-		//	glUniformMatrix4fv(shader_program->GetUniformLocationID("matModelInverseTranspose"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
-		//
-		//	glUniform4f(shader_program->GetUniformLocationID("diffuseColour"),
-		//				object->diffuse_colour.r,
-		//				object->diffuse_colour.g,
-		//				object->diffuse_colour.b,
-		//				object->diffuse_colour.a);
-		//
-		//	glUniform4f(shader_program->GetUniformLocationID("specularColour"),
-		//				object->specular_colour.r,
-		//				object->specular_colour.g,
-		//				object->specular_colour.b,
-		//				object->specular_colour.a);	// Power+
-		//
-		//
-		//	float doNotLight = object->ignore_lighting;
-		//
-		//	if (object->is_wireframe)
-		//	{
-		//		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		// LINES
-		//		doNotLight = GL_TRUE;
-		//	}
-		//	else
-		//	{
-		//		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
-		//	}
-		//	float useDiffuse = true; //pCurrentObject->UseDiffuse();
-		//
-		//	glUniform4f(shader_program->GetUniformLocationID("boolModifiers"),
-		//				0.f,
-		//				doNotLight,
-		//				useDiffuse,
-		//				0);
-		//
-		//
-		//	glUniform1f(shader_program->GetUniformLocationID("isSkinnedMesh"), (float)GL_FALSE);
-		//
-		//
-		//	VAOAndModel::sModelDrawInfo drawInfo;
-		//	if (VAOManager->FindDrawInfoByModelName(object->mesh, drawInfo))
-		//	{
-		//		glBindVertexArray(drawInfo.vao_id);
-		//		glDrawElements(GL_TRIANGLES,
-		//					   drawInfo.number_of_indices,
-		//					   GL_UNSIGNED_INT,
-		//					   0);
-		//		glBindVertexArray(0);
-		//	}
-		//
-		//}
 
 	}
 }

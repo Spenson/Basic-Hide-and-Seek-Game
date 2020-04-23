@@ -55,6 +55,7 @@ namespace Degen
 		VAOAndModel::sModelDrawInfo* cModelLoader::LoadBasicModel(std::string file_name, std::string friendly_name, std::string& error, const unsigned int meshIndex)
 		{
 			const aiScene* pScene;
+
 			if (mImporters.find(file_name) == mImporters.end())
 			{
 				unsigned int Flags = aiProcess_Triangulate |
@@ -113,6 +114,14 @@ namespace Degen
 				pCurVert->x = pAIVert->x;
 				pCurVert->y = pAIVert->y;
 				pCurVert->z = pAIVert->z;
+
+				if (pCurVert->x > draw_info->max_x) draw_info->max_x = pCurVert->x;
+				if (pCurVert->y > draw_info->max_y) draw_info->max_y = pCurVert->y;
+				if (pCurVert->z > draw_info->max_z) draw_info->max_z = pCurVert->z;
+
+				if (pCurVert->x < draw_info->min_x) draw_info->min_x = pCurVert->x;
+				if (pCurVert->y < draw_info->min_y) draw_info->min_y = pCurVert->y;
+				if (pCurVert->z < draw_info->min_z) draw_info->min_z = pCurVert->z;
 
 
 				// Normals
@@ -255,7 +264,7 @@ namespace Degen
 				{
 					BoneIndex = bone_info->bone_count;
 					bone_info->bone_count++;
-					
+
 					bone_info->bone_name_index[BoneName] = BoneIndex;
 
 					bone_info->Offsets.push_back(AIMatrixToGLMMatrix(mesh->mBones[boneIndex]->mOffsetMatrix));
@@ -345,7 +354,7 @@ namespace Degen
 						pCurVert->tz == 0.f &&
 						pCurVert->bx == 0.f &&
 						pCurVert->by == 0.f &&
-						pCurVert->bz == 0.f )
+						pCurVert->bz == 0.f)
 					{
 						printf("");
 					}
@@ -363,14 +372,14 @@ namespace Degen
 				pCurVert->bone_weights[1] = vertexBoneData[vertIndex].weights[1];
 				pCurVert->bone_weights[2] = vertexBoneData[vertIndex].weights[2];
 				pCurVert->bone_weights[3] = vertexBoneData[vertIndex].weights[3];
-				
+
 				if (vertexBoneData[vertIndex].ids[0] == 0 && vertexBoneData[vertIndex].ids[1] == 0 && vertexBoneData[vertIndex].ids[2] == 0 && vertexBoneData[vertIndex].ids[3] == 0
 					&& vertexBoneData[vertIndex].weights[0] == 0 && vertexBoneData[vertIndex].weights[1] == 0 && vertexBoneData[vertIndex].weights[2] == 0 && vertexBoneData[vertIndex].weights[3] == 0)
 				{
 					pCurVert->bone_id[0] = 1;
 					pCurVert->bone_weights[0] = 1;
 				}
-				
+
 
 			}//for ( int vertIndex
 
@@ -426,7 +435,7 @@ namespace Degen
 
 
 
-		
+
 		Animation::sAnimationInfo* cModelLoader::LoadAnimation(std::string file_name, std::string friendly_name, std::string model_name, std::string& error, const unsigned int animationIndex)
 		{
 			const aiScene* pScene;
@@ -466,18 +475,18 @@ namespace Degen
 
 
 #ifdef _DEBUG
-			printf("%s:\n" , friendly_name.c_str());
+			printf("%s:\n", friendly_name.c_str());
 			count = 0;
 			ReadNodeHeirarchy(pScene->mRootNode);
 #endif
 
-			
+
 			Animation::sAnimationInfo* animation_info = new Animation::sAnimationInfo();
 			animation_info->animation = pScene->mAnimations[animationIndex];
-			
+
 			animation_info->scene = pScene;
-			
-			
+
+
 			animation_info->name = friendly_name;
 			animation_info->file = file_name;
 			animation_info->model = model_name;

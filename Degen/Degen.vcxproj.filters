@@ -150,6 +150,9 @@
     <ClCompile Include="Engine\Component\Animation_New.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Component\MultiTransform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AI\BMP Loader\BMPImage.h">
@@ -306,6 +309,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Animation_New.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\MultiTransform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

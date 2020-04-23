@@ -9,7 +9,7 @@ namespace Degen
 	{
 		void cBasicMotion::Update(double dt)
 		{
-			for(auto* ent: entities)
+			for(auto* ent: moving_entities)
 			{
 				Component::BasicMotion* vel = dynamic_cast<Component::BasicMotion*>(ent->GetComponent(Component::BASIC_MOTION_COMPONENT));
 				if(glm::length(vel->velocity) < 0.01f)
@@ -31,9 +31,9 @@ namespace Degen
 		{
 			if (entity->HasComponent(Component::BASIC_MOTION_COMPONENT) && entity->HasComponent(Component::POSITION_COMPONENT))
 			{
-				if (std::find(entities.begin(), entities.end(), entity) == entities.end())
+				if (std::find(moving_entities.begin(), moving_entities.end(), entity) == moving_entities.end())
 				{
-					entities.push_back(entity);
+					moving_entities.push_back(entity);
 				}
 			}
 		}

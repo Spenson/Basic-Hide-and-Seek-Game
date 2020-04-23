@@ -11,6 +11,7 @@
 #include "Component/Gatherer.h"
 #include "Component/Animation.h"
 #include "Component/Animation_New.h"
+#include "Component/MultiTransform.h"
 
 namespace Degen
 {
@@ -97,14 +98,13 @@ namespace Degen
 				if (jsonCurModel["name"].isString()) model_name = jsonCurModel["name"].asString();
 				if (jsonCurModel["file"].isString()) model_file = jsonCurModel["file"].asString();
 				if (jsonCurModel["is_basic"].isBool()) is_basic = jsonCurModel["is_basic"].asBool();
-				if (jsonCurModel["mesh_number"].isUInt())
-					meshidx = jsonCurModel["mesh_number"].asUInt();
+				if (jsonCurModel["mesh_number"].isUInt()) meshidx = jsonCurModel["mesh_number"].asUInt();
 
 				VAOAndModel::sModelDrawInfo* mdi = nullptr;
 
 				if (is_basic)
 				{
-					mdi = ModelLoader->LoadBasicModel(model_file, model_name, error);
+					mdi = ModelLoader->LoadBasicModel(model_file, model_name, error, meshidx);
 				}
 				else
 				{
@@ -190,6 +190,11 @@ namespace Degen
 						else if (components[i]["component"] == "animation_new")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Animation_New>();
+							comp->Deserialize(components[i]);
+						}
+						else if (components[i]["component"] == "multi_transform")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::MultiTransform>();
 							comp->Deserialize(components[i]);
 						}
 						else

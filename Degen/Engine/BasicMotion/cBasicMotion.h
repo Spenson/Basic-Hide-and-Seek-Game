@@ -8,7 +8,7 @@ namespace Degen
 		class cBasicMotion
 		{
 		public:
-			std::vector<Entity::cEntity*> entities;
+			std::vector<Entity::cEntity*> moving_entities;
 			void Update(double dt);
 			void AddEntity(Entity::cEntity* entity);
 		};

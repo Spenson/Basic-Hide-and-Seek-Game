@@ -302,6 +302,10 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal, vec3 ve
 
 	}//for(intindex=0...
 
+	vec3 ambientObjectColour = (Ambient * vertexMaterialColour.rgb);
+
+	finalObjectColour.rgb = max(ambientObjectColour, finalObjectColour.rgb);
+
 	finalObjectColour.a = 1.0f;
 
 	return finalObjectColour;
@@ -461,41 +465,42 @@ void AlphaObjectsPass(void)
 	bool TBD2 = bool(modifiers.w);
 
 	vec4 tex1 = vec4(0.f, 0.f, 0.f, 0.f);
-	vec4 tex2 = vec4(0.f, 0.f, 0.f, 0.f);
+	//vec4 tex2 = vec4(0.f, 0.f, 0.f, 0.f);
 
 	// cube map textures
 	if (is_cube_texture)
 	{
 		tex1 = texture(skybox00, gOut.normal.xyz);
-		tex2 = texture(skybox01, gOut.normal.xyz);
+		if (colour_ratios.z >= 1.0)
+		{
+			tex1 *= texture(skybox00, gOut.normal.xyz);
+		}
+		//tex2 = texture(skybox01, gOut.normal.xyz);
 	}
 	// 2d textures
 	else
 	{
 		tex1 = texture(texture00, gOut.uv_x2.st);
-		tex2 = texture(texture01, gOut.uv_x2.st);
+		if (colour_ratios.z >= 1.0)
+		{
+			tex1 *= texture(texture01, gOut.uv_x2.st);
+		}
+
 	}
 
 	vec4 materialColour = diffuseColour;
 
 	materialColour =
 		(diffuseColour * colour_ratios.x) +
-		(tex1 * colour_ratios.y) +
-		(tex2 * colour_ratios.z);
-
-
-
-	if (diffuseColour.a <= 0.01f)		// Basically "invisable"
-	{
-		discard;
-	}
+		(tex1 * colour_ratios.y);// +
+		//(tex2 * colour_ratios.z);
 
 
 	colourOut = materialColour;
-	colourOut.a = diffuseColour.a;// * materialColour.a;
+	colourOut.a = diffuseColour.a;
 
 
-	//normalOut.xyz = gOut.normal.xyz;
+
 	if (ignore_lighting)
 	{
 		normalOut.w = 0.f;
@@ -505,20 +510,23 @@ void AlphaObjectsPass(void)
 		if (use_bump_map)
 		{
 			vec3 sample_normal = texture(bump_map, gOut.uv_x2.xy).rgb;
-			sample_normal = normalize(sample_normal * 2.0 - 1.0);
+			sample_normal = normalize((sample_normal - 0.5) * 2.f);
 			sample_normal = normalize(gOut.tbn * sample_normal);
 
 			normalOut.xyz = (sample_normal + 1.f) * 0.5;
+
 		}
 		else
 		{
 			normalOut.xyz = (gOut.normal.xyz + 1.f) * 0.5;
 		}
 
+
+
 		normalOut.w = 1.f;
+
 		worldPosOut.xyz = gOut.position.xyz;
 		worldPosOut.w = 1.f;
-
 
 		if (use_specular_map)
 		{
@@ -531,7 +539,7 @@ void AlphaObjectsPass(void)
 		}
 
 		// scale specular power to fix blend issues
-		specularOut.w = specularOut.w * (1.0f / 10000.0f);
+		specularOut.w = specularColour.w * (1.0f / 10000.0f);
 		if (specularOut.w > 1.f) specularOut.w = 1.f;
 		if (specularOut.w < 0.f) specularOut.w = 0.f;
 	}
@@ -560,6 +568,8 @@ void CombinePass(void)
 
 	vec4 alphaDiffuse = texture(textureAlphaColour, uvs.st).rgba;
 	vec4 alphaNormal = texture(textureAlphaNormal, uvs.st).rgba;
+	alphaNormal.rgb = (alphaNormal.rgb * 2.f) - 1.f;
+
 	vec4 alphaPosition = texture(textureAlphaPosition, uvs.st).rgba;
 	vec4 alphaSpecular = texture(textureAlphaSpecular, uvs.st).rgba;
 

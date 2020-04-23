@@ -5,6 +5,7 @@
 #include "../Component/Animation.h"
 #include <physics/interfaces/iLauncherComponent.h>
 #include "../Component/Animation_New.h"
+#include "../Component/BasicMotion.h"
 
 namespace Degen
 {
@@ -65,7 +66,7 @@ namespace Degen
 				glm::vec3 movement = View->target - View->position;
 				movement.y = 0.f;
 				movement = glm::normalize(movement);
-				movement *= 5.f * dt;
+				movement *= 20.f * dt;
 				dynamic_cast<Component::Position*>(Entity::cEntityManager::GetEntity(1000)->GetComponent(Component::POSITION_COMPONENT))->position += movement;
 
 			}
@@ -74,7 +75,7 @@ namespace Degen
 				glm::vec3 movement = View->target - View->position;
 				movement.y = 0.f;
 				movement = glm::normalize(movement);
-				movement *= 5.f * dt;
+				movement *= 20.f * dt;
 				dynamic_cast<Component::Position*>(Entity::cEntityManager::GetEntity(1000)->GetComponent(Component::POSITION_COMPONENT))->position -= movement;
 
 			}
@@ -84,7 +85,7 @@ namespace Degen
 				glm::vec3 movement = glm::cross(View->target - View->position, View->up);
 				movement.y = 0.f;
 				movement = glm::normalize(movement);
-				movement *= 5.f * dt;
+				movement *= 20.f * dt;
 				dynamic_cast<Component::Position*>(Entity::cEntityManager::GetEntity(1000)->GetComponent(Component::POSITION_COMPONENT))->position -= movement;
 
 			}
@@ -93,7 +94,7 @@ namespace Degen
 				glm::vec3 movement = glm::cross(View->target - View->position, View->up);
 				movement.y = 0.f;
 				movement = glm::normalize(movement);
-				movement *= 5.f * dt;
+				movement *= 20.f * dt;
 				dynamic_cast<Component::Position*>(Entity::cEntityManager::GetEntity(1000)->GetComponent(Component::POSITION_COMPONENT))->position += movement;
 
 			}
@@ -103,7 +104,7 @@ namespace Degen
 				glm::vec3 movement(0.f);
 				movement.y = 1.f;
 				movement = glm::normalize(movement);
-				movement *= 5.f * dt;
+				movement *= 20.f * dt;
 				dynamic_cast<Component::Position*>(Entity::cEntityManager::GetEntity(1000)->GetComponent(Component::POSITION_COMPONENT))->position -= movement;
 
 			}
@@ -112,14 +113,20 @@ namespace Degen
 				glm::vec3 movement(0.f);
 				movement.y = 1.f;
 				movement = glm::normalize(movement);
-				movement *= 5.f * dt;
+				movement *= 20.f * dt;
 				dynamic_cast<Component::Position*>(Entity::cEntityManager::GetEntity(1000)->GetComponent(Component::POSITION_COMPONENT))->position += movement;
 
 			}
 
+
+			Entity::cEntity* player = EntityManager->GetEntity("Elf");
+			
+			Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(player->GetComponent(Component::ANIMATION_NEW_COMPONENT));
+			Component::BasicMotion* motion_comp = dynamic_cast<Component::BasicMotion*>(player->GetComponent(Component::BASIC_MOTION_COMPONENT));
+
+			
 			if (glfwGetKey(window, GLFW_KEY_LEFT))
 			{
-				Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(EntityManager->GetEntity("Elf")->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 				if (animation_comp->animation_queue.empty())
 				{
 					if (animation_comp->animation == "elf@strafe_right")
@@ -153,7 +160,6 @@ namespace Degen
 			}
 			else if (glfwGetKey(window, GLFW_KEY_RIGHT))
 			{
-				Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(EntityManager->GetEntity("Elf")->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 				if (animation_comp->animation_queue.empty())
 				{
 					if (animation_comp->animation == "elf@strafe_left" || animation_comp->animation == "elf@idle_left")
@@ -175,8 +181,6 @@ namespace Degen
 			}
 			else if (glfwGetKey(window, GLFW_KEY_UP))
 			{
-				Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(EntityManager->GetEntity("Elf")->GetComponent(Component::ANIMATION_NEW_COMPONENT));
-
 				if (animation_comp->animation_queue.empty())
 				{
 					Component::animation_info info;
@@ -188,8 +192,6 @@ namespace Degen
 			}
 			else
 			{
-				Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(EntityManager->GetEntity("Elf")->GetComponent(Component::ANIMATION_NEW_COMPONENT));
-
 				if (animation_comp->animation_queue.empty())
 				{
 					if (animation_comp->animation == "elf@strafe_left")
