@@ -369,27 +369,35 @@ void SolidObjectsPass(void)
 	//}
 
 	vec4 tex1 = vec4(0.f, 0.f, 0.f, 0.f);
-	vec4 tex2 = vec4(0.f, 0.f, 0.f, 0.f);
+	//vec4 tex2 = vec4(0.f, 0.f, 0.f, 0.f);
 
 	// cube map textures
 	if (is_cube_texture)
 	{
 		tex1 = texture(skybox00, gOut.normal.xyz);
-		tex2 = texture(skybox01, gOut.normal.xyz);
+		if (colour_ratios.z >= 1.0)
+		{
+			tex1 *= texture(skybox00, gOut.normal.xyz);
+		}
+		//tex2 = texture(skybox01, gOut.normal.xyz);
 	}
 	// 2d textures
 	else
 	{
 		tex1 = texture(texture00, gOut.uv_x2.st);
-		tex2 = texture(texture01, gOut.uv_x2.st);
+		if (colour_ratios.z >= 1.0)
+		{
+			tex1 *= texture(texture01, gOut.uv_x2.st);
+		}
+
 	}
 
 	vec4 materialColour = diffuseColour;
 
 	materialColour =
 		(diffuseColour * colour_ratios.x) +
-		(tex1 * colour_ratios.y) +
-		(tex2 * colour_ratios.z);
+		(tex1 * colour_ratios.y);// +
+		//(tex2 * colour_ratios.z);
 
 
 	colourOut = materialColour;
@@ -406,7 +414,7 @@ void SolidObjectsPass(void)
 		if (use_bump_map)
 		{
 			vec3 sample_normal = texture(bump_map, gOut.uv_x2.xy).rgb;
-			sample_normal = normalize(sample_normal - 0.5);
+			sample_normal = normalize((sample_normal - 0.5)*2.f);
 			sample_normal = normalize(gOut.tbn * sample_normal);
 
 			normalOut.xyz = (sample_normal + 1.f) * 0.5;

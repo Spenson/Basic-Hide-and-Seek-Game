@@ -182,6 +182,7 @@
     <ClCompile Include="Engine\Camera\cCamera.cpp" />
     <ClCompile Include="Engine\cEngine.cpp" />
     <ClCompile Include="Engine\Component\Animation.cpp" />
+    <ClCompile Include="Engine\Component\Animation_New.cpp" />
     <ClCompile Include="Engine\Component\Camera.cpp" />
     <ClCompile Include="Engine\Component\Gatherer.cpp" />
     <ClCompile Include="Engine\Component\Light.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="Engine\Camera\cCamera.h" />
     <ClInclude Include="Engine\cEngine.h" />
     <ClInclude Include="Engine\Component\Animation.h" />
+    <ClInclude Include="Engine\Component\Animation_New.h" />
     <ClInclude Include="Engine\Component\Camera.h" />
     <ClInclude Include="Engine\Component\ComponentCheatSheat.txt" />
     <ClInclude Include="Engine\Component\Gatherer.h" />

@@ -9,6 +9,16 @@
       "+z": "drakeq_ft.png",
       "-z": "drakeq_bk.png",
       "format": "png"
+    },
+    {
+      "name": "cloudy-cloud",
+      "-z": "browncloud_lf.png",
+      "+z": "browncloud_rt.png",
+      "+y": "browncloud_up.png",
+      "-y": "browncloud_dn.png",
+      "+x": "browncloud_ft.png",
+      "-x": "browncloud_bk.png",
+      "format": "png"
     }
   ],
   "Textures": [
@@ -38,8 +48,33 @@
       "format": "png"
     },
     {
-      "name": "wood",
-      "file": "wood.png",
+      "name": "Elf_Specular",
+      "file": "Elf_Specular.png",
+      "format": "png"
+    },
+    {
+      "name": "Elf_Normals",
+      "file": "Elf_Normals.png",
+      "format": "png"
+    },
+    {
+      "name": "Elf_Colour",
+      "file": "Elf_Albedo.png",
+      "format": "png"
+    },
+    {
+      "name": "Elf_Shadow",
+      "file": "Elf_Ao.png",
+      "format": "png"
+    },
+    {
+      "name": "grass",
+      "file": "Grass.png",
+      "format": "png"
+    },
+    {
+      "name": "grass normal",
+      "file": "Grass N.png",
       "format": "png"
     }
   ],
@@ -52,7 +87,7 @@
     },
     {
       "name": "quad",
-      "file": "quad_2_sided.ply",
+      "file": "quad_2_sided_high_texture.ply",
       "is_basic": true
     },
     {
@@ -61,23 +96,18 @@
       "is_basic": true
     },
     {
-      "name": "cone",
-      "file": "cone.ply",
-      "is_basic": true
-    },
-    {
-      "name": "cylinder",
-      "file": "cylinder.ply",
-      "is_basic": true
+      "name": "Elf",
+      "file": "Elf_Mesh.fbx",
+      "is_basic": false
     },
     {
       "name": "forest_guard",
-      "file": "forest_guard.FBX",
+      "file": "forest_guard.fbx",
       "is_basic": false
     },
     {
       "name": "forest_guard_eyes",
-      "file": "forest_guard.FBX",
+      "file": "forest_guard.fbx",
       "mesh_number": 1,
       "is_basic": false
     }
@@ -85,15 +115,48 @@
   "Animations": [
     {
       "name": "forest_guard@idle",
-      "file": "forest_guard@idle.FBX",
+      "file": "forest_guard@idle_crouch.fbx",
       "index": 0,
       "model": "forest_guard"
     },
     {
-      "name": "forest_guard@walk",
-      "file": "forest_guard@walk.FBX",
+      "name": "forest_guard@idle_still",
+      "file": "forest_guard@idle_still.fbx",
       "index": 0,
       "model": "forest_guard"
+    },
+    {
+      "name": "elf@idle",
+      "file": "elf@idle.fbx",
+      "index": 1,
+      "model": "Elf"
+
+    },
+    {
+      "name": "elf@idle_left",
+      "file": "elf@idle_left.fbx",
+      "index": 1,
+      "model": "Elf"
+    },
+    {
+      "name": "elf@walk",
+      "file": "elf@walk.fbx",
+      "index": 1,
+      "model": "Elf"
+
+    },
+    {
+      "name": "elf@strafe_left",
+      "file": "elf@strafe_left.fbx",
+      "index": 1,
+      "model": "Elf"
+
+    },
+    {
+      "name": "elf@strafe_right",
+      "file": "elf@strafe_right.fbx",
+      "index": 1,
+      "model": "Elf"
 
     }
   ],
@@ -115,13 +178,13 @@
         {
           "component": "render",
           "mesh": "sphere",
-          "texture1": "spacey-space",
+          "texture1": "cloudy-cloud",
           "texture1_amount": 1.0,
           "is_cubemap_texture": true,
           "diffuse": [ 1.0, 0.8, 0.2, 1.0 ],
           "diffuse_amount": 0.0,
           "specular": [ 1.0, 1.0, 1.0, 100.0 ],
-          "scale": [ 100.0, 100.0, 100.0 ],
+          "scale": [ 500.0, 500.0, 500.0 ],
           "ignore_lighting": true,
           "is_wireframe": false,
           "cull_face_back": false
@@ -142,13 +205,13 @@
       "components": [
         {
           "component": "transform",
-          "pos": [ 0.0, 10.0, 0.0 ],
+          "pos": [ 0.0, 0.0, 0.0 ],
           "rot": [ 0.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
           "mesh": "box",
-          "texture1": "wood",
+          "texture1": "grass",
           "texture1_amount": 0.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 1.0,
@@ -159,15 +222,18 @@
 
         }
       ]
-    }
-    ,
+    },
+    
     {
       "name": "forest guard 1",
       "components": [
         {
-          "component": "transform",
-          "pos": [ 0.0, 0.0, 10.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
+          "component": "position",
+          "position": [ -3.0, -0.001, 10.0 ]
+        },
+        {
+          "component": "rotation",
+          "rotation": [ 0.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
@@ -177,7 +243,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.0,
           "specular": [ 1.0, 0.1, 0.1, 1000.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
+          "scale": [ 0.075, 0.075, 0.075 ],
           "ignore_lighting": false,
           "is_wireframe": false,
 
@@ -194,7 +260,7 @@
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.0,
           "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
+          "scale": [ 0.075, 0.075, 0.075 ],
           "ignore_lighting": false,
           "is_wireframe": false,
 
@@ -213,482 +279,73 @@
 
 
     {
-      "name": "forest guard 2",
+      "name": "Elf",
       "components": [
         {
-          "component": "transform",
-          "pos": [ 10.0, 7.0, 0.0 ],
-          "rot": [ 0.0, 0.0, 180.0 ]
+          "component": "position",
+          "position": [ 3.0, -0.05, 10.0 ]
+        },
+        {
+          "component": "rotation",
+          "rotation": [ 0.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
+          "mesh": "Elf",
+          "texture1": "Elf_Colour",
           "texture1_amount": 1.0,
+          "texture2": "Elf_Shadow",
+          "texture2_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
+          "specular": [ 0.01, 0.01, 0.01, 200 ],
           "scale": [ 0.1, 0.1, 0.1 ],
           "ignore_lighting": false,
           "is_wireframe": false,
 
           "use_bump_map": true,
-          "bump_map": "forest guard bump",
+          "bump_map": "Elf_Normals",
           "use_specular_map": true,
-          "specular_map": "forest guard specular"
+          "specular_map": "Elf_Specular"
         },
         {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
+          "component": "animation_new",
+          "animation": "elf@idle",
+          "play_till_end": false
         }
+
       ]
     },
 
+
+
+
     {
-      "name": "forest guard 3",
+      "name": "Ground",
       "components": [
         {
           "component": "transform",
           "pos": [ 0.0, 0.0, 0.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
-        }
-      ]
-    },
-
-    {
-      "name": "forest guard 4",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ -10.0, 0.0, 0.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
-        }
-      ]
-    },
-
-    {
-      "name": "forest guard 5",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 10.0, 0.0, -10.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
-        }
-      ]
-    },
-
-    {
-      "name": "forest guard 6",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 0.0, 0.0, -10.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
-        }
-      ]
-    },
-
-    {
-      "name": "forest guard 7",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ -10.0, 0.0, -10.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
-        }
-      ]
-    },
-
-    {
-      "name": "forest guard 8",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 10.0, 0.0, -20.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
-        }
-      ]
-    },
-
-    {
-      "name": "forest guard 9",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 0.0, 0.0, -20.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
-        }
-      ]
-    },
-
-    {
-      "name": "forest guard 10",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ -10.0, 0.0, -20.0 ],
-          "rot": [ 0.0, 0.0, 0.0 ]
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 0.1, 0.1, 0.1, 0.1 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "render",
-          "mesh": "forest_guard_eyes",
-          "texture1": "forest guard diffuse",
-          "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.0,
-          "specular": [ 1.0, 1.0, 1.0, 200.0 ],
-          "scale": [ 0.1, 0.1, 0.1 ],
-          "ignore_lighting": false,
-          "is_wireframe": false,
-
-          "use_bump_map": true,
-          "bump_map": "forest guard bump",
-          "use_specular_map": true,
-          "specular_map": "forest guard specular"
-        },
-        {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
-        }
-      ]
-    },
-
-
-
-
-    {
-      "name": "Bottom",
-      "components": [
-        {
-          "component": "transform",
-          "pos": [ 0.0, 0.0, 0.0 ],
-          "rot": [ 90.0, 0.0, 0.0 ]
+          "rot": [ -90.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
           "mesh": "quad",
-          "texture1": "wood",
+          "texture1": "grass",
           "texture1_amount": 1.0,
           "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
-          "diffuse_amount": 0.25,
-          "specular": [ 0.2, 0.2, 0.2, 100.0 ],
-          "scale": [ 16.5, 35, 1 ],
+          "diffuse_amount": 0.0,
+          "specular": [ 0.05, 0.05, 0.05, 100.0 ],
+          "scale": [ 500.0, 500.0, 1 ],
           "ignore_lighting": false,
-          "is_wireframe": false
+          "is_wireframe": false,
+
+          "use_bump_map": true,
+          "bump_map": "grass normal"
         }
 
       ]
-    }
-    ,
+    },
 
 
 
@@ -699,7 +356,7 @@
       "components": [
         {
           "component": "transform",
-          "pos": [ -100.0, 100.0, 300.0 ],
+          "pos": [ -200.0, 100.0, 400.0 ],
           "rot": [ 0.0, 0.0, 0.0 ]
         },
         {
@@ -718,33 +375,6 @@
         }
       ]
     }
-    //,
-    //{
-    //  "name": "light 2",
-    //  "components": [
-    //    {
-    //      "component": "transform",
-    //      "pos": [ 30.0, -100.0, 0.0 ],
-    //      "rot": [ 0.0, 0.0, 0.0 ]
-    //    },
-    //    {
-    //      "component": "light",
-    //      "on": true,
-    //      "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
-    //      "specular": [ 1.0, 1.0, 1.0, 1.0 ],
-    //      "const_atten": 0.0000001,
-    //      "linear_atten": 0.012,
-    //      "quad_atten": 0.000001,
-    //      "direction": [ 0.0, -1.0, 0.0 ],
-    //      "position": [ 0.0, -50.0, 0.0 ],
-    //      "type": 0,
-    //      "inner_angle": 5.0,
-    //      "outer_angle": 10.0
-    //    }
-    //  ]
-    //}
-
-
 
   ]
 }

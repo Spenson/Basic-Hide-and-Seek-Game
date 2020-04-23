@@ -135,6 +135,29 @@ namespace Degen
 					}
 				}
 
+				// Tangents and Bitangents (bi-normals)
+				if (mesh->HasTangentsAndBitangents())
+				{
+					pCurVert->tx = mesh->mTangents[vertIndex].x;
+					pCurVert->ty = mesh->mTangents[vertIndex].y;
+					pCurVert->tz = mesh->mTangents[vertIndex].z;
+
+					pCurVert->bx = mesh->mBitangents[vertIndex].x;
+					pCurVert->by = mesh->mBitangents[vertIndex].y;
+					pCurVert->bz = mesh->mBitangents[vertIndex].z;
+
+
+					if (pCurVert->tx == 0.f &&
+						pCurVert->ty == 0.f &&
+						pCurVert->tz == 0.f &&
+						pCurVert->bx == 0.f &&
+						pCurVert->by == 0.f &&
+						pCurVert->bz == 0.f)
+					{
+						printf("");
+					}
+				}
+
 
 			}//for ( int vertIndex
 
@@ -232,6 +255,7 @@ namespace Degen
 				{
 					BoneIndex = bone_info->bone_count;
 					bone_info->bone_count++;
+					
 					bone_info->bone_name_index[BoneName] = BoneIndex;
 
 					bone_info->Offsets.push_back(AIMatrixToGLMMatrix(mesh->mBones[boneIndex]->mOffsetMatrix));
@@ -340,12 +364,13 @@ namespace Degen
 				pCurVert->bone_weights[2] = vertexBoneData[vertIndex].weights[2];
 				pCurVert->bone_weights[3] = vertexBoneData[vertIndex].weights[3];
 				
-				if (vertexBoneData[vertIndex].ids[0] == 0 && vertexBoneData[vertIndex].ids[1] == 0 && vertexBoneData[vertIndex].ids[2] == 0 && vertexBoneData[vertIndex].ids[3] == 0)
+				if (vertexBoneData[vertIndex].ids[0] == 0 && vertexBoneData[vertIndex].ids[1] == 0 && vertexBoneData[vertIndex].ids[2] == 0 && vertexBoneData[vertIndex].ids[3] == 0
+					&& vertexBoneData[vertIndex].weights[0] == 0 && vertexBoneData[vertIndex].weights[1] == 0 && vertexBoneData[vertIndex].weights[2] == 0 && vertexBoneData[vertIndex].weights[3] == 0)
 				{
 					pCurVert->bone_id[0] = 1;
 					pCurVert->bone_weights[0] = 1;
 				}
-
+				
 
 			}//for ( int vertIndex
 
@@ -380,6 +405,28 @@ namespace Degen
 			return draw_info;
 		}
 
+
+#ifdef _DEBUG
+		int count = 0;
+		std::string indent = " ";
+		void ReadNodeHeirarchy(const aiNode* pNode)
+		{
+			aiString NodeName(pNode->mName.data);
+			printf("%s%i: %s\n", indent.c_str(), count, NodeName.C_Str());
+			count++;
+
+			//indent += ' ';
+
+			for (unsigned int ChildIndex = 0; ChildIndex != pNode->mNumChildren; ChildIndex++)
+			{
+				ReadNodeHeirarchy(pNode->mChildren[ChildIndex]);
+			}
+		}
+#endif
+
+
+
+		
 		Animation::sAnimationInfo* cModelLoader::LoadAnimation(std::string file_name, std::string friendly_name, std::string model_name, std::string& error, const unsigned int animationIndex)
 		{
 			const aiScene* pScene;
@@ -417,6 +464,14 @@ namespace Degen
 				return nullptr;
 			}
 
+
+#ifdef _DEBUG
+			printf("%s:\n" , friendly_name.c_str());
+			count = 0;
+			ReadNodeHeirarchy(pScene->mRootNode);
+#endif
+
+			
 			Animation::sAnimationInfo* animation_info = new Animation::sAnimationInfo();
 			animation_info->animation = pScene->mAnimations[animationIndex];
 			

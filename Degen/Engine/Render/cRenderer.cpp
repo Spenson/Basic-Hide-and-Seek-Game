@@ -157,18 +157,23 @@ namespace Degen
 
 				glm::mat4 tranform = GetTransform(entity);
 				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
+				Component::Animation_New* animation_new = dynamic_cast<Component::Animation_New*>(entity->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 
 				for (unsigned i = 0; i < rends.size(); i++)
 				{
 					Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
 
-					if (!animation)
+					if (animation)
 					{
-						RenderObject(mShaderProgram, rend, tranform);
+						RenderObject(mShaderProgram, rend, animation, tranform);
+					}
+					else if (animation_new)
+					{
+						RenderObject(mShaderProgram, rend, animation_new, tranform);
 					}
 					else
 					{
-						RenderObject(mShaderProgram, rend, animation, tranform);
+						RenderObject(mShaderProgram, rend, tranform);
 					}
 				}
 			}
@@ -183,18 +188,23 @@ namespace Degen
 				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
 				glm::mat4 tranform = GetTransform(entity);
 				Component::Animation* animation = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
+				Component::Animation_New* animation_new = dynamic_cast<Component::Animation_New*>(entity->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 
 				for (unsigned i = 0; i < rends.size(); i++)
 				{
 					Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
 
-					if (!animation)
+					if (animation)
 					{
-						RenderObject(mShaderProgram, rend, tranform);
+						RenderObject(mShaderProgram, rend, animation, tranform);
+					}
+					else if (animation_new)
+					{
+						RenderObject(mShaderProgram, rend, animation_new, tranform);
 					}
 					else
 					{
-						RenderObject(mShaderProgram, rend, animation, tranform);
+						RenderObject(mShaderProgram, rend, tranform);
 					}
 				}
 			}
@@ -339,6 +349,143 @@ namespace Degen
 		}
 
 		void cRenderer::RenderObject(Shaders::cShaderManager::cShaderProgram* shader_program, Component::Render* rend_comp, Component::Animation* animation, glm::mat4 transform, glm::mat4 parent_matrix)
+		{
+			if (rend_comp->cull_face_back) { glEnable(GL_CULL_FACE); }
+			else { glDisable(GL_CULL_FACE); }
+
+			glDisable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glCullFace(GL_BACK);
+
+			glm::mat4 matWorldCurrentGO = (transform * glm::scale(glm::mat4(1.f), rend_comp->scale));
+			glUniformMatrix4fv(shader_program->GetUniformLocationID("matModel"), 1, GL_FALSE, glm::value_ptr(matWorldCurrentGO));
+
+			glm::mat4 matModelInverseTranspose = glm::inverse(glm::transpose(matWorldCurrentGO));
+			glUniformMatrix4fv(shader_program->GetUniformLocationID("matInvTrans"), 1, GL_FALSE, glm::value_ptr(matModelInverseTranspose));
+
+
+			if (rend_comp->is_cubemap_textures)
+			{
+				glActiveTexture(GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_CUBE_MAP, TextureManager->getTextureIDFromName(rend_comp->texture1));
+				glUniform1i(shader_program->GetUniformLocationID("skybox00"), 2);
+				if (!rend_comp->texture2.empty())
+				{
+					glActiveTexture(GL_TEXTURE3);
+					glBindTexture(GL_TEXTURE_CUBE_MAP, TextureManager->getTextureIDFromName(rend_comp->texture2));
+					glUniform1i(shader_program->GetUniformLocationID("skybox01"), 3);
+				}
+			}
+			else
+			{
+				GLuint texSamp0_UL = TextureManager->getTextureIDFromName(rend_comp->texture1);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texSamp0_UL);
+				glUniform1i(shader_program->GetUniformLocationID("texture00"), 0);
+
+				if (!rend_comp->texture2.empty())
+				{
+					glActiveTexture(GL_TEXTURE1);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->texture2));
+					glUniform1i(shader_program->GetUniformLocationID("texture01"), 1);
+				}
+
+				if (rend_comp->use_bump_map)
+				{
+					glActiveTexture(GL_TEXTURE4);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->bump_map));
+					glUniform1i(shader_program->GetUniformLocationID("bump_map"), 4);
+
+					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_TRUE);
+				}
+				else
+				{
+					glUniform1f(shader_program->GetUniformLocationID("use_bump_map"), (float)GL_FALSE);
+				}
+
+				if (rend_comp->use_specular_map)
+				{
+					glActiveTexture(GL_TEXTURE5);
+					glBindTexture(GL_TEXTURE_2D, TextureManager->getTextureIDFromName(rend_comp->specular_map));
+					glUniform1i(shader_program->GetUniformLocationID("specular_map"), 5);
+
+					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_TRUE);
+				}
+				else
+				{
+					glUniform1f(shader_program->GetUniformLocationID("use_specular_map"), (float)GL_FALSE);
+				}
+			}
+			glUniform4f(shader_program->GetUniformLocationID("colour_ratios"),
+						rend_comp->diffuse_amount,
+						rend_comp->texture1_amount,
+						rend_comp->texture2_amount,
+						0.f);
+
+			glUniform4f(shader_program->GetUniformLocationID("diffuseColour"),
+						rend_comp->diffuse_colour.r,
+						rend_comp->diffuse_colour.g,
+						rend_comp->diffuse_colour.b,
+						rend_comp->diffuse_colour.a);
+
+			glUniform4f(shader_program->GetUniformLocationID("specularColour"),
+						rend_comp->specular_colour.r,
+						rend_comp->specular_colour.g,
+						rend_comp->specular_colour.b,
+						rend_comp->specular_colour.a);	// Power
+
+			float ignore_lighting = rend_comp->ignore_lighting;
+
+			if (rend_comp->is_wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);		// LINES
+				ignore_lighting = GL_TRUE;
+			}
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);		// SOLID
+			}
+			//float use_diffuse = true; //pCurrentObject->UseDiffuse();
+
+			glUniform4f(shader_program->GetUniformLocationID("modifiers"),
+						rend_comp->is_cubemap_textures ? (float)GL_TRUE : (float)GL_FALSE,
+						ignore_lighting,
+						0.f,
+						0.f);
+
+			if (!animation->bone_transforms.empty())
+			{
+				glUniform1f(shader_program->GetUniformLocationID("isSkinnedMesh"), (float)GL_TRUE);
+				glUniformMatrix4fv(shader_program->GetUniformLocationID("animation[0]"), animation->bone_transforms.size(),
+								   GL_FALSE,
+								   glm::value_ptr(animation->bone_transforms[0]));
+			}
+			else
+			{
+				glUniform1f(shader_program->GetUniformLocationID("isSkinnedMesh"), (float)GL_FALSE);
+			}
+			VAOAndModel::sModelDrawInfo drawInfo;
+			if (VAOManager->FindDrawInfoByModelName(rend_comp->mesh, drawInfo))
+			{
+				glBindVertexArray(drawInfo.vao_id);
+				//*
+				glPatchParameteri(GL_PATCH_VERTICES, 3);
+				glDrawElements(GL_PATCHES,
+							   drawInfo.number_of_indices,
+							   GL_UNSIGNED_INT,
+							   0);
+				//*/
+				/*
+				glDrawElements(GL_TRIANGLES,
+							   drawInfo.number_of_indices,
+							   GL_UNSIGNED_INT,
+							   0);
+				//*/
+				glBindVertexArray(0);
+			}
+		}
+
+		void cRenderer::RenderObject(Shaders::cShaderManager::cShaderProgram* shader_program, Component::Render* rend_comp, Component::Animation_New* animation, glm::mat4 transform, glm::mat4 parent_matrix)
 		{
 			if (rend_comp->cull_face_back) { glEnable(GL_CULL_FACE); }
 			else { glDisable(GL_CULL_FACE); }

@@ -10,6 +10,7 @@
 #include "Component/BasicMotion.h"
 #include "Component/Gatherer.h"
 #include "Component/Animation.h"
+#include "Component/Animation_New.h"
 
 namespace Degen
 {
@@ -90,6 +91,8 @@ namespace Degen
 			std::string error;
 			for (unsigned int idx = 0; idx < jsonModels.size(); idx++)
 			{
+				meshidx = 0;
+				is_basic = true;
 				Json::Value jsonCurModel = jsonModels[idx];
 				if (jsonCurModel["name"].isString()) model_name = jsonCurModel["name"].asString();
 				if (jsonCurModel["file"].isString()) model_file = jsonCurModel["file"].asString();
@@ -183,6 +186,15 @@ namespace Degen
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::Animation>();
 							comp->Deserialize(components[i]);
+						}
+						else if (components[i]["component"] == "animation_new")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Animation_New>();
+							comp->Deserialize(components[i]);
+						}
+						else
+						{
+							printf("Unknown component: %s\n", components[i]["component"].asString().c_str());
 						}
 					}
 				}

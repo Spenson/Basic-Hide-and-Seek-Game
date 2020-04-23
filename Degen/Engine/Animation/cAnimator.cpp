@@ -2,6 +2,7 @@
 #include "../Component/Animation.h"
 #include "../Component/Position.h"
 #include "../Component/Transform.h"
+#include "../Component/Animation_New.h"
 
 namespace Degen
 {
@@ -19,7 +20,7 @@ namespace Degen
 
 		cAnimator::cAnimator()
 		{
-			for (size_t i = 0; i < 5; ++i)
+			for (size_t i = 0; i < 1; ++i)
 				workers.emplace_back(std::thread(Worker(*this)));
 
 		}
@@ -45,19 +46,19 @@ namespace Degen
 			{
 				enqueue(entity);
 			}
-			
+
 			while (!empty_queue())
 			{
 				std::unique_lock<std::mutex> lock(loop_done_mutex);
 				loop_done_condition.wait(lock);
 			}
 
-			
+
 		}
 
 		void cAnimator::AddEntity(Entity::cEntity* entity)
 		{
-			if (entity->HasComponent(Component::ANIMATION_COMPONENT) &&
+			if ((entity->HasComponent(Component::ANIMATION_COMPONENT) || entity->HasComponent(Component::ANIMATION_NEW_COMPONENT)) &&
 				(entity->HasComponent(Component::POSITION_COMPONENT) || entity->HasComponent(Component::TRANSFORM_COMPONENT)))
 			{
 				if (std::find(entities.begin(), entities.end(), entity) == entities.end())
@@ -67,8 +68,8 @@ namespace Degen
 			}
 		}
 
-
-		void cAnimator::CalculateTransforms(Entity::cEntity* entity)
+		// garbage way overthought I can do better
+		void cAnimator::AnimationOLD(Entity::cEntity* entity)
 		{
 			Component::Animation* animation_comp = dynamic_cast<Component::Animation*>(entity->GetComponent(Component::ANIMATION_COMPONENT));
 
@@ -85,10 +86,8 @@ namespace Degen
 			// Get current animation_info
 			std::string animation_name = animation_comp->playing_animation;
 			double animation_blend_time = animation_comp->playing_animation_blend_time;
-			if (animation_name == "forest_guard@walk")
-			{
-				printf("");
-			}
+
+
 			if (animation_name.empty())
 			{
 				animation_name = animation_comp->default_animation;
@@ -211,7 +210,252 @@ namespace Degen
 				}
 
 			}
+		}
 
+		void cAnimator::AnimationNEW(Entity::cEntity* entity)
+		{
+			Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(entity->GetComponent(Component::ANIMATION_NEW_COMPONENT));
+			if (animation_comp->animation.empty())
+			{
+				if (animation_comp->animation_queue.empty())
+				{
+					printf("%s has no animation.\n", entity->name.c_str());
+					return;
+				}
+				animation_comp->animation = animation_comp->animation_queue.front().animation;
+				animation_comp->play_till_end = animation_comp->animation_queue.front().play_till_end;
+			}
+
+			if (!AnimationManager->HasAnimation(animation_comp->animation))
+			{
+				printf("%s animation not found.\n", animation_comp->animation.c_str());
+				return;
+			}
+
+
+			animation_comp->playing_time += this->dt;
+
+			if(animation_comp->blending_time > 0.f)
+			{
+				animation_comp->blending_time += dt;
+
+				if (animation_comp->blending_time >= animation_comp->animation_queue.front().blend_for)
+				{
+					animation_comp->playing_time = animation_comp->blending_time;
+					animation_comp->animation = animation_comp->animation_queue.front().animation;
+					animation_comp->play_till_end = animation_comp->animation_queue.front().play_till_end;
+
+					animation_comp->blending_time = 0;
+
+					animation_comp->animation_queue.pop_front();
+
+
+					sAnimationInfo* animation_info = AnimationManager->GetAnimation(animation_comp->animation);
+
+					std::vector< glm::mat4x4 > offsets;
+					std::vector< glm::mat4x4 > globals;
+
+					BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+					return;
+				}
+
+
+				sAnimationInfo* animation_info = AnimationManager->GetAnimation(animation_comp->animation);
+
+				std::vector< glm::mat4x4 > offsets;
+				std::vector< glm::mat4x4 > globals;
+
+				BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+
+				sAnimationInfo* next_animation_info = AnimationManager->GetAnimation(animation_comp->animation_queue.front().animation);
+				if (!next_animation_info)
+				{
+					printf("%s animation not found.\n", animation_comp->animation_queue.front().animation.c_str());
+					return;
+				}
+
+				std::vector<glm::mat4x4> bone_transforms;
+				std::vector<glm::mat4x4> globals_next;
+				std::vector<glm::mat4x4> offsets_next;
+
+				BoneTransform(animation_comp->blending_time, next_animation_info, bone_transforms, globals_next, offsets_next);
+
+				float blend_amount = glm::smoothstep(0.0, animation_comp->animation_queue.front().blend_for, animation_comp->blending_time);
+
+				for (unsigned int BoneIndex = 0; BoneIndex < animation_comp->bone_transforms.size(); BoneIndex++)
+				{
+					animation_comp->bone_transforms[BoneIndex] = animation_comp->bone_transforms[BoneIndex] * (1.f - blend_amount)
+						+ bone_transforms[BoneIndex] * blend_amount;
+				}
+
+				return;
+			}
+			
+			if (animation_comp->animation_queue.empty())
+			{
+				sAnimationInfo* animation_info = AnimationManager->GetAnimation(animation_comp->animation);
+
+				std::vector< glm::mat4x4 > offsets;
+				std::vector< glm::mat4x4 > globals;
+
+				BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+				return;
+			}
+
+			if(animation_comp->animation_queue.front().animation == animation_comp->animation)
+			{
+				animation_comp->animation_queue.pop_front();
+				
+				sAnimationInfo* animation_info = AnimationManager->GetAnimation(animation_comp->animation);
+
+				std::vector< glm::mat4x4 > offsets;
+				std::vector< glm::mat4x4 > globals;
+
+				BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+				return;
+			}
+
+			if (!animation_comp->play_till_end)
+			{
+				animation_comp->blending_time += dt;
+
+				if (animation_comp->blending_time >= animation_comp->animation_queue.front().blend_for)
+				{
+					animation_comp->playing_time = animation_comp->blending_time;
+					animation_comp->animation = animation_comp->animation_queue.front().animation;
+					animation_comp->play_till_end = animation_comp->animation_queue.front().play_till_end;
+
+					animation_comp->blending_time = 0;
+
+					animation_comp->animation_queue.pop_front();
+
+
+					sAnimationInfo* animation_info = AnimationManager->GetAnimation(animation_comp->animation);
+
+					std::vector< glm::mat4x4 > offsets;
+					std::vector< glm::mat4x4 > globals;
+
+					BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+					return;
+				}
+
+
+				sAnimationInfo* animation_info = AnimationManager->GetAnimation(animation_comp->animation);
+
+				std::vector< glm::mat4x4 > offsets;
+				std::vector< glm::mat4x4 > globals;
+
+				BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+
+				sAnimationInfo* next_animation_info = AnimationManager->GetAnimation(animation_comp->animation_queue.front().animation);
+				if (!next_animation_info)
+				{
+					printf("%s animation not found.\n", animation_comp->animation_queue.front().animation.c_str());
+					return;
+				}
+
+				std::vector<glm::mat4x4> bone_transforms;
+				std::vector<glm::mat4x4> globals_next;
+				std::vector<glm::mat4x4> offsets_next;
+
+				BoneTransform(animation_comp->blending_time, next_animation_info, bone_transforms, globals_next, offsets_next);
+
+				float blend_amount = glm::smoothstep(0.0, animation_comp->animation_queue.front().blend_for, animation_comp->blending_time);
+
+				for (unsigned int BoneIndex = 0; BoneIndex < animation_comp->bone_transforms.size(); BoneIndex++)
+				{
+					animation_comp->bone_transforms[BoneIndex] = animation_comp->bone_transforms[BoneIndex] * (1.f - blend_amount)
+						+ bone_transforms[BoneIndex] * blend_amount;
+				}
+
+				return;
+			}
+
+			sAnimationInfo* animation_info = AnimationManager->GetAnimation(animation_comp->animation);
+			double relitive_time = fmod(animation_comp->playing_time, animation_info->animation_time);
+
+			if (relitive_time >= animation_info->animation_time - animation_comp->animation_queue.front().blend_for)
+			{
+				animation_comp->blending_time += dt;
+
+				if (animation_comp->blending_time >= animation_comp->animation_queue.front().blend_for)
+				{
+					animation_comp->playing_time = animation_comp->blending_time;
+					animation_comp->animation = animation_comp->animation_queue.front().animation;
+					animation_comp->play_till_end = animation_comp->animation_queue.front().play_till_end;
+
+					animation_comp->blending_time = 0;
+
+					animation_comp->animation_queue.pop_front();
+
+
+					animation_info = AnimationManager->GetAnimation(animation_comp->animation);
+
+					std::vector< glm::mat4x4 > offsets;
+					std::vector< glm::mat4x4 > globals;
+
+					BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+					return;
+				}
+
+				std::vector< glm::mat4x4 > offsets;
+				std::vector< glm::mat4x4 > globals;
+
+				BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+
+				sAnimationInfo* next_animation_info = AnimationManager->GetAnimation(animation_comp->animation_queue.front().animation);
+				if (!next_animation_info)
+				{
+					printf("%s animation not found.\n", animation_comp->animation_queue.front().animation.c_str());
+					return;
+				}
+
+				std::vector<glm::mat4x4> bone_transforms;
+				std::vector<glm::mat4x4> globals_next;
+				std::vector<glm::mat4x4> offsets_next;
+
+				BoneTransform(animation_comp->blending_time, next_animation_info, bone_transforms, globals_next, offsets_next);
+
+				float blend_amount = glm::smoothstep(0.0, animation_comp->animation_queue.front().blend_for, animation_comp->blending_time);
+
+				for (unsigned int BoneIndex = 0; BoneIndex < animation_comp->bone_transforms.size(); BoneIndex++)
+				{
+					animation_comp->bone_transforms[BoneIndex] = animation_comp->bone_transforms[BoneIndex] * (1.f - blend_amount)
+						+ bone_transforms[BoneIndex] * blend_amount;
+				}
+
+				return;
+
+			}
+
+
+			std::vector< glm::mat4x4 > offsets;
+			std::vector< glm::mat4x4 > globals;
+
+			BoneTransform(animation_comp->playing_time, animation_info, animation_comp->bone_transforms, globals, offsets);
+
+			return;
+		}
+
+		void cAnimator::CalculateTransforms(Entity::cEntity* entity)
+		{
+
+			if (entity->HasComponent(Component::ANIMATION_NEW_COMPONENT))
+			{
+				AnimationNEW(entity);
+			}
+			else
+			{
+				AnimationOLD(entity);
+			}
 
 		}
 

@@ -4,6 +4,7 @@
 #include "../Component/Camera.h"
 #include "../Component/Animation.h"
 #include <physics/interfaces/iLauncherComponent.h>
+#include "../Component/Animation_New.h"
 
 namespace Degen
 {
@@ -116,59 +117,98 @@ namespace Degen
 
 			}
 
-			//if (glfwGetKey(window, GLFW_KEY_LEFT))
-			//{
-			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Left Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+			if (glfwGetKey(window, GLFW_KEY_LEFT))
+			{
+				Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(EntityManager->GetEntity("Elf")->GetComponent(Component::ANIMATION_NEW_COMPONENT));
+				if (animation_comp->animation_queue.empty())
+				{
+					if (animation_comp->animation == "elf@strafe_right")
+					{
+						Component::animation_info idleinfo;
+						idleinfo.animation = "elf@idle";
+						idleinfo.play_till_end = false;
+						idleinfo.blend_for = 0.5f;
+						animation_comp->animation_queue.push_back(idleinfo);
+						idleinfo.animation = "elf@idle_left";
+						idleinfo.play_till_end = false;
+						idleinfo.blend_for = 0.5f;
+						animation_comp->animation_queue.push_back(idleinfo);
 
-			//	Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+					}
+					else if (animation_comp->animation == "elf@idle")
+					{
+						Component::animation_info idleinfo;
+						idleinfo.animation = "elf@idle_left";
+						idleinfo.play_till_end = false;
+						idleinfo.blend_for = 1.f;
+						animation_comp->animation_queue.push_back(idleinfo);
 
-			//	paddle->Hit(glm::vec3(0, 200, 0));
-			//}
-			//else
-			//{
-			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Left Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+					}
+					Component::animation_info info;
+					info.animation = "elf@strafe_left";
+					info.play_till_end = false;
+					info.blend_for = 1.f;
+					animation_comp->animation_queue.push_back(info);
+				}
+			}
+			else if (glfwGetKey(window, GLFW_KEY_RIGHT))
+			{
+				Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(EntityManager->GetEntity("Elf")->GetComponent(Component::ANIMATION_NEW_COMPONENT));
+				if (animation_comp->animation_queue.empty())
+				{
+					if (animation_comp->animation == "elf@strafe_left" || animation_comp->animation == "elf@idle_left")
+					{
+						Component::animation_info idleinfo;
+						idleinfo.animation = "elf@idle";
+						idleinfo.play_till_end = false;
+						idleinfo.blend_for = 1.0f;
+						animation_comp->animation_queue.push_back(idleinfo);
 
-			//	Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+					}
 
-			//	paddle->Hit(glm::vec3(0, -20, 0));
-			//	
-			//}
-			//
-			//if (glfwGetKey(window, GLFW_KEY_RIGHT))
-			//{
-			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Right Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+					Component::animation_info info;
+					info.animation = "elf@strafe_right";
+					info.play_till_end = false;
+					info.blend_for = 1.f;
+					animation_comp->animation_queue.push_back(info);
+				}
+			}
+			else if (glfwGetKey(window, GLFW_KEY_UP))
+			{
+				Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(EntityManager->GetEntity("Elf")->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 
-			//	Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
+				if (animation_comp->animation_queue.empty())
+				{
+					Component::animation_info info;
+					info.animation = "elf@walk";
+					info.play_till_end = true;
+					info.blend_for = 1.f;
+					animation_comp->animation_queue.push_back(info);
+				}
+			}
+			else
+			{
+				Component::Animation_New* animation_comp = dynamic_cast<Component::Animation_New*>(EntityManager->GetEntity("Elf")->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 
-			//	paddle->Hit(glm::vec3(0, -200, 0));
-			//}
-			//else
-			//{
-			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Right Paddle")->GetComponent(Component::PHYSICS_COMPONENT));
+				if (animation_comp->animation_queue.empty())
+				{
+					if (animation_comp->animation == "elf@strafe_left")
+					{
+						Component::animation_info idleinfo;
+						idleinfo.animation = "elf@idle_left";
+						idleinfo.play_till_end = false;
+						idleinfo.blend_for = 1.0f;
+						animation_comp->animation_queue.push_back(idleinfo);
+					}
+					
+					Component::animation_info idleinfo;
+					idleinfo.animation = "elf@idle";
+					idleinfo.play_till_end = false;
+					idleinfo.blend_for = 1.0f;
+					animation_comp->animation_queue.push_back(idleinfo);
 
-			//	Physics::iPaddleComponent* paddle = dynamic_cast<Physics::iPaddleComponent*>(phys->comp);
-
-			//	paddle->Hit(glm::vec3(0, 20, 0));
-
-			//}
-
-			//if (glfwGetKey(window, GLFW_KEY_SPACE))
-			//{
-			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Launcher")->GetComponent(Component::PHYSICS_COMPONENT));
-
-			//	Physics::iLauncherComponent* launcher = dynamic_cast<Physics::iLauncherComponent*>(phys->comp);
-
-			//	launcher->Pull(glm::vec3(0,0,-1));
-			//	
-			//}
-			//else
-			//{
-			//	Component::Physics* phys = dynamic_cast<Component::Physics*>(Entity::cEntityManager::GetEntity("Launcher")->GetComponent(Component::PHYSICS_COMPONENT));
-
-			//	Physics::iLauncherComponent* launcher = dynamic_cast<Physics::iLauncherComponent*>(phys->comp);
-
-			//	launcher->Release();
-			//}
+				}
+			}
 		}
 	}
 }

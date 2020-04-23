@@ -23,6 +23,8 @@ namespace Degen
 
 		private:
 			void CalculateTransforms(Entity::cEntity* entity);
+			void AnimationOLD(Entity::cEntity* entity);
+			void AnimationNEW(Entity::cEntity* entity);
 
 			std::vector<Entity::cEntity*> entities;
 			
