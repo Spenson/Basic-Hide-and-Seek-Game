@@ -25,8 +25,8 @@ namespace Degen
 
 			struct RenderString
 			{
-				RenderString(const std::string& text, const GLfloat& x, const GLfloat& y, const GLfloat& scale, const glm::vec3& colour)
-					: text(text), x(x), y(y), scale(scale), colour(colour)
+				RenderString(const std::string& text, const GLfloat& x, const GLfloat& y, const GLfloat& scale, const glm::vec3& colour, float time)
+					: time(time), text(text), x(x), y(y), scale(scale), colour(colour)
 				{
 				}
 				float time;

@@ -26,13 +26,8 @@ namespace Degen
 	extern cEngine* Engine;
 	extern sView* View; // view for rendering updated by camera
 
-
-	enum status
-	{
-		convo,
-		seeking,
-		resetting
-	};
+	extern bool start;
+	extern bool seeking;
 	
 	
 }

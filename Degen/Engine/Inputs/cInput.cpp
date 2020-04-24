@@ -46,7 +46,7 @@ namespace Degen
 		{
 			double x, y;
 			glfwGetCursorPos(window, &x, &y);
-			/*if ((glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) &&mouse_on_window)*/ 
+			/*if ((glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) &&mouse_on_window)*/
 			{
 				float diffX = x - mouse_position_x;
 				float diffY = y - mouse_position_y;
@@ -156,7 +156,7 @@ namespace Degen
 				speed += adjust;
 				motion_comp->velocity = dir * speed;
 
-				
+
 				if (animation_comp->animation_queue.empty())
 				{
 					if (animation_comp->animation == "elf@strafe_left" || animation_comp->animation == "elf@idle_left")
@@ -186,7 +186,7 @@ namespace Degen
 				look.y = 0.f;
 				look = glm::normalize(look);
 				rotation_comp->rotation = glm::quatLookAt(-look, glm::vec3(0, 1, 0));
-				
+
 				speed += adjust;
 				motion_comp->velocity = -dir * speed;
 
@@ -197,7 +197,7 @@ namespace Degen
 						Component::animation_info idleinfo;
 						idleinfo.animation = "elf@idle";
 						idleinfo.play_till_end = false;
-						idleinfo.blend_for =0.25f;
+						idleinfo.blend_for = 0.25f;
 						animation_comp->animation_queue.push_back(idleinfo);
 						idleinfo.animation = "elf@idle_left";
 						idleinfo.play_till_end = false;
@@ -253,6 +253,28 @@ namespace Degen
 
 				}
 			}
+			
+			/*Entity::cEntity* goblin = EntityManager->GetEntity("forest guard");
+			if (glfwGetKey(window, GLFW_KEY_SPACE))
+			{
+				Entity::cEntity* goblin = EntityManager->GetEntity("forest guard");
+				Component::Animation_New* other_ani = dynamic_cast<Component::Animation_New*>(goblin->GetComponent(Component::ANIMATION_NEW_COMPONENT));
+
+				if (other_ani->animation_queue.empty())
+				{
+					Component::animation_info ai;
+					ai.play_till_end = true;
+					ai.blend_for = 0.2f;
+					ai.animation = "forest_guard@standup";
+					other_ani->animation_queue.push_back(ai);
+					ai.animation = "forest_guard@clapping";
+					other_ani->animation_queue.push_back(ai);
+					
+					ai.play_till_end = false;
+					ai.animation = "forest_guard@idle_still";
+					other_ani->animation_queue.push_back(ai);
+				}
+			}*/
 		}
 	}
 }

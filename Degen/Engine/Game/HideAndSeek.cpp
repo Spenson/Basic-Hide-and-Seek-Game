@@ -6,9 +6,13 @@
 #include "../Component/MultiTransform.h"
 #include "../Component/Radius2D.h"
 #include "../Component/Position.h"
+#include "../Component/Animation_New.h"
 
 namespace Degen
 {
+
+	bool start = true;
+	bool seeking = false;
 	namespace Game
 	{
 		HideAndSeek::HideAndSeek()
@@ -114,6 +118,7 @@ namespace Degen
 			//	rend_comp->bump_map = "Leaf normal";
 			//rend_comp->tesselate = false;
 			//}
+
 			rend_comp = dynamic_cast<Component::Render*>(trees->AddComponent<Component::Render>());
 			{
 				rend_comp->mesh = "Tree bark";
@@ -154,22 +159,31 @@ namespace Degen
 			}
 
 
+			TextRenderer->AddText("[Esc] -> Exit", 25, 175, 1, glm::vec3(1), -1);
+			TextRenderer->AddText("[W][A][D] -> Move", 25, 125, 1, glm::vec3(1), -1);
+			//TextRenderer->AddText("[E] -> Interact", 25, 75, 1, glm::vec3(1), -1);
+
+
+			//TextRenderer->AddText("3...2...1... Ready or not here I come", WINDOW_WIDTH*0.4, 250, 1, glm::vec3(1), -1);
+			//TextRenderer->AddText("Go to the transparent statue and count and I will hide!", WINDOW_WIDTH*0.35, 250, 1, glm::vec3(1), -1);
+			//TextRenderer->AddText("YAY! You found me! Go back to the statue to go again.", WINDOW_WIDTH * 0.35, 250, 1, glm::vec3(1), -1);
+
 		}
 		void HideAndSeek::AddEntity(Entity::cEntity* entity)
 		{
-			if(entity->user_id == 3)
+			if (entity->user_id == 3)
 			{
 				player = entity;
 			}
-			else if(entity->user_id == 1)
+			else if (entity->user_id == 1)
 			{
 				statue = entity;
 			}
-			else if(entity->user_id == 2)
+			else if (entity->user_id == 2)
 			{
 				goblin = entity;
 			}
-			else if(entity->user_id == 1000)
+			else if (entity->user_id == 1000)
 			{
 				camera = entity;
 			}
@@ -179,8 +193,42 @@ namespace Degen
 			Component::Position* cam_pos = dynamic_cast<Component::Position*>(camera->GetComponent(Component::POSITION_COMPONENT));
 			Component::Position* player_pos = dynamic_cast<Component::Position*>(player->GetComponent(Component::POSITION_COMPONENT));
 			cam_pos->position = player_pos->position;
-			cam_pos->position.y  = 5.5f;
+			cam_pos->position.y = 5.5f;
 
+
+			Component::Position* goblin_pos = dynamic_cast<Component::Position*>(goblin->GetComponent(Component::POSITION_COMPONENT));
+			if (glm::distance(goblin_pos->position, player_pos->position) < 10.f)
+			{
+				glm::vec3 look = View->target - View->position;
+				look.y = 0.f;
+				look = glm::normalize(look);
+
+				glm::vec3 to_goblin = goblin_pos->position - View->position;
+				to_goblin.y = 0.f;
+				to_goblin = glm::normalize(to_goblin);
+
+				if (glm::dot(look, to_goblin) > 0.3)
+					TextRenderer->AddText("[E] -> Interact", 25, 75, 1, glm::vec3(1), 0.f);
+
+			}
+			if (!seeking)
+			{
+				Component::Position* goblin_pos = dynamic_cast<Component::Position*>(goblin->GetComponent(Component::POSITION_COMPONENT));
+				if (glm::distance(goblin_pos->position, player_pos->position) < 10.f)
+				{
+					glm::vec3 look = View->target - View->position;
+					look.y = 0.f;
+					look = glm::normalize(look);
+
+					glm::vec3 to_goblin = goblin_pos->position - View->position;
+					to_goblin.y = 0.f;
+					to_goblin = glm::normalize(to_goblin);
+
+					if (glm::dot(look, to_goblin) > 0.3)
+						TextRenderer->AddText("[E] -> Interact", 25, 75, 1, glm::vec3(1), 0.f);
+
+				}
+			}
 		}
 	}
 }

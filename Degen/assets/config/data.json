@@ -209,8 +209,20 @@
   ],
   "Animations": [
     {
-      "name": "forest_guard@idle",
+      "name": "forest_guard@idle_crouch",
       "file": "forest_guard@idle_crouch.fbx",
+      "index": 0,
+      "model": "forest_guard"
+    },
+    {
+      "name": "forest_guard@clapping",
+      "file": "forest_guard@clapping.fbx",
+      "index": 0,
+      "model": "forest_guard"
+    },
+    {
+      "name": "forest_guard@standup",
+      "file": "forest_guard@standup.fbx",
       "index": 0,
       "model": "forest_guard"
     },
@@ -681,12 +693,12 @@
 
 
     {
-      "name": "forest guard 1",
+      "name": "forest guard",
       "id": 2,
       "components": [
         {
           "component": "position",
-          "position": [ -3.0, -0.001, 10.0 ]
+          "position": [ 0.0, -0.001, 25.0 ]
         },
         {
           "component": "rotation",
@@ -727,9 +739,9 @@
           "specular_map": "forest guard specular"
         },
         {
-          "component": "animation",
-          "default_animation": "forest_guard@idle",
-          "default_blend_time": 0.3
+          "component": "animation_new",
+          "animation": "forest_guard@idle_still",
+          "play_till_end": false
         },
         {
           "component": "radius_2d",
