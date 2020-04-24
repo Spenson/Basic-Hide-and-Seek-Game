@@ -6,17 +6,15 @@ namespace Degen
 {
 	namespace Component
 	{
-		constexpr unsigned int BASIC_MOTION_COMPONENT = 8;
+		constexpr unsigned int AABB_2D_COMPONENT = 14;
 
-		class BasicMotion : public iComponent
+		class AABB2D : public iComponent
 		{
 		public:
-			BasicMotion();
+			AABB2D();
 			bool Deserialize(Json::Value& json) override;
 
-			glm::vec3 velocity;
-			float radius;
+			glm::vec2 half_extents;
 		};
-
 	}
 }

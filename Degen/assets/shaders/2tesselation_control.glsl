@@ -28,7 +28,7 @@ struct TessContOut
 };
 out TessContOut tcOut[];
 
-
+uniform bool tesselate;
 uniform vec4 eyeLocation;
 
 
@@ -82,7 +82,7 @@ void main(void)
 	vert_eye_vec = normalize(vert_eye_vec);
 	float eye_normal_dot = dot(vert_eye_vec, face_norm);
 
-	if (eye_normal_dot < -0.3)
+	if (eye_normal_dot < -0.3 || !tesselate)
 	{
 		// don't tessellate triangles facing away
 		gl_TessLevelOuter[0] = 1;

@@ -147,7 +147,7 @@ namespace Degen
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matView"), 1, GL_FALSE, glm::value_ptr(view));
 			glUniformMatrix4fv(mShaderProgram->GetUniformLocationID("matProj"), 1, GL_FALSE, glm::value_ptr(perspective));
 
-			std::vector<Entity::cEntity*> alpha_objects;
+			//std::vector<Entity::cEntity*> alpha_objects;
 
 			for (auto* entity : mRenderEntities)
 			{
@@ -169,17 +169,17 @@ namespace Degen
 				}
 				
 				glm::mat4 tranform = GetTransform(entity);
-				bool in_alpha = false;
+				//bool in_alpha = false;
 				for (unsigned i = 0; i < rends.size(); i++)
 				{
 					Component::Render* rend = dynamic_cast<Component::Render*>(rends[i]);
 
-					if (rend->diffuse_colour.a < 1.f && !in_alpha)
+					/*if (rend->diffuse_colour.a < 1.f && !in_alpha)
 					{
 						alpha_objects.push_back(entity);
 						in_alpha = true;
 						continue;
-					}
+					}*/
 
 					
 					if (animation)
@@ -202,7 +202,7 @@ namespace Degen
 			mTransparentFBO.clearBuffers(true, false);
 			glUniform1i(mShaderProgram->GetUniformLocationID("passNumber"), 1);
 			glClear(GL_COLOR_BUFFER_BIT);
-			for (auto* entity : alpha_objects)
+			for (auto* entity : mRenderEntities)
 			{
 				std::vector<Component::iComponent*> rends = entity->GetComponents(Component::RENDER_COMPONENT);
 
@@ -357,8 +357,9 @@ namespace Degen
 			glUniform4f(shader_program->GetUniformLocationID("modifiers"),
 						rend_comp->is_cubemap_textures ? (float)GL_TRUE : (float)GL_FALSE,
 						ignore_lighting,
-						0.f,
+						rend_comp->alpha_mode,
 						0.f);
+			glUniform1f(shader_program->GetUniformLocationID("tesselate"), rend_comp->tesselate);
 
 			glUniform1f(shader_program->GetUniformLocationID("isSkinnedMesh"), (float)GL_FALSE);
 
@@ -482,10 +483,11 @@ namespace Degen
 			glUniform4f(shader_program->GetUniformLocationID("modifiers"),
 						rend_comp->is_cubemap_textures ? (float)GL_TRUE : (float)GL_FALSE,
 						ignore_lighting,
-						0.f,
+						rend_comp->alpha_mode,
 						0.f);
 
 			glUniform1f(shader_program->GetUniformLocationID("isSkinnedMesh"), (float)GL_FALSE);
+			glUniform1f(shader_program->GetUniformLocationID("tesselate"), rend_comp->tesselate);
 
 
 			
@@ -625,8 +627,9 @@ namespace Degen
 			glUniform4f(shader_program->GetUniformLocationID("modifiers"),
 						rend_comp->is_cubemap_textures ? (float)GL_TRUE : (float)GL_FALSE,
 						ignore_lighting,
-						0.f,
+						rend_comp->alpha_mode,
 						0.f);
+			glUniform1f(shader_program->GetUniformLocationID("tesselate"), rend_comp->tesselate);
 
 			if (!animation->bone_transforms.empty())
 			{
@@ -762,9 +765,10 @@ namespace Degen
 			glUniform4f(shader_program->GetUniformLocationID("modifiers"),
 						rend_comp->is_cubemap_textures ? (float)GL_TRUE : (float)GL_FALSE,
 						ignore_lighting,
-						0.f,
+						rend_comp->alpha_mode,
 						0.f);
 
+			glUniform1f(shader_program->GetUniformLocationID("tesselate"), rend_comp->tesselate);
 			if (!animation->bone_transforms.empty())
 			{
 				glUniform1f(shader_program->GetUniformLocationID("isSkinnedMesh"), (float)GL_TRUE);
@@ -892,6 +896,7 @@ namespace Degen
 			glDisable(GL_DEPTH_TEST);
 			glDepthMask(GL_FALSE);
 			glUniform1f(mShaderProgram->GetUniformLocationID("isSkinnedMesh"), (float)GL_FALSE);
+			glUniform1f(mShaderProgram->GetUniformLocationID("tesselate"), (float)GL_FALSE);
 
 			VAOAndModel::sModelDrawInfo drawInfo;
 			//if (pTheVAOManager->FindDrawInfoByModelName("bunny", drawInfo))

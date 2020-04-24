@@ -62,6 +62,17 @@ namespace Degen
 			return true;
 		}
 		
+		// set a vec2
+		inline bool Set(const Json::Value& jsonVal, glm::vec2& val)
+		{
+			if (!jsonVal[0].isNumeric() 
+				|| !jsonVal[1].isNumeric()) return false;
+			
+			val.x = jsonVal[0].asFloat();
+			val.y = jsonVal[1].asFloat();
+			return true;
+		}
+		
 		// set a vec3
 		inline bool Set(const Json::Value& jsonVal, glm::vec3& val)
 		{

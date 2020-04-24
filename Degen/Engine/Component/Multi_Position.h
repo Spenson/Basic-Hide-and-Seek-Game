@@ -6,15 +6,15 @@ namespace Degen
 {
 	namespace Component
 	{
-		constexpr unsigned int MULTI_TRANSFORM_COMPONENT = 11;
+		constexpr unsigned int MULTI_POSITION_COMPONENT = 12;
 
-		class MultiTransform : public iComponent
+		class MultiPosition : public iComponent
 		{
 		public:
-			MultiTransform();
+			MultiPosition();
 			bool Deserialize(Json::Value& json) override;
 
-			std::vector<glm::mat4> transforms;
+			std::vector<glm::vec3> positions;
 		};
 	}
 }

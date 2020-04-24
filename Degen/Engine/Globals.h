@@ -25,5 +25,14 @@ namespace Degen
 	extern Render::cTextRenderer* TextRenderer;
 	extern cEngine* Engine;
 	extern sView* View; // view for rendering updated by camera
+
+
+	enum status
+	{
+		convo,
+		seeking,
+		resetting
+	};
+	
 	
 }

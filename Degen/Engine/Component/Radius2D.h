@@ -6,15 +6,15 @@ namespace Degen
 {
 	namespace Component
 	{
-		constexpr unsigned int MULTI_TRANSFORM_COMPONENT = 11;
+		constexpr unsigned int RADIUS_2D_COMPONENT = 13;
 
-		class MultiTransform : public iComponent
+		class Radius2D : public iComponent
 		{
 		public:
-			MultiTransform();
+			Radius2D();
 			bool Deserialize(Json::Value& json) override;
 
-			std::vector<glm::mat4> transforms;
+			float radius;
 		};
 	}
 }

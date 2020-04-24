@@ -29,6 +29,7 @@ namespace Degen
 					: text(text), x(x), y(y), scale(scale), colour(colour)
 				{
 				}
+				float time;
 				std::string text;
 				GLfloat x;
 				GLfloat y;
@@ -38,7 +39,7 @@ namespace Degen
 
 		public:
 			cTextRenderer(Shaders::cShaderManager::cShaderProgram* shader);
-			void AddText(const std::string& text, const GLfloat& x, const GLfloat& y, const GLfloat& scale, const glm::vec3& colour);
+			void AddText(const std::string& text, const GLfloat& x, const GLfloat& y, const GLfloat& scale, const glm::vec3& colour, float time = 0.0);
 			void Update(double dt);
 			~cTextRenderer();
 		private:

@@ -7,11 +7,13 @@
 #include "Component/Rotation.h"
 #include "Component/Camera.h"
 #include "Component/Light.h"
-#include "Component/BasicMotion.h"
+#include "Component/Motion.h"
 #include "Component/Gatherer.h"
 #include "Component/Animation.h"
 #include "Component/Animation_New.h"
 #include "Component/MultiTransform.h"
+#include "Component/Radius2D.h"
+#include "Component/AABB2D.h"
 
 namespace Degen
 {
@@ -172,9 +174,9 @@ namespace Degen
 							Component::iComponent* comp = ent->AddComponent<Component::Light>();
 							comp->Deserialize(components[i]);
 						}
-						else if (components[i]["component"] == "basic_motion")
+						else if (components[i]["component"] == "motion")
 						{
-							Component::iComponent* comp = ent->AddComponent<Component::BasicMotion>();
+							Component::iComponent* comp = ent->AddComponent<Component::Motion>();
 							comp->Deserialize(components[i]);
 						}
 						else if (components[i]["component"] == "gatherer")
@@ -195,6 +197,16 @@ namespace Degen
 						else if (components[i]["component"] == "multi_transform")
 						{
 							Component::iComponent* comp = ent->AddComponent<Component::MultiTransform>();
+							comp->Deserialize(components[i]);
+						}
+						else if (components[i]["component"] == "radius_2d")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::Radius2D>();
+							comp->Deserialize(components[i]);
+						}
+						else if (components[i]["component"] == "aabb_2d")
+						{
+							Component::iComponent* comp = ent->AddComponent<Component::AABB2D>();
 							comp->Deserialize(components[i]);
 						}
 						else

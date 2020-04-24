@@ -1,27 +1,33 @@
 {
-	"shader": {
-		"name": "Uber",
-		"vert": "1vertex.glsl",
-		"tess_cont": "2tesselation_control.glsl",
-		"tess_eval": "2tesselation_evaluation.glsl",
-		"geo": "3geometry.glsl",
-		"frag": "4fragment.glsl"
-	},
-	//"shader": {
-	//	"name": "Uber",
-	//	"vert": "TESTING VERT.glsl",
-	//	"frag": "TESTING FRAG.glsl"
-	//},
-	"text_shader": {
-		"name": "text",
-		"vert": "text_1vertex.glsl",
-		"frag": "text_4fragment.glsl"
-	},
+  "shader": {
+    "name": "Uber",
+    "vert": "1vertex.glsl",
+    "tess_cont": "2tesselation_control.glsl",
+    "tess_eval": "2tesselation_evaluation.glsl",
+    "geo": "3geometry.glsl",
+    "frag": "4fragment.glsl"
+  },
+  //"shader": {
+  //	"name": "Uber",
+  //	"vert": "TESTING VERT.glsl",
+  //	"frag": "TESTING FRAG.glsl"
+  //},
+  "text_shader": {
+    "name": "text",
+    "vert": "text_1vertex.glsl",
+    "frag": "text_4fragment.glsl"
+  },
 
-	"width": 1280,
-	"height": 720,
+  "width": 1280,
+  "height": 720,
 
-	"gravity": [ 0, -5.0, -10.0 ],
+  "gravity": [ 0, -5.0, -10.0 ],
 
-	"ai_map": "assets/resourceMap2.bmp"
+  "ai_map": "assets/resourceMap2.bmp",
+
+  "world_bounds": {
+    "max": [200,10,200],
+    "min": [-200,1,-200]
+  }
+
 }

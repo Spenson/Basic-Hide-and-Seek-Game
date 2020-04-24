@@ -18,6 +18,7 @@
 #include "Texture/cTextureManager.h"
 #include "Animation/cAnimator.h"
 #include "Render/cTextRenderer.h"
+#include "Game/HideAndSeek.h"
 
 
 namespace Degen
@@ -251,8 +252,14 @@ namespace Degen
 
 		mCamera = new Camera::cCamera();
 		mInput = new Input::cInput(mWindow);
+		
 		mBasicMotion = new BasicMotion::cBasicMotion();
+		JsonHelp::Set(jsonRoot["world_bounds"]["max"], mBasicMotion->max);
+		JsonHelp::Set(jsonRoot["world_bounds"]["min"], mBasicMotion->min);
+		
 		mAnimator = new Animation::cAnimator();
+
+		mHideAndSeek = new Game::HideAndSeek();
 		
 		return true;
 	}
@@ -330,6 +337,7 @@ namespace Degen
 			previous_time = time;
 
 			mInput->Update(delta_time);
+			mHideAndSeek->Update(delta_time);
 			mBasicMotion->Update(delta_time);
 			mCamera->Update(delta_time);
 			mAnimator->Update(delta_time);
@@ -346,6 +354,7 @@ namespace Degen
 	{
 		for (auto* entity : Entity::cEntityManager::entities)
 		{
+			mHideAndSeek->AddEntity(entity);
 			mRenderer->AddEntity(entity);
 			mCamera->AddEntity(entity);
 			mBasicMotion->AddEntity(entity);

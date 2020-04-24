@@ -30,7 +30,7 @@ namespace Degen
 	}
 	namespace Game
 	{
-		
+		class HideAndSeek;
 	}
 
 	
@@ -51,9 +51,9 @@ namespace Degen
 		Render::cRenderer* mRenderer;
 		Camera::cCamera* mCamera;
 		Input::cInput* mInput;
-		//AI::cIntelligence* mIntelligence;
 		BasicMotion::cBasicMotion* mBasicMotion;
 		Animation::cAnimator* mAnimator;
+		Game::HideAndSeek* mHideAndSeek;
 		
 
 		// Needed for loading

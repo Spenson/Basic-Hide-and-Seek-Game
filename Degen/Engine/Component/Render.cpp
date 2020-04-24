@@ -12,6 +12,7 @@ namespace Degen
 			texture2(),
 			texture2_amount(0.f),
 			is_cubemap_textures(false),
+			alpha_mode(0),
 			diffuse_colour(1.f),
 			diffuse_amount(1.f),
 			specular_colour(1.f, 1.f, 1.f, 1000.f),
@@ -22,7 +23,8 @@ namespace Degen
 			bump_map(),
 			use_bump_map(false),
 			specular_map(),
-			use_specular_map(false)
+			use_specular_map(false),
+		tesselate(true)
 		{
 		}
 
@@ -31,6 +33,7 @@ namespace Degen
 			JsonHelp::Set(json["mesh"], mesh);
 			JsonHelp::Set(json["texture1"], texture1);
 			JsonHelp::Set(json["texture1_amount"], texture1_amount);
+			JsonHelp::Set(json["alpha_mode"], alpha_mode);
 			JsonHelp::Set(json["texture2"], texture2);
 			JsonHelp::Set(json["texture2_amount"], texture2_amount);
 			JsonHelp::Set(json["is_cubemap_texture"], is_cubemap_textures);
@@ -48,6 +51,9 @@ namespace Degen
 			
 			JsonHelp::Set(json["specular_map"], specular_map);
 			JsonHelp::Set(json["use_specular_map"], use_specular_map);
+
+			
+			JsonHelp::Set(json["tesselate"], tesselate);
 
 
 

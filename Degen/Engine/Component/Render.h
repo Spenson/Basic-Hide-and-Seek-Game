@@ -21,6 +21,10 @@ namespace Degen
 			std::string texture2;
 			float texture2_amount;
 			bool is_cubemap_textures;
+
+			int alpha_mode; //0 = diffuse, 1 = texture 1 alpha, 2 alpha texture
+
+
 			
 			glm::vec4 diffuse_colour;
 			float diffuse_amount;
@@ -36,6 +40,8 @@ namespace Degen
 			bool use_bump_map;
 			std::string specular_map;
 			bool use_specular_map;
+
+			bool tesselate;
 		};
 	}
 }
