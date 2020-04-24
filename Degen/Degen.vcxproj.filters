@@ -24,15 +24,6 @@
     <ClCompile Include="..\dependencies\src\jsoncpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\AI\BMP Loader\BMPImage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\AI\BMP Loader\ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\AI\cIntelligence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Camera\cCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,13 +108,7 @@
     <ClCompile Include="Engine\Load.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component\Gatherer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\BasicMotion\cBasicMotion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\AI\Graph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Texture\cTextureManager.cpp">
@@ -165,17 +150,11 @@
     <ClCompile Include="Engine\Game\HideAndSeek.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Component\Firefly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\AI\BMP Loader\BMPImage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\AI\BMP Loader\ResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\AI\cIntelligence.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Camera\cCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -281,16 +260,10 @@
     <ClInclude Include="Engine\sView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component\Gatherer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\BasicMotion\cBasicMotion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\ComponentCheatSheat.txt">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\AI\Graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Texture\cTextureManager.h">
@@ -336,6 +309,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Game\HideAndSeek.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Firefly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

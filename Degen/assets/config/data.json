@@ -1,16 +1,6 @@
 {
   "Cubemaps": [
     {
-      "name": "spacey-space",
-      "+x": "drakeq_lf.png",
-      "-x": "drakeq_rt.png",
-      "+y": "drakeq_up.png",
-      "-y": "drakeq_dn.png",
-      "+z": "drakeq_ft.png",
-      "-z": "drakeq_bk.png",
-      "format": "png"
-    },
-    {
       "name": "cloudy-cloud",
       "-z": "browncloud_lf.png",
       "+z": "browncloud_rt.png",
@@ -22,11 +12,6 @@
     }
   ],
   "Textures": [
-    {
-      "name": "grid",
-      "file": "gridtexture.png",
-      "format": "png"
-    },
     {
       "name": "Wall Dark",
       "file": "Texture_01_Dark.png",
@@ -401,9 +386,12 @@
       "id": 1,
       "components": [
         {
-          "component": "transform",
-          "pos": [ 0.0, 5.0, 0.0 ],
-          "rot": [ -90.0, 0.0, 0.0 ]
+          "component": "position",
+          "position": [ 0.0, 5.0, 0.0 ]
+        },
+        {
+          "component": "rotation",
+          "rotation": [ -90.0, 0.0, 0.0 ]
         },
         {
           "component": "render",
@@ -709,9 +697,9 @@
           "mesh": "forest_guard",
           "texture1": "forest guard diffuse",
           "texture1_amount": 1.0,
-          "diffuse": [ 1.0, 0.2, 0.2, 1.0 ],
+          "diffuse": [ 0.5, 0.2, 0.2, 1.0 ],
           "diffuse_amount": 0.0,
-          "specular": [ 1.0, 0.1, 0.1, 1000.0 ],
+          "specular": [ 0.5, 0.1, 0.1, 1000.0 ],
           "scale": [ 0.075, 0.075, 0.075 ],
           "ignore_lighting": false,
           "is_wireframe": false,
@@ -891,7 +879,7 @@
     //  "components": [
     //    {
     //      "component": "transform",
-    //      "pos": [ -200.0, 100.0, 400.0 ],
+    //      "pos": [ 0.0, 5.0, 10.0 ],
     //      "rot": [ 0.0, 0.0, 0.0 ]
     //    },
     //    {
@@ -899,12 +887,13 @@
     //      "on": true,
     //      "diffuse": [ 1.0, 1.0, 1.0, 1.0 ],
     //      "specular": [ 1.0, 1.0, 1.0, 1.0 ],
-    //      "const_atten": 0.0000001,
-    //      "linear_atten": 0.0018,
-    //      "quad_atten": 0.000001,
+    //      "const_atten": 0.00001,
+    //      "linear_atten": 0.18,
+    //      "quad_atten": 0.001,
+    //      "cutoff": 7.5,
     //      "direction": [ -1.0, -0.5, -0.5 ],
-    //      "position": [ 0.0, 50.0, 0.0 ],
-    //      "type": 2,
+    //      "position": [ 0.0, 0.0, 0.0 ],
+    //      "type": 0,
     //      "inner_angle": 5.0,
     //      "outer_angle": 10.0
     //    }

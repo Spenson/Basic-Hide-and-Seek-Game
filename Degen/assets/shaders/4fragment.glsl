@@ -204,7 +204,7 @@ vec4 calcualteLightContrib(vec3 vertexMaterialColour, vec3 vertexNormal, vec3 ve
 		if (distanceToLight > theLights[index].atten.w)
 		{
 			// Make light contribution black
-			finalObjectColour.rgb += vec3(1.0f, 0.0f, 0.0f);
+			finalObjectColour.rgb += vec3(0.0f, 0.0f, 0.0f);
 			// All done with this light
 			continue;
 		}

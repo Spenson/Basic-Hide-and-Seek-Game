@@ -26,8 +26,8 @@
   "ai_map": "assets/resourceMap2.bmp",
 
   "world_bounds": {
-    "max": [200,10,200],
-    "min": [-200,1,-200]
+    "max": [200,12,200],
+    "min": [-200,2,-200]
   }
 
 }

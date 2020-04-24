@@ -46,6 +46,8 @@ namespace Degen
 		void Go();
 
 		void UpdateEntityLists();
+		
+		Game::HideAndSeek* mHideAndSeek;
 	private:
 		GLFWwindow* mWindow;
 		Render::cRenderer* mRenderer;
@@ -53,7 +55,6 @@ namespace Degen
 		Input::cInput* mInput;
 		BasicMotion::cBasicMotion* mBasicMotion;
 		Animation::cAnimator* mAnimator;
-		Game::HideAndSeek* mHideAndSeek;
 		
 
 		// Needed for loading

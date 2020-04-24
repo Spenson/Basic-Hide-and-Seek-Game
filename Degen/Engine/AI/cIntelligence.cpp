@@ -5,7 +5,7 @@
 #include "../Component/Position.h"
 #include "../Component/Render.h"
 #include "../Component/Motion.h"
-#include "../Component/Gatherer.h"
+#include "../Component/Firefly.h"
 #include "Graph.h"
 
 ResourceManager gResourceManager;
@@ -258,28 +258,28 @@ namespace Degen
 		{
 			for (auto* entity : entities)
 			{
-				Component::Gatherer* gather = dynamic_cast<Component::Gatherer*>(entity->GetComponent(Component::GATHERER_COMPONENT));
+				Component::Firefly* gather = dynamic_cast<Component::Firefly*>(entity->GetComponent(Component::FIREFLY_COMPONENT));
 				switch (gather->current_state)
 				{
-					case(Component::Gatherer::search):
+					case(Component::Firefly::search):
 						SearchUpdate(dt, entity, gather);
 						continue;
-					case(Component::Gatherer::wait):
+					case(Component::Firefly::wait):
 						WaitUpdate(dt, entity, gather);
 						continue;
-					case(Component::Gatherer::return_):
+					case(Component::Firefly::return_):
 						ReturnUpdate(dt, entity, gather);
 						continue;
-					case(Component::Gatherer::idle):
+					case(Component::Firefly::idle):
 						continue;
 					default:
 						printf("Unknown Gather State. Setting to Idle\n");
-						gather->current_state = Component::Gatherer::idle;
+						gather->current_state = Component::Firefly::idle;
 						continue;
 				}
 			}
 		}
-		void cIntelligence::SearchUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather)
+		void cIntelligence::SearchUpdate(double dt, Entity::cEntity* entity, Component::Firefly* gather)
 		{
 			if (gather->path.empty())
 			{
@@ -287,7 +287,7 @@ namespace Degen
 
 				if(!target)
 				{
-					gather->current_state = Component::Gatherer::idle;
+					gather->current_state = Component::Firefly::idle;
 					return;
 				}
 				
@@ -312,7 +312,7 @@ namespace Degen
 				{
 					gather->node = gather->path.back();
 					gather->path.pop_back();
-					gather->current_state = Component::Gatherer::wait;
+					gather->current_state = Component::Firefly::wait;
 					gather->time = 7.f;
 					vel->velocity = glm::vec3(0.f);
 					return;
@@ -325,7 +325,7 @@ namespace Degen
 			}
 
 		}
-		void cIntelligence::WaitUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather)
+		void cIntelligence::WaitUpdate(double dt, Entity::cEntity* entity, Component::Firefly* gather)
 		{
 			gather->time -= dt;
 			if(gather->time <= 0.f)
@@ -336,20 +336,20 @@ namespace Degen
 						->diffuse_colour = glm::vec4(1.f);
 					gather->node->type = Node::open;
 
-					gather->current_state = Component::Gatherer::return_;
+					gather->current_state = Component::Firefly::return_;
 					dynamic_cast<Component::Render*>(entity->GetComponent(Component::RENDER_COMPONENT))
 						->diffuse_colour = glm::vec4(1.f, 0.f, 0.f, 1.f);
 				}
 				if (gather->node->type == Node::home)
 				{
-					gather->current_state = Component::Gatherer::search;
+					gather->current_state = Component::Firefly::search;
 					dynamic_cast<Component::Render*>(entity->GetComponent(Component::RENDER_COMPONENT))
 						->diffuse_colour = glm::vec4(1.f, 0.8f, 0.2f, 1.0f);
 				}
 			}
 
 		}
-		void cIntelligence::ReturnUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather)
+		void cIntelligence::ReturnUpdate(double dt, Entity::cEntity* entity, Component::Firefly* gather)
 		{
 			if (gather->path.empty())
 			{
@@ -376,7 +376,7 @@ namespace Degen
 				{
 					gather->node = gather->path.back();
 					gather->path.pop_back();
-					gather->current_state = Component::Gatherer::wait;
+					gather->current_state = Component::Firefly::wait;
 					gather->time = 2.f;
 					vel->velocity = glm::vec3(0.f);
 					return;
@@ -389,15 +389,15 @@ namespace Degen
 		}
 		void cIntelligence::AddEntity(Entity::cEntity* entity)
 		{
-			if (entity->HasComponent(Component::GATHERER_COMPONENT) &&
+			if (entity->HasComponent(Component::FIREFLY_COMPONENT) &&
 				entity->HasComponent(Component::MOTION_COMPONENT) &&
 				entity->HasComponent(Component::POSITION_COMPONENT))
 			{
 				if (std::find(entities.begin(), entities.end(), entity) == entities.end())
 				{
-					Component::Gatherer* g = dynamic_cast<Component::Gatherer*>(entity->GetComponent(Component::GATHERER_COMPONENT));
+					Component::Firefly* g = dynamic_cast<Component::Firefly*>(entity->GetComponent(Component::FIREFLY_COMPONENT));
 					g->node = start_node;
-					g->current_state = Component::Gatherer::search;
+					g->current_state = Component::Firefly::search;
 					g->time = 0.f;
 					g->path.clear();
 					Component::Position* p = dynamic_cast<Component::Position*>(entity->GetComponent(Component::POSITION_COMPONENT));

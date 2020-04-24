@@ -15,7 +15,7 @@ namespace Degen
 			glm::vec3 rot;
 			JsonHelp::Set(json["rotation"], rot);
 
-			rotation = glm::quat(rot);
+			rotation = glm::quat(glm::radians(rot));
 
 			return true;
 		}

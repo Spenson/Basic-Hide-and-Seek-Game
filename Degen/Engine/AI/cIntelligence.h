@@ -6,7 +6,7 @@
 
 namespace Degen {
 	namespace Component {
-		class Gatherer;
+		class Firefly;
 	}
 }
 
@@ -19,9 +19,9 @@ namespace Degen
 		public:
 			cIntelligence(std::string map_file);
 			void Update(double dt);
-			void WaitUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather);
-			void ReturnUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather);
-			void SearchUpdate(double dt, Entity::cEntity* entity, Component::Gatherer* gather);
+			void WaitUpdate(double dt, Entity::cEntity* entity, Component::Firefly* gather);
+			void ReturnUpdate(double dt, Entity::cEntity* entity, Component::Firefly* gather);
+			void SearchUpdate(double dt, Entity::cEntity* entity, Component::Firefly* gather);
 			void AddEntity(Entity::cEntity* entity);
 
 			std::vector<Entity::cEntity*> entities;

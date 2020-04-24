@@ -14,12 +14,18 @@ namespace Degen
 			Entity::cEntity* goblin;
 			Entity::cEntity* statue;
 			Entity::cEntity* camera;
+
+			std::vector<Entity::cEntity*> fireflies;
+			Entity::cEntity* tree_collisions;
 			
 		public:
 			HideAndSeek();
 
 			void AddEntity(Entity::cEntity* entity);
 			void Update(double dt);
+
+			void InteractFriend();
+			void InteractStatue();
 		};
 	}
 }

@@ -2,11 +2,10 @@
 #include "../Globals.h"
 #include "../Component/Position.h"
 #include "../Component/Camera.h"
-#include "../Component/Animation.h"
-#include <physics/interfaces/iLauncherComponent.h>
 #include "../Component/Animation_New.h"
 #include "../Component/Motion.h"
 #include "../Component/Rotation.h"
+#include "../Game/HideAndSeek.h"
 
 namespace Degen
 {
@@ -15,6 +14,8 @@ namespace Degen
 		bool cInput::mouse_on_window = false;
 		double cInput::mouse_scroll_x_offset = 0;
 		double cInput::mouse_scroll_y_offset = 0;
+
+		float wait = 0;
 
 		void cursor_enter_callback(GLFWwindow* window, int entered)
 		{
@@ -253,28 +254,59 @@ namespace Degen
 
 				}
 			}
-			
-			/*Entity::cEntity* goblin = EntityManager->GetEntity("forest guard");
-			if (glfwGetKey(window, GLFW_KEY_SPACE))
-			{
-				Entity::cEntity* goblin = EntityManager->GetEntity("forest guard");
-				Component::Animation_New* other_ani = dynamic_cast<Component::Animation_New*>(goblin->GetComponent(Component::ANIMATION_NEW_COMPONENT));
 
-				if (other_ani->animation_queue.empty())
+			if (glfwGetKey(window, GLFW_KEY_E) && wait <= 0.f)
+			{
+				wait = 1.f;
+				
+				Component::Position* player_pos = dynamic_cast<Component::Position*>(player->GetComponent(Component::POSITION_COMPONENT));
+				Entity::cEntity* goblin = EntityManager->GetEntity("forest guard");
+
+				
+				Component::Position* goblin_pos = dynamic_cast<Component::Position*>(goblin->GetComponent(Component::POSITION_COMPONENT));
+				if (glm::distance(goblin_pos->position, player_pos->position) < 10.f)
 				{
-					Component::animation_info ai;
-					ai.play_till_end = true;
-					ai.blend_for = 0.2f;
-					ai.animation = "forest_guard@standup";
-					other_ani->animation_queue.push_back(ai);
-					ai.animation = "forest_guard@clapping";
-					other_ani->animation_queue.push_back(ai);
-					
-					ai.play_till_end = false;
-					ai.animation = "forest_guard@idle_still";
-					other_ani->animation_queue.push_back(ai);
+					glm::vec3 look = View->target - View->position;
+					look.y = 0.f;
+					look = glm::normalize(look);
+
+					glm::vec3 to_goblin = goblin_pos->position - View->position;
+					to_goblin.y = 0.f;
+					to_goblin = glm::normalize(to_goblin);
+
+					if (glm::dot(look, to_goblin) > 0.3)
+					{
+						Engine->mHideAndSeek->InteractFriend();
+						return;
+					}
 				}
-			}*/
+				
+				if (!seeking)
+				{
+					Entity::cEntity* statue = EntityManager->GetEntity("Statue");
+
+					Component::Position* statue_pos = dynamic_cast<Component::Position*>(statue->GetComponent(Component::POSITION_COMPONENT));
+					if (glm::distance(statue_pos->position, player_pos->position) < 15.f)
+					{
+						glm::vec3 look = View->target - View->position;
+						look.y = 0.f;
+						look = glm::normalize(look);
+
+						glm::vec3 to_statue = statue_pos->position - View->position;
+						to_statue.y = 0.f;
+						to_statue = glm::normalize(to_statue);
+
+						if (glm::dot(look, to_statue) > 0.3) 
+						{
+							Engine->mHideAndSeek->InteractStatue();
+							return;
+						}
+					}
+				}
+
+
+			}
+			wait -= dt;
 		}
 	}
 }

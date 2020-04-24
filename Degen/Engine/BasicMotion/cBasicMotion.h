@@ -19,6 +19,7 @@ namespace Degen
 			void AddEntity(Entity::cEntity* entity);
 		private:
 			void CheckBoundsXZ(float& radius, glm::vec3& position);
+			void CheckBoundsY(float& radius, glm::vec3& position);
 			void CheckOtherObjects(float& radius, glm::vec3& position, unsigned id);
 
 			void CircleCircle(float& radius, glm::vec3& position, float radius_other, glm::vec3 position_other);

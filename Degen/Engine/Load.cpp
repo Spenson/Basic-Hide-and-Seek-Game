@@ -8,7 +8,7 @@
 #include "Component/Camera.h"
 #include "Component/Light.h"
 #include "Component/Motion.h"
-#include "Component/Gatherer.h"
+#include "Component/Firefly.h"
 #include "Component/Animation.h"
 #include "Component/Animation_New.h"
 #include "Component/MultiTransform.h"
@@ -181,7 +181,7 @@ namespace Degen
 						}
 						else if (components[i]["component"] == "gatherer")
 						{
-							Component::iComponent* comp = ent->AddComponent<Component::Gatherer>();
+							Component::iComponent* comp = ent->AddComponent<Component::Firefly>();
 							comp->Deserialize(components[i]);
 						}
 						else if (components[i]["component"] == "animation")

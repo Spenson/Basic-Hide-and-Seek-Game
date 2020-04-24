@@ -19,7 +19,7 @@ namespace Degen
 				Component::Motion* motion = dynamic_cast<Component::Motion*>(ent->GetComponent(Component::MOTION_COMPONENT));
 
 				if (glm::length(motion->velocity) < 0.01) continue;
-				
+
 				if (glm::length(motion->velocity) > motion->max_velocity)
 				{
 					motion->velocity = glm::normalize(motion->velocity) * motion->max_velocity;
@@ -31,6 +31,12 @@ namespace Degen
 				if (radius)
 				{
 					CheckBoundsXZ(radius->radius, position->position);
+					if (ent->user_id == 10)
+					{
+						CheckBoundsY(radius->radius, position->position);
+
+					}
+
 					CheckOtherObjects(radius->radius, position->position, ent->unique_id);
 				}
 			}
@@ -62,18 +68,23 @@ namespace Degen
 
 			if (position.x - radius < min.x) position.x = min.x + radius;
 			if (position.z - radius < min.z) position.z = min.z + radius;
-			
-			//if (position.y + radius > max.y) position.y = max.y - radius;
-			//if (position.y - radius < min.y) position.y = min.y + radius;
-			
+
+		}
+		void cBasicMotion::CheckBoundsY(float& radius, glm::vec3& position)
+		{
+			if (position.y + radius > max.y) position.y = max.y - radius;
+			if (position.y - radius < min.y) position.y = min.y + radius;
+
 		}
 
 		void cBasicMotion::CheckOtherObjects(float& radius, glm::vec3& position, unsigned id)
 		{
 			for (auto* other : collision_entities)
 			{
-				if(id == other->unique_id) continue;
-				
+				if (id == other->unique_id) continue;
+				if (10 == other->user_id) continue;
+
+
 				Component::Position* other_pos = dynamic_cast<Component::Position*>(other->GetComponent(Component::POSITION_COMPONENT));
 				if (other_pos)
 				{
@@ -115,7 +126,7 @@ namespace Degen
 				Component::MultiTransform* other_mt = dynamic_cast<Component::MultiTransform*>(other->GetComponent(Component::MULTI_TRANSFORM_COMPONENT));
 				if (other_mt)
 				{
-					
+
 					Component::Radius2D* other_rad = dynamic_cast<Component::Radius2D*>(other->GetComponent(Component::RADIUS_2D_COMPONENT));
 					if (other_rad)
 					{
